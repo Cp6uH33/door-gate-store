@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
+import { useCart } from '@/context/CartContext';
 
 export default function Home() {
   const [products, setProducts] = useState<any[]>([]);
