@@ -8,7 +8,7 @@ export default function Header() {
   const { cartCount } = useCart();
 
   const menuItems = [
-    { name: 'Shop', href: '/' },
+    { name: 'Shop', href: '/shop' },
     { name: 'Proizvodi', href: '/proizvodi' },
     { name: 'Kontakt', href: '/kontakt' },
   ];
