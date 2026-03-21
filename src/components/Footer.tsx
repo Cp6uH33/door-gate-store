@@ -1,69 +1,113 @@
+"use client";
 import Link from 'next/link';
+
+const cols = [
+  {
+    title: 'Shop',
+    links: [
+      { label: 'Video interfoni', href: '/shop?cat=interfoni' },
+      { label: 'Motori za kapije', href: '/shop?cat=motori' },
+      { label: 'RFID sistemi', href: '/shop?cat=rfid' },
+      { label: 'Brave i cilindri', href: '/shop?cat=brave' },
+      { label: 'Smart Home', href: '/shop?cat=smart' },
+    ],
+  },
+  {
+    title: 'Firma',
+    links: [
+      { label: 'O nama', href: '/' },
+      { label: 'Reference', href: '/' },
+      { label: 'Servis', href: '/' },
+      { label: 'Blog', href: '/' },
+    ],
+  },
+  {
+    title: 'Podrška',
+    links: [
+      { label: 'Kontakt', href: '/kontakt' },
+      { label: 'FAQ', href: '/' },
+      { label: 'Politika vraćanja', href: '/' },
+      { label: 'Dostava', href: '/' },
+    ],
+  },
+];
 
 export default function Footer() {
   return (
-    <footer style={{background:'#0a0a0a', borderTop:'1px solid #1e1e1e', padding:'48px 24px 24px'}}>
-      <div style={{maxWidth:'1100px', margin:'0 auto'}}>
-        <div style={{display:'grid', gridTemplateColumns:'2fr 1fr 1fr 1fr', gap:'40px', marginBottom:'40px'}}>
+    <footer style={{ background: '#0a0a0a', borderTop: '1px solid #1a1a1a', padding: '48px 0 28px' }}>
+      <div style={{ maxWidth: "1152px", margin: "0 auto", padding: "0 24px" }}>
 
-          {/* Brand */}
+        {/* Top grid */}
+        <div style={{
+          display: 'grid',
+          gridTemplateColumns: '2fr 1fr 1fr 1fr',
+          gap: '40px',
+          paddingBottom: '40px',
+          borderBottom: '1px solid #1a1a1a',
+          marginBottom: '28px',
+        }}>
+
+          {/* Brand col */}
           <div>
-            <div style={{display:'flex', alignItems:'center', gap:'12px', marginBottom:'16px'}}>
-              <div style={{width:'40px', height:'40px', background:'#e87c2a', borderRadius:'8px', display:'flex', alignItems:'center', justifyContent:'center', fontSize:'18px'}}>🚪</div>
-              <span style={{color:'#f0f0f0', fontWeight:900, fontSize:'18px'}}>Door <span style={{color:'#e87c2a'}}>&</span> Gate Sistem</span>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '14px' }}>
+              <div style={{
+                width: '32px', height: '32px', background: '#ffc02a',
+                borderRadius: '8px', display: 'flex', alignItems: 'center', justifyContent: 'center',
+              }}>
+                <svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="#0e0f11" strokeWidth="2" strokeLinecap="round">
+                  <rect x="3" y="2" width="12" height="14" rx="2" />
+                  <circle cx="11" cy="9" r="1.5" />
+                  <line x1="3" y1="6" x2="15" y2="6" />
+                </svg>
+              </div>
+              <span style={{ fontSize: '15px', fontWeight: 700, color: '#f0f0f0' }}>
+                Door & Gate Sistem
+              </span>
             </div>
-            <p style={{color:'#444', fontSize:'15px', lineHeight:1.7, margin:'0 0 20px 0', maxWidth:'280px'}}>
-              Profesionalna automatizacija kapija, interfoni i pametni sistemi za dom i posao.
+            <p style={{ fontSize: '13px', color: '#555', lineHeight: 1.7, maxWidth: '260px' }}>
+              Profesionalna automatizacija kapija, interfoni i sistemi za kontrolu pristupa. Prodaja i montaža širom Srbije.
             </p>
-            <div style={{display:'flex', gap:'12px'}}>
-              {['Facebook', 'Instagram'].map(s => (
-                <a key={s} href="#" style={{background:'#1a1a1a', border:'1px solid #2a2a2a', color:'#888', padding:'8px 16px', borderRadius:'8px', fontSize:'13px', fontWeight:600, textDecoration:'none'}}>
-                  {s === 'Facebook' ? '📘' : '📸'} {s}
-                </a>
+          </div>
+
+          {/* Link cols */}
+          {cols.map(col => (
+            <div key={col.title}>
+              <div style={{ fontSize: '13px', fontWeight: 700, color: '#f0f0f0', marginBottom: '16px' }}>
+                {col.title}
+              </div>
+              {col.links.map(l => (
+                <Link
+                  key={l.href + l.label}
+                  href={l.href}
+                  style={{ display: 'block', fontSize: '13px', color: '#555', padding: '4px 0', textDecoration: 'none', transition: 'color 0.2s' }}
+                  onMouseEnter={e => ((e.currentTarget as HTMLElement).style.color = '#ffc02a')}
+                  onMouseLeave={e => ((e.currentTarget as HTMLElement).style.color = '#555')}
+                >
+                  {l.label}
+                </Link>
               ))}
             </div>
-          </div>
-
-          {/* Navigacija */}
-          <div>
-            <h4 style={{color:'#888', fontSize:'12px', fontWeight:700, letterSpacing:'2px', textTransform:'uppercase', margin:'0 0 16px 0'}}>Navigacija</h4>
-            {[{name:'Web Shop', href:'/'},{name:'Proizvodi', href:'/proizvodi'},{name:'Kontakt', href:'/kontakt'},{name:'Korpa', href:'/cart'}].map(item => (
-              <Link key={item.href} href={item.href} style={{display:'block', color:'#555', fontSize:'15px', textDecoration:'none', marginBottom:'10px', fontWeight:500}}>
-                {item.name}
-              </Link>
-            ))}
-          </div>
-
-          {/* Kategorije */}
-          <div>
-            <h4 style={{color:'#888', fontSize:'12px', fontWeight:700, letterSpacing:'2px', textTransform:'uppercase', margin:'0 0 16px 0'}}>Kategorije</h4>
-            {['Motori za kapije','Interfoni','RFID sistemi','Brave','Smart Home'].map(cat => (
-              <Link key={cat} href="/proizvodi" style={{display:'block', color:'#555', fontSize:'15px', textDecoration:'none', marginBottom:'10px', fontWeight:500}}>
-                {cat}
-              </Link>
-            ))}
-          </div>
-
-          {/* Kontakt */}
-          <div>
-            <h4 style={{color:'#888', fontSize:'12px', fontWeight:700, letterSpacing:'2px', textTransform:'uppercase', margin:'0 0 16px 0'}}>Kontakt</h4>
-            {[
-              {icon:'📞', text:'+381 64 123 4567'},
-              {icon:'📧', text:'info@doorgatesistem.com'},
-              {icon:'📍', text:'Novi Sad, Vojvodina'},
-              {icon:'⏰', text:'Pon-Sub: 8-20h'},
-            ].map(({icon, text}) => (
-              <p key={text} style={{color:'#555', fontSize:'14px', margin:'0 0 10px 0'}}>
-                {icon} {text}
-              </p>
-            ))}
-          </div>
+          ))}
         </div>
 
         {/* Bottom */}
-        <div style={{borderTop:'1px solid #1a1a1a', paddingTop:'24px', display:'flex', justifyContent:'space-between', alignItems:'center'}}>
-          <p style={{color:'#333', fontSize:'13px', margin:0}}>© 2025 Door & Gate Sistem. Sva prava zadržana.</p>
-          <p style={{color:'#333', fontSize:'13px', margin:0}}>Novi Sad, Srbija 🇷🇸</p>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <span style={{ fontSize: '12px', color: '#444' }}>
+            © 2026 Door & Gate Sistem. Sva prava zadržana.
+          </span>
+          <div style={{ display: 'flex', gap: '20px' }}>
+            {['Privatnost', 'Uslovi korišćenja'].map(label => (
+              <Link
+                key={label}
+                href="/"
+                style={{ fontSize: '12px', color: '#444', textDecoration: 'none', transition: 'color 0.2s' }}
+                onMouseEnter={e => ((e.currentTarget as HTMLElement).style.color = '#f0f0f0')}
+                onMouseLeave={e => ((e.currentTarget as HTMLElement).style.color = '#444')}
+              >
+                {label}
+              </Link>
+            ))}
+          </div>
         </div>
       </div>
     </footer>
