@@ -26,7 +26,13 @@ export function CartProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     const saved = localStorage.getItem('cart');
-    if (saved) setCart(JSON.parse(saved));
+    if (saved) {
+      try {
+        setCart(JSON.parse(saved));
+      } catch {
+        localStorage.removeItem('cart');
+      }
+    }
   }, []);
 
   useEffect(() => {
@@ -34,11 +40,23 @@ export function CartProvider({ children }: { children: ReactNode }) {
   }, [cart]);
 
   const addToCart = (product: any) => {
-    const existing = cart.find(item => item.id === product.id);
-    const newCart = existing 
-      ? cart.map(item => item.id === product.id ? {...item, quantity: item.quantity + 1} : item)
-      : [...cart, {...product, quantity: 1}];
-    setCart(newCart);
+    const cartItem: CartItem = {
+      id: product.id,
+      name: product.name,
+      price: product.price,
+      images: product.images || [],
+      short_description: product.short_description || '',
+      quantity: 1
+    };
+    
+    const existingIndex = cart.findIndex(item => item.id === product.id);
+    if (existingIndex > -1) {
+      const newCart = [...cart];
+      newCart[existingIndex].quantity += 1;
+      setCart(newCart);
+    } else {
+      setCart([...cart, cartItem]);
+    }
   };
 
   const removeFromCart = (id: number) => {

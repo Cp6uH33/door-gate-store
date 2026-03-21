@@ -1,109 +1,123 @@
 "use client";
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
+import { useCart } from '@/contexts/CartContext';
 
 export default function Proizvodi() {
   const [products, setProducts] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
-  const [cart, setCart] = useState<any[]>([]);
+  const [activeCategory, setActiveCategory] = useState('Sve');
+  const { addToCart } = useCart();
 
   useEffect(() => {
-    const savedCart = localStorage.getItem('cart');
-    if (savedCart) setCart(JSON.parse(savedCart));
-
-    // TVOJ WooCommerce API
-    fetch('https://doorgatesistem.com/wp-json/wc/v3/products?consumer_key=ck_928d757a20f67f6ea4f412a8fd14ef1cc0710c95&consumer_secret=cs_c7f76ab6fef58c391655a016826961bf154f21ba&per_page=50&status=publish')
+    fetch(`${process.env.NEXT_PUBLIC_WC_URL}/products?consumer_key=${process.env.NEXT_PUBLIC_WC_CONSUMER_KEY}&consumer_secret=${process.env.NEXT_PUBLIC_WC_CONSUMER_SECRET}&per_page=50&status=publish`)
       .then(res => res.json())
-      .then(data => {
-        setProducts(data);
-        setLoading(false);
-      })
+      .then(data => { setProducts(data); setLoading(false); })
       .catch(() => setLoading(false));
   }, []);
 
-  const addToCart = (product: any) => {
-    const existing = cart.find(item => item.id === product.id);
-    const newCart = existing 
-      ? cart.map(item => item.id === product.id ? {...item, quantity: item.quantity + 1} : item)
-      : [...cart, {...product, quantity: 1}];
-    setCart(newCart);
-    localStorage.setItem('cart', JSON.stringify(newCart));
-  };
-
   if (loading) return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-50">
-      <div className="text-4xl font-bold text-blue-600 animate-pulse">Učitavam proizvode...</div>
+    <div style={{background:'#0f0f0f'}} className="min-h-screen flex items-center justify-center">
+      <div style={{color:'#e87c2a'}} className="text-3xl font-bold animate-pulse">Učitavam proizvode...</div>
     </div>
   );
 
-  const categories = [...new Set(products.map(p => p.categories[0]?.name).filter(Boolean))];
+  const categories = ['Sve', ...new Set(products.map(p => p.categories[0]?.name).filter(Boolean))];
+  const filtered = activeCategory === 'Sve' ? products : products.filter(p => p.categories[0]?.name === activeCategory);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-white via-blue-50/50 to-indigo-50 py-24">
-      <div className="max-w-7xl mx-auto px-6">
-        <div className="text-center mb-20">
-          <h1 className="text-7xl font-black bg-gradient-to-r from-gray-900 to-blue-900 bg-clip-text text-transparent mb-6">
-            Svi proizvodi
-          </h1>
-          <p className="text-2xl text-gray-600 max-w-2xl mx-auto">
-            {products.length} artikala na lageru • Besplatna dostava Vojvodina
-          </p>
+    <div style={{background:'#0f0f0f', color:'#f0f0f0'}} className="min-h-screen">
+      <div className="max-w-7xl mx-auto px-6 py-16">
+
+        {/* Naslov */}
+        <div style={{borderBottom:'1px solid #2a2a2a', paddingBottom:'32px', marginBottom:'40px'}}>
+          <h1 style={{color:'#f0f0f0', fontWeight:900, fontSize:'56px', margin:'0 0 8px 0'}}>Svi proizvodi</h1>
+          <p style={{color:'#555', fontSize:'18px', margin:0}}>{products.length} artikala na lageru • Besplatna dostava Vojvodina</p>
         </div>
 
-        {/* Filter po kategorijama */}
-        <div className="flex flex-wrap gap-4 justify-center mb-20 bg-white/70 backdrop-blur-sm p-8 rounded-3xl shadow-xl">
-          <Link href="/proizvodi" className="px-8 py-4 font-bold text-xl bg-blue-500 text-white rounded-3xl hover:bg-blue-600 transition-all">
-            Sve ({products.length})
-          </Link>
+        {/* Kategorije filter */}
+        <div style={{display:'flex', flexWrap:'wrap', gap:'10px', marginBottom:'40px'}}>
           {categories.map((cat, i) => (
-            <button key={i} className="px-8 py-4 font-bold text-xl text-gray-700 hover:text-blue-600 hover:bg-blue-50 rounded-3xl transition-all bg-white/50">
-              {cat}
+            <button
+              key={i}
+              onClick={() => setActiveCategory(cat)}
+              style={{
+                background: activeCategory === cat ? '#e87c2a' : '#1a1a1a',
+                color: activeCategory === cat ? '#fff' : '#888',
+                border: activeCategory === cat ? '1px solid #e87c2a' : '1px solid #2a2a2a',
+                padding:'10px 20px',
+                borderRadius:'8px',
+                fontWeight:700,
+                fontSize:'15px',
+                cursor:'pointer',
+                transition:'all 0.2s'
+              }}
+            >
+              {cat} {cat === 'Sve' ? `(${products.length})` : `(${products.filter(p => p.categories[0]?.name === cat).length})`}
             </button>
           ))}
         </div>
 
-        {/* Grid svih proizvoda */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-8">
-          {products.map((product) => (
-            <div key={product.id} className="group bg-white/80 backdrop-blur-sm rounded-3xl p-8 shadow-xl border border-blue-100 hover:border-blue-300 hover:shadow-2xl hover:-translate-y-3 transition-all duration-500 hover:bg-white">
-              <div className="h-72 mb-6 overflow-hidden rounded-2xl group-hover:scale-[1.03] transition-transform">
-                <img 
-                  src={product.images[0]?.src || '/placeholder.jpg'} 
-                  alt={product.name}
-                  className="w-full h-full object-cover group-hover:brightness-105 transition-all" 
-                />
+        {/* Grid */}
+        <div style={{display:'grid', gridTemplateColumns:'repeat(auto-fill, minmax(260px, 1fr))', gap:'20px'}}>
+          {filtered.map((product) => (
+            <div
+              key={product.id}
+              style={{background:'#1a1a1a', border:'1px solid #2a2a2a', borderRadius:'14px', overflow:'hidden', transition:'all 0.3s'}}
+              onMouseEnter={e => {
+                (e.currentTarget as HTMLElement).style.borderColor = '#e87c2a';
+                (e.currentTarget as HTMLElement).style.transform = 'translateY(-4px)';
+              }}
+              onMouseLeave={e => {
+                (e.currentTarget as HTMLElement).style.borderColor = '#2a2a2a';
+                (e.currentTarget as HTMLElement).style.transform = 'translateY(0)';
+              }}
+            >
+              <Link href={`/proizvodi/${product.id}`} style={{textDecoration:'none'}}>
+                <div style={{height:'220px', overflow:'hidden', background:'#222'}}>
+                  <img
+                    src={product.images[0]?.src || 'https://via.placeholder.com/300x220/222/555?text=Proizvod'}
+                    alt={product.name}
+                    style={{width:'100%', height:'100%', objectFit:'cover', opacity:0.9, transition:'all 0.4s'}}
+                    onMouseEnter={e => (e.target as HTMLElement).style.opacity = '1'}
+                    onMouseLeave={e => (e.target as HTMLElement).style.opacity = '0.9'}
+                  />
+                </div>
+              </Link>
+              <div style={{padding:'20px'}}>
+                <Link href={`/proizvodi/${product.id}`} style={{textDecoration:'none'}}>
+                  <h3 style={{color:'#f0f0f0', fontWeight:800, fontSize:'18px', margin:'0 0 8px 0', lineHeight:1.3}}>
+                    {product.name}
+                  </h3>
+                </Link>
+                <p style={{color:'#555', fontSize:'14px', margin:'0 0 16px 0', lineHeight:1.6, display:'-webkit-box', WebkitLineClamp:2, WebkitBoxOrient:'vertical', overflow:'hidden'}}>
+                  {product.short_description?.replace(/<[^>]*>/g, '') || ''}
+                </p>
+                <div style={{display:'flex', alignItems:'center', justifyContent:'space-between', marginBottom:'16px'}}>
+                  <span style={{color:'#e87c2a', fontWeight:900, fontSize:'26px'}}>
+                    {parseFloat(product.price).toLocaleString()} <span style={{fontSize:'14px'}}>RSD</span>
+                  </span>
+                  <span style={{background:'rgba(232,124,42,0.1)', color:'#e87c2a', border:'1px solid rgba(232,124,42,0.2)', padding:'4px 10px', borderRadius:'6px', fontSize:'12px', fontWeight:700}}>
+                    Na lageru
+                  </span>
+                </div>
+                <button
+                  onClick={() => addToCart(product)}
+                  style={{width:'100%', background:'#e87c2a', color:'#fff', border:'none', padding:'14px', borderRadius:'10px', fontWeight:800, fontSize:'16px', cursor:'pointer', transition:'opacity 0.2s'}}
+                  onMouseEnter={e => (e.target as HTMLElement).style.opacity = '0.9'}
+                  onMouseLeave={e => (e.target as HTMLElement).style.opacity = '1'}
+                >
+                  🛒 Dodaj u korpu
+                </button>
               </div>
-              <h3 className="font-black text-2xl mb-4 line-clamp-2 text-gray-800 group-hover:text-blue-600 transition-colors">
-                {product.name}
-              </h3>
-              <p className="text-gray-600 mb-8 line-clamp-3 text-lg leading-relaxed opacity-90">
-                {product.short_description}
-              </p>
-              <div className="flex items-baseline justify-between mb-10">
-                <span className="text-4xl font-black bg-gradient-to-r from-emerald-500 to-emerald-600 bg-clip-text text-transparent drop-shadow-lg">
-                  {parseFloat(product.price).toLocaleString()} RSD
-                </span>
-                <span className="px-4 py-2 bg-emerald-100 text-emerald-700 font-bold rounded-xl text-sm">
-                  ✓ {product.stock_quantity || 0} kom
-                </span>
-              </div>
-              <button 
-                onClick={() => addToCart(product)}
-                className="w-full bg-gradient-to-r from-blue-500 to-indigo-500 text-white py-5 rounded-2xl font-black text-xl shadow-2xl hover:shadow-3xl hover:from-blue-600 hover:to-indigo-600 transition-all duration-300 transform hover:-translate-y-1 hover:scale-[1.02] active:scale-95"
-              >
-                🛒 Dodaj u korpu
-              </button>
             </div>
           ))}
         </div>
 
-        {products.length === 0 && (
-          <div className="text-center py-32">
-            <div className="text-8xl mb-8">🛒</div>
-            <h2 className="text-5xl font-black text-gray-500 mb-6">Nema proizvoda</h2>
-            <Link href="/" className="bg-blue-500 text-white px-12 py-6 rounded-3xl font-bold text-2xl hover:bg-blue-600">
-              Vrati se na Web Shop
-            </Link>
+        {filtered.length === 0 && (
+          <div style={{textAlign:'center', padding:'80px 0'}}>
+            <div style={{fontSize:'64px', marginBottom:'24px'}}>🔍</div>
+            <h2 style={{color:'#555', fontSize:'32px', fontWeight:900}}>Nema proizvoda u ovoj kategoriji</h2>
           </div>
         )}
       </div>

@@ -1,8 +1,7 @@
 "use client";
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import Link from 'next/link';
-import Image from 'next/image';
-import { useCart } from '@/context/CartContext';
+import { useCart } from '@/contexts/CartContext';
 
 export default function Cart() {
   const { cart, removeFromCart, updateQuantity, totalPrice } = useCart();
@@ -10,91 +9,54 @@ export default function Cart() {
 
   const checkout = () => {
     setLoading(true);
-    alert(`Ukupno: ${totalPrice.toLocaleString()} RSD\nHvala na porudžbini!\nPlaćanje pouzećem.`);
-    localStorage.removeItem('cart');
-    window.location.href = '/';
-    setLoading(false);
+    setTimeout(() => {
+      alert(`Ukupno: ${totalPrice.toLocaleString()} RSD\nHvala na porudžbini!\nKontaktiraćemo vas uskoro.`);
+      localStorage.removeItem('cart');
+      window.location.href = '/';
+    }, 1000);
   };
 
-  if (cart.length === 0) {
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-50 py-32 flex flex-col items-center justify-center">
-        <div className="text-center max-w-md">
-          <div className="w-48 h-48 mx-auto mb-12 bg-gradient-to-br from-gray-200 to-gray-300 rounded-3xl flex items-center justify-center text-6xl">
-            🛒
-          </div>
-          <h1 className="text-6xl font-black text-gray-500 mb-8">Korpa je prazna</h1>
-          <Link 
-            href="/"
-            className="bg-gradient-to-r from-blue-500 to-indigo-500 text-white px-12 py-6 rounded-3xl font-black text-2xl shadow-2xl hover:shadow-3xl hover:from-blue-600 hover:to-indigo-600 transition-all"
-          >
-            🛍️ Nastavi kupovinu
-          </Link>
-        </div>
+  if (cart.length === 0) return (
+    <div style={{background:'#0f0f0f', minHeight:'100vh', display:'flex', alignItems:'center', justifyContent:'center'}}>
+      <div style={{textAlign:'center'}}>
+        <div style={{fontSize:'80px', marginBottom:'24px'}}>🛒</div>
+        <h1 style={{color:'#555', fontWeight:900, fontSize:'40px', margin:'0 0 24px 0'}}>Korpa je prazna</h1>
+        <Link href="/" style={{background:'#e87c2a', color:'#fff', padding:'16px 40px', borderRadius:'10px', fontWeight:700, fontSize:'18px', textDecoration:'none'}}>
+          🛍️ Nastavi kupovinu
+        </Link>
       </div>
-    );
-  }
+    </div>
+  );
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-white via-blue-50/50 to-indigo-50 py-24">
-      <div className="max-w-6xl mx-auto px-6">
-        <div className="text-center mb-24">
-          <h1 className="text-7xl font-black bg-gradient-to-r from-gray-900 to-blue-900 bg-clip-text text-transparent mb-6">
-            Korpa
-          </h1>
-          <p className="text-2xl text-gray-600">
-            {cart.length} artikala • Besplatna dostava Vojvodina
-          </p>
-        </div>
+    <div style={{background:'#0f0f0f', color:'#f0f0f0', minHeight:'100vh', padding:'48px 24px'}}>
+      <div style={{maxWidth:'1100px', margin:'0 auto'}}>
 
-        <div className="grid lg:grid-cols-3 gap-12">
-          {/* Proizvodi */}
-          <div className="lg:col-span-2 space-y-6">
+        <h1 style={{fontWeight:900, fontSize:'48px', margin:'0 0 8px 0'}}>Korpa</h1>
+        <p style={{color:'#555', fontSize:'18px', margin:'0 0 40px 0'}}>{cart.length} artikala • Besplatna dostava Vojvodina</p>
+
+        <div style={{display:'grid', gridTemplateColumns:'1fr 380px', gap:'32px', alignItems:'start'}}>
+
+          {/* Lista */}
+          <div style={{display:'flex', flexDirection:'column', gap:'12px'}}>
             {cart.map((item) => (
-              <div key={item.id} className="flex gap-8 p-8 bg-white/80 backdrop-blur-sm rounded-3xl shadow-xl hover:shadow-2xl transition-all border border-blue-100">
-                <div className="w-32 h-32 rounded-2xl overflow-hidden bg-gray-100 flex-shrink-0 shadow-lg">
-                  <Image 
-                    src={item.images?.[0]?.src || 'https://via.placeholder.com/128?text=?'} 
-                    alt={item.name}
-                    width={128}
-                    height={128}
-                    className="w-full h-full object-cover"
-                  />
+              <div key={item.id} style={{background:'#1a1a1a', border:'1px solid #2a2a2a', borderRadius:'14px', padding:'20px', display:'flex', gap:'20px', alignItems:'center'}}>
+                <div style={{width:'88px', height:'88px', borderRadius:'10px', overflow:'hidden', background:'#222', flexShrink:0, border:'1px solid #333'}}>
+                  <img src={item.images?.[0]?.src || 'https://via.placeholder.com/88/222/555?text=?'} alt={item.name} style={{width:'100%', height:'100%', objectFit:'cover'}} />
                 </div>
-                
-                <div className="flex-1 min-w-0">
-                  <h3 className="text-2xl font-black text-gray-900 mb-2 line-clamp-2">{item.name}</h3>
-                  <p className="text-lg text-gray-600 mb-6 line-clamp-2">{item.short_description}</p>
-                  
-                  <div className="flex items-center gap-6 mb-8">
-                    <div className="flex items-center gap-4 bg-gray-100 px-6 py-3 rounded-2xl">
-                      <button 
-                        onClick={() => updateQuantity(item.id, item.quantity - 1)}
-                        className="w-12 h-12 bg-white rounded-xl flex items-center justify-center font-bold text-xl hover:bg-gray-200 transition-colors"
-                      >
-                        −
-                      </button>
-                      <span className="w-12 text-center text-2xl font-bold text-gray-900">
-                        {item.quantity}
-                      </span>
-                      <button 
-                        onClick={() => updateQuantity(item.id, item.quantity + 1)}
-                        className="w-12 h-12 bg-white rounded-xl flex items-center justify-center font-bold text-xl hover:bg-gray-200 transition-colors"
-                      >
-                        +
-                      </button>
-                    </div>
-                    <span className="text-3xl font-black bg-gradient-to-r from-emerald-500 to-emerald-600 bg-clip-text text-transparent">
-                      {(parseFloat(item.price || '0') * item.quantity).toLocaleString()} RSD
-                    </span>
+
+                <div style={{flex:1, minWidth:0}}>
+                  <h3 style={{color:'#f0f0f0', fontWeight:800, fontSize:'17px', margin:'0 0 4px 0'}}>{item.name}</h3>
+                  <p style={{color:'#e87c2a', fontWeight:900, fontSize:'22px', margin:'0 0 12px 0'}}>{(parseFloat(item.price || '0') * item.quantity).toLocaleString()} RSD</p>
+
+                  <div style={{display:'flex', alignItems:'center', gap:'8px'}}>
+                    <button onClick={() => updateQuantity(item.id, item.quantity - 1)} style={{width:'36px', height:'36px', background:'#2a2a2a', border:'1px solid #333', color:'#f0f0f0', borderRadius:'8px', fontWeight:700, fontSize:'18px', cursor:'pointer'}}>−</button>
+                    <span style={{color:'#f0f0f0', fontWeight:700, fontSize:'18px', width:'32px', textAlign:'center'}}>{item.quantity}</span>
+                    <button onClick={() => updateQuantity(item.id, item.quantity + 1)} style={{width:'36px', height:'36px', background:'#2a2a2a', border:'1px solid #333', color:'#f0f0f0', borderRadius:'8px', fontWeight:700, fontSize:'18px', cursor:'pointer'}}>+</button>
                   </div>
                 </div>
-                
-                <button 
-                  onClick={() => removeFromCart(item.id)}
-                  className="w-16 h-16 bg-red-100 hover:bg-red-200 text-red-600 rounded-2xl flex items-center justify-center text-2xl font-bold hover:scale-110 transition-all shadow-lg"
-                  title="Ukloni"
-                >
+
+                <button onClick={() => removeFromCart(item.id)} style={{width:'40px', height:'40px', background:'rgba(239,68,68,0.1)', border:'1px solid rgba(239,68,68,0.2)', color:'#ef4444', borderRadius:'10px', fontSize:'18px', cursor:'pointer', flexShrink:0}}>
                   🗑️
                 </button>
               </div>
@@ -102,45 +64,38 @@ export default function Cart() {
           </div>
 
           {/* Checkout */}
-          <div className="lg:sticky lg:top-32 lg:h-fit">
-            <div className="bg-white/90 backdrop-blur-sm rounded-3xl p-10 shadow-2xl border border-blue-100">
-              <h2 className="text-4xl font-black text-gray-900 mb-12 text-center">Ukupno</h2>
-              
-              <div className="space-y-6 mb-12">
-                <div className="flex justify-between text-2xl font-bold">
-                  <span>Artikala:</span>
-                  <span>{cart.length}</span>
-                </div>
-                <div className="flex justify-between text-2xl font-bold">
-                  <span>Količina:</span>
-                  <span>{cart.reduce((sum, item) => sum + item.quantity, 0)}</span>
-                </div>
-                <div className="h-px bg-gradient-to-r from-transparent via-gray-300 to-transparent" />
-                <div className="flex justify-between text-4xl font-black bg-gradient-to-r from-emerald-500 to-emerald-600 bg-clip-text text-transparent">
-                  <span>UKUPNO:</span>
-                  <span>{totalPrice.toLocaleString()} RSD</span>
-                </div>
+          <div style={{background:'#1a1a1a', border:'1px solid #2a2a2a', borderRadius:'16px', padding:'28px', position:'sticky', top:'90px'}}>
+            <h2 style={{color:'#f0f0f0', fontWeight:900, fontSize:'24px', margin:'0 0 24px 0'}}>Pregled porudžbine</h2>
+
+            <div style={{display:'flex', flexDirection:'column', gap:'12px', marginBottom:'24px'}}>
+              <div style={{display:'flex', justifyContent:'space-between', color:'#888', fontSize:'16px'}}>
+                <span>Artikala:</span><span style={{color:'#f0f0f0'}}>{cart.length}</span>
               </div>
-
-              <Link 
-                href="/"
-                className="block w-full bg-gray-100 text-gray-900 py-4 px-8 rounded-2xl font-bold text-xl text-center hover:bg-gray-200 transition-all mb-6 flex items-center justify-center gap-3"
-              >
-                ← Nastavi kupovinu
-              </Link>
-
-              <button 
-                onClick={checkout}
-                disabled={loading}
-                className="w-full bg-gradient-to-r from-emerald-500 to-emerald-600 text-white py-6 px-8 rounded-3xl font-black text-2xl shadow-2xl hover:shadow-3xl hover:from-emerald-600 hover:to-emerald-700 transition-all duration-300 transform hover:-translate-y-1 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-3"
-              >
-                {loading ? '⏳' : '💳'} Završi kupovinu
-              </button>
-
-              <div className="mt-8 pt-8 border-t border-gray-200 text-center text-sm text-gray-500">
-                <p>✅ Besplatna dostava Vojvodina</p>
-                <p>💰 Plaćanje pouzećem / transfer</p>
+              <div style={{display:'flex', justifyContent:'space-between', color:'#888', fontSize:'16px'}}>
+                <span>Količina:</span><span style={{color:'#f0f0f0'}}>{cart.reduce((s, i) => s + i.quantity, 0)}</span>
               </div>
+              <div style={{display:'flex', justifyContent:'space-between', color:'#888', fontSize:'16px'}}>
+                <span>Dostava:</span><span style={{color:'#e87c2a', fontWeight:700}}>Besplatna</span>
+              </div>
+              <div style={{height:'1px', background:'#2a2a2a', margin:'8px 0'}} />
+              <div style={{display:'flex', justifyContent:'space-between', fontSize:'22px', fontWeight:900}}>
+                <span style={{color:'#888'}}>UKUPNO:</span>
+                <span style={{color:'#e87c2a'}}>{totalPrice.toLocaleString()} RSD</span>
+              </div>
+            </div>
+
+            <Link href="/" style={{display:'block', background:'#222', color:'#888', border:'1px solid #333', padding:'14px', borderRadius:'10px', fontWeight:600, textAlign:'center', textDecoration:'none', marginBottom:'12px', fontSize:'16px'}}>
+              ← Nastavi kupovinu
+            </Link>
+
+            <button onClick={checkout} disabled={loading} style={{width:'100%', background:'#e87c2a', color:'#fff', border:'none', padding:'18px', borderRadius:'10px', fontWeight:900, fontSize:'18px', cursor:'pointer', opacity: loading ? 0.7 : 1}}>
+              {loading ? '⏳ Šaljem...' : '💳 Završi kupovinu'}
+            </button>
+
+            <div style={{marginTop:'20px', paddingTop:'20px', borderTop:'1px solid #2a2a2a', display:'flex', flexDirection:'column', gap:'6px'}}>
+              <p style={{color:'#444', fontSize:'13px', margin:0}}>✅ Besplatna dostava Vojvodina</p>
+              <p style={{color:'#444', fontSize:'13px', margin:0}}>💰 Plaćanje pouzećem ili transferom</p>
+              <p style={{color:'#444', fontSize:'13px', margin:0}}>🔧 Montaža u roku od 48h</p>
             </div>
           </div>
         </div>

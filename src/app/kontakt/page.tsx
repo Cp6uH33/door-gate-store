@@ -2,139 +2,112 @@
 import { useState } from 'react';
 
 export default function Kontakt() {
-  const [formData, setFormData] = useState({
-    ime: '',
-    email: '',
-    poruka: ''
-  });
+  const [form, setForm] = useState({ ime: '', email: '', telefon: '', poruka: '' });
   const [sent, setSent] = useState(false);
+  const [loading, setLoading] = useState(false);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    setFormData({...formData, [e.target.name]: e.target.value});
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // TODO: Pošalji na email/WordPress
-    console.log('Forma:', formData);
-    setSent(true);
-    setTimeout(() => setSent(false), 5000);
+    setLoading(true);
+    setTimeout(() => {
+      setSent(true);
+      setLoading(false);
+    }, 1200);
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-white via-blue-50/30 to-indigo-50 py-24">
-      <div className="max-w-6xl mx-auto px-6">
-        {/* Hero */}
-        <div className="text-center mb-32">
-          <h1 className="text-7xl font-black bg-gradient-to-r from-gray-900 to-blue-900 bg-clip-text text-transparent mb-8">
-            Kontakt
-          </h1>
-          <p className="text-2xl text-gray-600 max-w-3xl mx-auto">
-            Besplatne konsultacije • Ponuda u 24h • Montaža širom Vojvodine
-          </p>
+    <div style={{background:'#0f0f0f', color:'#f0f0f0', minHeight:'100vh', padding:'48px 24px'}}>
+      <div style={{maxWidth:'1100px', margin:'0 auto'}}>
+
+        <div style={{marginBottom:'48px'}}>
+          <h1 style={{fontWeight:900, fontSize:'56px', margin:'0 0 8px 0'}}>Kontakt</h1>
+          <p style={{color:'#555', fontSize:'18px', margin:0}}>Odgovaramo u roku od 1h • Besplatna procena</p>
         </div>
 
-        <div className="grid lg:grid-cols-2 gap-20 items-center mb-32">
-          {/* LEVO: FORMA */}
-          <div className="bg-white/80 backdrop-blur-sm rounded-3xl p-12 shadow-2xl border border-blue-100">
-            <h2 className="text-4xl font-black text-gray-900 mb-12">Pošalji upit</h2>
-            <form onSubmit={handleSubmit} className="space-y-8">
-              <div>
-                <label className="block text-xl font-semibold text-gray-700 mb-4">Ime i Prezime *</label>
-                <input 
-                  name="ime" 
-                  required 
-                  value={formData.ime}
-                  onChange={handleChange}
-                  className="w-full p-6 border-2 border-gray-200 rounded-2xl text-xl focus:border-blue-400 focus:outline-none focus:ring-4 ring-blue-100 transition-all"
-                  placeholder="Unesite ime"
-                />
+        <div style={{display:'grid', gridTemplateColumns:'1fr 1fr', gap:'40px', alignItems:'start'}}>
+
+          {/* Forma */}
+          <div style={{background:'#1a1a1a', border:'1px solid #2a2a2a', borderRadius:'16px', padding:'32px'}}>
+            <h2 style={{color:'#f0f0f0', fontWeight:800, fontSize:'24px', margin:'0 0 28px 0'}}>Pošalji upit</h2>
+
+            {sent ? (
+              <div style={{textAlign:'center', padding:'40px 0'}}>
+                <div style={{fontSize:'64px', marginBottom:'16px'}}>✅</div>
+                <h3 style={{color:'#e87c2a', fontWeight:900, fontSize:'24px', margin:'0 0 8px 0'}}>Poruka poslata!</h3>
+                <p style={{color:'#888', fontSize:'16px', margin:0}}>Kontaktiraćemo vas uskoro.</p>
               </div>
-              
-              <div>
-                <label className="block text-xl font-semibold text-gray-700 mb-4">Email adresa *</label>
-                <input 
-                  name="email" 
-                  type="email"
-                  required 
-                  value={formData.email}
-                  onChange={handleChange}
-                  className="w-full p-6 border-2 border-gray-200 rounded-2xl text-xl focus:border-blue-400 focus:outline-none focus:ring-4 ring-blue-100 transition-all"
-                  placeholder="vas@email.com"
-                />
-              </div>
-              
-              <div>
-                <label className="block text-xl font-semibold text-gray-700 mb-4">Poruka / Projekat</label>
-                <textarea 
-                  name="poruka"
-                  rows={6}
-                  value={formData.poruka}
-                  onChange={handleChange}
-                  className="w-full p-6 border-2 border-gray-200 rounded-2xl text-xl resize-vertical focus:border-blue-400 focus:outline-none focus:ring-4 ring-blue-100 transition-all"
-                  placeholder="Opis projekta, dimenzije kapije, lokacija..."
-                />
-              </div>
-              
-              <button 
-                type="submit" 
-                className="w-full bg-gradient-to-r from-blue-500 to-indigo-500 text-white py-8 rounded-3xl font-black text-2xl shadow-2xl hover:shadow-3xl hover:from-blue-600 hover:to-indigo-600 transition-all duration-300 transform hover:-translate-y-1"
-                disabled={sent}
-              >
-                {sent ? '✅ Poruka poslata!' : '📤 Pošalji upit'}
-              </button>
-            </form>
+            ) : (
+              <form onSubmit={handleSubmit} style={{display:'flex', flexDirection:'column', gap:'16px'}}>
+                {[
+                  {label:'Ime i prezime', key:'ime', type:'text', placeholder:'Vaše ime...'},
+                  {label:'Email adresa', key:'email', type:'email', placeholder:'email@primer.com'},
+                  {label:'Telefon', key:'telefon', type:'tel', placeholder:'+381 ...'},
+                ].map(({label, key, type, placeholder}) => (
+                  <div key={key}>
+                    <label style={{color:'#888', fontSize:'13px', fontWeight:600, letterSpacing:'1px', textTransform:'uppercase', display:'block', marginBottom:'8px'}}>{label}</label>
+                    <input
+                      type={type}
+                      placeholder={placeholder}
+                      value={form[key as keyof typeof form]}
+                      onChange={e => setForm({...form, [key]: e.target.value})}
+                      required
+                      style={{width:'100%', background:'#111', border:'1px solid #333', color:'#f0f0f0', padding:'14px 16px', borderRadius:'10px', fontSize:'16px', outline:'none', boxSizing:'border-box'}}
+                      onFocus={e => (e.target as HTMLElement).style.borderColor = '#e87c2a'}
+                      onBlur={e => (e.target as HTMLElement).style.borderColor = '#333'}
+                    />
+                  </div>
+                ))}
+                <div>
+                  <label style={{color:'#888', fontSize:'13px', fontWeight:600, letterSpacing:'1px', textTransform:'uppercase', display:'block', marginBottom:'8px'}}>Poruka</label>
+                  <textarea
+                    placeholder="Opišite šta vam treba..."
+                    value={form.poruka}
+                    onChange={e => setForm({...form, poruka: e.target.value})}
+                    required
+                    rows={5}
+                    style={{width:'100%', background:'#111', border:'1px solid #333', color:'#f0f0f0', padding:'14px 16px', borderRadius:'10px', fontSize:'16px', outline:'none', resize:'vertical', boxSizing:'border-box', fontFamily:'inherit'}}
+                    onFocus={e => (e.target as HTMLElement).style.borderColor = '#e87c2a'}
+                    onBlur={e => (e.target as HTMLElement).style.borderColor = '#333'}
+                  />
+                </div>
+                <button
+                  type="submit"
+                  disabled={loading}
+                  style={{background:'#e87c2a', color:'#fff', border:'none', padding:'18px', borderRadius:'10px', fontWeight:900, fontSize:'18px', cursor:'pointer', opacity: loading ? 0.7 : 1, marginTop:'8px'}}
+                >
+                  {loading ? '⏳ Šaljem...' : '📤 Pošalji upit'}
+                </button>
+              </form>
+            )}
           </div>
 
-          {/* DESNO: KONTAKT INFO + MAPA */}
-          <div className="space-y-12">
-            {/* Telefoni */}
-            <div className="bg-white/80 backdrop-blur-sm rounded-3xl p-10 shadow-xl border border-blue-100">
-              <h3 className="text-3xl font-black text-gray-900 mb-8 flex items-center gap-4">
-                📞 Kontakt
-              </h3>
-              <div className="space-y-6">
-                <div className="flex items-start gap-6 p-6 bg-gradient-to-r from-emerald-50 to-blue-50 rounded-2xl">
-                  <div className="w-16 h-16 bg-emerald-500 rounded-2xl flex items-center justify-center text-2xl font-bold text-white shadow-lg">
-                    📱
-                  </div>
-                  <div>
-                    <p className="text-2xl font-bold text-gray-900">Mobi 1</p>
-                    <a href="tel:+381641234567" className="text-3xl font-black text-blue-600 hover:text-blue-700">+381 64 123 4567</a>
-                  </div>
+          {/* Info */}
+          <div style={{display:'flex', flexDirection:'column', gap:'16px'}}>
+            {[
+              {icon:'📞', title:'Telefon', value:'+381 64 123 4567', sub:'Dostupni pon-sub 8-20h'},
+              {icon:'📧', title:'Email', value:'info@doorgatesistem.com', sub:'Odgovaramo u roku od 1h'},
+              {icon:'📍', title:'Lokacija', value:'Novi Sad, Vojvodina', sub:'Servis i montaža na terenu'},
+              {icon:'⏰', title:'Radno vreme', value:'Pon – Sub: 8:00 – 20:00', sub:'Ned: Po dogovoru'},
+            ].map(({icon, title, value, sub}) => (
+              <div key={title} style={{background:'#1a1a1a', border:'1px solid #2a2a2a', borderRadius:'14px', padding:'24px', display:'flex', gap:'20px', alignItems:'flex-start'}}>
+                <div style={{width:'52px', height:'52px', background:'rgba(232,124,42,0.1)', border:'1px solid rgba(232,124,42,0.2)', borderRadius:'12px', display:'flex', alignItems:'center', justifyContent:'center', fontSize:'22px', flexShrink:0}}>
+                  {icon}
                 </div>
-                <div className="flex items-start gap-6 p-6 bg-gradient-to-r from-emerald-50 to-blue-50 rounded-2xl">
-                  <div className="w-16 h-16 bg-emerald-500 rounded-2xl flex items-center justify-center text-2xl font-bold text-white shadow-lg">
-                    ☎️
-                  </div>
-                  <div>
-                    <p className="text-2xl font-bold text-gray-900">Fiksni</p>
-                    <a href="tel:+381211234567" className="text-3xl font-black text-blue-600 hover:text-blue-700">+381 21 123 4567</a>
-                  </div>
+                <div>
+                  <p style={{color:'#555', fontSize:'12px', fontWeight:700, letterSpacing:'2px', textTransform:'uppercase', margin:'0 0 4px 0'}}>{title}</p>
+                  <p style={{color:'#f0f0f0', fontWeight:800, fontSize:'18px', margin:'0 0 4px 0'}}>{value}</p>
+                  <p style={{color:'#555', fontSize:'14px', margin:0}}>{sub}</p>
                 </div>
               </div>
-            </div>
+            ))}
 
-            {/* Adresa */}
-            <div className="bg-white/80 backdrop-blur-sm rounded-3xl p-10 shadow-xl border border-blue-100">
-              <h3 className="text-3xl font-black text-gray-900 mb-6">📍 Bregalnička 240b, Novi Sad</h3>
-              <p className="text-xl text-gray-600 mb-8">Radno vreme: Pon-Pet 08-18h • Sub 09-15h</p>
-              <a href="mailto:info@doorgatesistem.com" className="block text-xl font-semibold text-blue-600 hover:text-blue-700 mb-8">
-                ✉️ info@doorgatesistem.com
+            {/* CTA */}
+            <div style={{background:'linear-gradient(135deg, rgba(232,124,42,0.15), rgba(232,124,42,0.05))', border:'1px solid rgba(232,124,42,0.3)', borderRadius:'14px', padding:'24px', textAlign:'center', marginTop:'8px'}}>
+              <p style={{color:'#e87c2a', fontWeight:900, fontSize:'20px', margin:'0 0 8px 0'}}>⚡ Brza procena</p>
+              <p style={{color:'#888', fontSize:'15px', margin:'0 0 16px 0'}}>Pozovite za besplatnu procenu i ponudu na licu mesta</p>
+              <a href="tel:+381641234567" style={{background:'#e87c2a', color:'#fff', padding:'14px 28px', borderRadius:'10px', fontWeight:700, fontSize:'16px', textDecoration:'none', display:'inline-block'}}>
+                📞 Pozovi odmah
               </a>
-              {/* Google Maps */}
-              <div className="w-full h-96 rounded-2xl overflow-hidden shadow-2xl border-4 border-white">
-                <iframe
-                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2808.482748523!2d19.845!3d45.256!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zNDDCsDE1JzIxLjQiTiAxOsKwNTAnNDguMiJF!5e0!3m2!1sen!2srs!4v1234567890"
-                  width="100%"
-                  height="100%"
-                  style={{border:0}}
-                  allowFullScreen={false}
-                  loading="lazy"
-                  referrerPolicy="no-referrer-when-downgrade"
-                  className="w-full h-full"
-                />
-              </div>
             </div>
           </div>
         </div>
