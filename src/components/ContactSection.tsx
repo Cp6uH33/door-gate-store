@@ -4,7 +4,31 @@ import { useState } from 'react';
 const contactCards = [
   {
     label: 'Telefon',
-    value: '+381 64 xxx xxxx',
+    value: (
+      <>
+        <a href="tel:+381631183898" style={{
+          color: '#fffbf0',
+          textDecoration: 'none',
+          display: 'block',
+          fontWeight: 500,
+          fontSize: '14px',
+          lineHeight: '1.6',
+          marginBottom: '10px',
+        }}>
+          +381 631 183 898
+        </a>
+        <a href="tel:+381691200104" style={{
+          color: '#fffbf0',
+          textDecoration: 'none',
+          display: 'block',
+          fontWeight: 500,
+          fontSize: '14px',
+          lineHeight: '1.4'
+        }}>
+          +381 691 200 104
+        </a>
+      </>
+    ),
     icon: (
       <svg viewBox="0 0 18 18" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round">
         <path d="M3 4a1 1 0 011-1h2.5l1 3-1.5 1.5a10 10 0 004.5 4.5L12 10.5l3 1V14a1 1 0 01-1 1C7 15 3 11 3 4z" />
@@ -13,7 +37,18 @@ const contactCards = [
   },
   {
     label: 'Email',
-    value: 'info@doorgatesistem.com',
+    value: (
+      <a href="mailto:doorgatesistem@gmail.com" style={{
+        color: '#fffbf0',
+        textDecoration: 'none',
+        display: 'block',
+        fontWeight: 500,
+        fontSize: '14px',
+        lineHeight: '1.6'
+      }}>
+        doorgatesistem@gmail.com
+      </a>
+    ),
     icon: (
       <svg viewBox="0 0 18 18" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round">
         <path d="M3 5l6 4 6-4" /><rect x="2" y="4" width="14" height="10" rx="1.5" />
@@ -22,7 +57,18 @@ const contactCards = [
   },
   {
     label: 'Adresa',
-    value: 'Srbija — dostava na celoj teritoriji',
+    value: (
+      <a href="https://maps.google.com/?q=Bregalnicka7+Subotica,+Srbija" target="_blank" style={{
+        color: '#fffbf0',
+        textDecoration: 'none',
+        display: 'block',
+        fontWeight: 500,
+        fontSize: '14px',
+        lineHeight: '1.6'
+      }}>
+        Bregalnička 7, 24000 Subotica
+      </a>
+    ),
     icon: (
       <svg viewBox="0 0 18 18" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round">
         <path d="M9 2C6.2 2 4 4.2 4 7c0 3.5 5 9 5 9s5-5.5 5-9c0-2.8-2.2-5-5-5z" />
@@ -32,7 +78,7 @@ const contactCards = [
   },
   {
     label: 'Radno vreme',
-    value: 'Pon – Sub: 08:00 – 18:00',
+    value: 'Pon – Sub: 08:00 – 16:00',
     icon: (
       <svg viewBox="0 0 18 18" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round">
         <circle cx="9" cy="9" r="7" /><path d="M9 5v4l2.5 2.5" />
@@ -56,12 +102,12 @@ export default function ContactSection() {
     width: '100%', padding: '12px 16px',
     background: '#222', border: '1.5px solid #2a2a2a',
     borderRadius: '12px', fontSize: '14px',
-    fontFamily: "'DM Sans', sans-serif", color: '#0e0f11',
+    fontFamily: "'DM Sans', sans-serif", color: '#ededeb',
     outline: 'none', transition: 'border-color 0.2s, background 0.2s',
   };
 
   return (
-    <section id="contact" style={{ padding: '80px 0', background: '#f7f7f8' }}>
+    <section id="contact" style={{ padding: '80px 0', background: '#1a1a1a' }}>
       <div style={{ maxWidth: "1152px", margin: "0 auto", padding: "0 24px" }}>
 
         {/* Header */}
@@ -77,20 +123,20 @@ export default function ContactSection() {
           <div
             style={{
               background: '#1a1a1a', borderRadius: '32px',
-              padding: '40px', border: '1.5px solid #2a2a2a',
+              padding: '40px', border: '1.5px solid #ffc02a',
             }}
           >
             <div style={{ fontFamily: "'Syne', sans-serif", fontSize: '24px', fontWeight: 800, marginBottom: '6px', letterSpacing: '-0.5px', color: '#f0f0f0' }}>
               Pošaljite upit
             </div>
-            <div style={{ fontSize: '14px', color: '#999', marginBottom: '28px' }}>
+            <div style={{ fontSize: '14px', color: '#ededeb', marginBottom: '28px' }}>
               Opišite šta vam treba i javimo se što pre.
             </div>
 
             <form onSubmit={handleSubmit}>
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px', marginBottom: '16px' }}>
                 <div>
-                  <label style={{ fontSize: '12px', fontWeight: 500, color: '#6b6c72', display: 'block', marginBottom: '6px', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+                  <label style={{ fontSize: '12px', fontWeight: 500, color: '#ededeb', display: 'block', marginBottom: '6px', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
                     Ime
                   </label>
                   <input
@@ -104,7 +150,7 @@ export default function ContactSection() {
                   />
                 </div>
                 <div>
-                  <label style={{ fontSize: '12px', fontWeight: 500, color: '#6b6c72', display: 'block', marginBottom: '6px', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+                  <label style={{ fontSize: '12px', fontWeight: 500, color: '#ededeb', display: 'block', marginBottom: '6px', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
                     Telefon
                   </label>
                   <input
@@ -120,7 +166,7 @@ export default function ContactSection() {
               </div>
 
               <div style={{ marginBottom: '16px' }}>
-                <label style={{ fontSize: '12px', fontWeight: 500, color: '#6b6c72', display: 'block', marginBottom: '6px', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+                <label style={{ fontSize: '12px', fontWeight: 500, color: '#ededeb', display: 'block', marginBottom: '6px', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
                   Email
                 </label>
                 <input
@@ -135,7 +181,7 @@ export default function ContactSection() {
               </div>
 
               <div style={{ marginBottom: '16px' }}>
-                <label style={{ fontSize: '12px', fontWeight: 500, color: '#6b6c72', display: 'block', marginBottom: '6px', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+                <label style={{ fontSize: '12px', fontWeight: 500, color: '#ededeb', display: 'block', marginBottom: '6px', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
                   Poruka
                 </label>
                 <textarea
@@ -173,10 +219,10 @@ export default function ContactSection() {
 
           {/* INFO */}
           <div>
-            <div style={{ fontFamily: "'Syne', sans-serif", fontSize: '24px', fontWeight: 800, marginBottom: '6px', letterSpacing: '-0.5px', color: '#f0f0f0' }}>
+            <div style={{ fontFamily: "'Syne', sans-serif", fontSize: '24px', fontWeight: 800, marginBottom: '6px', letterSpacing: '-0.5px', color: '#fffbf0' }}>
               Pronađite nas
             </div>
-            <div style={{ fontSize: '14px', color: '#6b6c72', marginBottom: '32px' }}>
+            <div style={{ fontSize: '14px', color: '#fffbf0', marginBottom: '32px' }}>
               Radujemo se vašoj poseti ili pozivu.
             </div>
 
@@ -185,9 +231,9 @@ export default function ContactSection() {
                 <div
                   key={card.label}
                   style={{
-                    background: '#fff', border: '1.5px solid #2a2a2a', borderRadius: '12px',
+                    background: '#1a1a1a', border: '1.5px solid #ffc02a', borderRadius: '12px',
                     padding: '18px 20px', display: 'flex', alignItems: 'flex-start', gap: '14px',
-                    transition: 'border-color 0.2s',
+                    transition: 'border-color 0.2s',color: '#fffbf0',
                   }}
                   onMouseEnter={e => ((e.currentTarget as HTMLElement).style.borderColor = '#ffc02a')}
                   onMouseLeave={e => ((e.currentTarget as HTMLElement).style.borderColor = '#2a2a2a')}
@@ -203,32 +249,24 @@ export default function ContactSection() {
                     <div style={{ width: '18px', height: '18px' }}>{card.icon}</div>
                   </div>
                   <div>
-                    <div style={{ fontSize: '11px', textTransform: 'uppercase', letterSpacing: '0.6px', color: '#6b6c72', fontWeight: 500, marginBottom: '3px' }}>
+                    <div style={{ fontSize: '11px', textTransform: 'uppercase', letterSpacing: '0.6px', color: '#fffbf0', fontWeight: 500, marginBottom: '3px' }}>
                       {card.label}
                     </div>
-                    <div style={{ fontSize: '14px', fontWeight: 500, color: '#f0f0f0' }}>{card.value}</div>
+                    <div style={{ fontSize: '14px', fontWeight: 500, color: '#fffbf0' }}>{card.value}</div>
                   </div>
                 </div>
               ))}
             </div>
 
             {/* Map placeholder */}
-            <div
-              style={{
-                background: '#fff', border: '1.5px solid #2a2a2a', borderRadius: '20px',
-                height: '180px', display: 'flex', flexDirection: 'column',
-                alignItems: 'center', justifyContent: 'center', gap: '10px',
-                color: '#6b6c72', fontSize: '14px', cursor: 'pointer',
-                transition: 'border-color 0.2s',
-              }}
-              onMouseEnter={e => ((e.currentTarget as HTMLElement).style.borderColor = '#ffc02a')}
-              onMouseLeave={e => ((e.currentTarget as HTMLElement).style.borderColor = '#2a2a2a')}
-            >
-              <svg width="32" height="32" viewBox="0 0 32 32" fill="none" stroke="#ffc02a" strokeWidth="1.5" strokeLinecap="round">
-                <path d="M16 4C11.6 4 8 7.6 8 12c0 6.5 8 16 8 16s8-9.5 8-16c0-4.4-3.6-8-8-8z" />
-                <circle cx="16" cy="12" r="3" />
-              </svg>
-              <span>Kliknite za Google Maps</span>
+            <div style={{ borderRadius: '20px', overflow: 'hidden', border: '1.5px solid #ffc02a' }}>
+              <iframe
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2767.7527004349085!2d19.66795608578743!3d46.075972017884936!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x474360d07374fe75%3A0x8a4cbefda79c09b1!2sBregalni%C4%8Dka%207%2C%20Subotica%2024106!5e0!3m2!1sen!2srs!4v1774380965444!5m2!1sen!2srs"
+                height="220"
+                width="100%"
+                style={{ border: 0, display: 'block' }}
+                loading="lazy"
+              />
             </div>
           </div>
         </div>

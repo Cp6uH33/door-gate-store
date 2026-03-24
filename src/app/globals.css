@@ -113,20 +113,20 @@ body {
 
   .tag {
     @apply inline-flex items-center gap-1.5 text-xs font-medium uppercase tracking-widest;
-    color: var(--brand-dark);
-    background: var(--brand-light);
-    padding: 5px 12px;
+    color: var(--ink);
+    background: #ffc02a;
+    padding: 4px 12px;
     border-radius: 100px;
   }
   .tag::before {
-    content: '';
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    background: var(--brand);
-    display: block;
-    flex-shrink: 0;
-  }
+  content: '';
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: currentColor;  /* Isto kao tekst */
+  display: inline-block;
+  margin-right: 6px;
+}
 
   .section-title {
     font-family: 'Syne', sans-serif;
@@ -134,13 +134,13 @@ body {
     font-weight: 800;
     letter-spacing: -1.5px;
     line-height: 1.1;
-    color: var(--ink);
+    color: var(--brand-pale);
     margin-top: 12px;
   }
 
   .section-sub {
     font-size: 15px;
-    color: var(--ink-50);
+    color: var(--brand-pale);
     margin-top: 8px;
     max-width: 500px;
   }

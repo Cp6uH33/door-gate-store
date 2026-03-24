@@ -80,7 +80,7 @@ export default function ProductsSection() {
   }
 
   return (
-    <section id="products" style={{ padding: '80px 0', background: '#636363' }}>
+    <section id="products" style={{ padding: '80px 0', background: '#1a1a1a' }}>
       <div style={{ maxWidth: "1152px", margin: "0 auto", padding: "0 24px" }} ref={sectionRef}>
 
         {/* Header */}
