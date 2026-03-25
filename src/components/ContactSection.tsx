@@ -102,7 +102,7 @@ export default function ContactSection() {
     width: '100%', padding: '12px 16px',
     background: '#222', border: '1.5px solid #2a2a2a',
     borderRadius: '12px', fontSize: '14px',
-    fontFamily: "'DM Sans', sans-serif", color: '#ededeb',
+    fontFamily: "'DM Sans', sans-serif", color: '#0f0f0f',
     outline: 'none', transition: 'border-color 0.2s, background 0.2s',
   };
 
@@ -136,7 +136,7 @@ export default function ContactSection() {
             <form onSubmit={handleSubmit}>
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px', marginBottom: '16px' }}>
                 <div>
-                  <label style={{ fontSize: '12px', fontWeight: 500, color: '#ededeb', display: 'block', marginBottom: '6px', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+                  <label style={{ fontSize: '12px', fontWeight: 500, color: '#edebeb', display: 'block', marginBottom: '6px', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
                     Ime
                   </label>
                   <input
@@ -236,7 +236,7 @@ export default function ContactSection() {
                     transition: 'border-color 0.2s',color: '#fffbf0',
                   }}
                   onMouseEnter={e => ((e.currentTarget as HTMLElement).style.borderColor = '#ffc02a')}
-                  onMouseLeave={e => ((e.currentTarget as HTMLElement).style.borderColor = '#2a2a2a')}
+                  onMouseLeave={e => ((e.currentTarget as HTMLElement).style.borderColor = '#ffc02a')}
                 >
                   <div
                     style={{
