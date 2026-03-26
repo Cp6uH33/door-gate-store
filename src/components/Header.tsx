@@ -7,12 +7,37 @@ import { useCart } from '@/contexts/CartContext';
 export default function Header() {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [isLight, setIsLight] = useState(false);
   const { cartCount } = useCart();
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 50);
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  useEffect(() => {
+    const lightSections = ['products'];
+    const darkSections = ['hero', 'why'];
+    const allSections = [...lightSections, ...darkSections];
+    const observers: IntersectionObserver[] = [];
+    allSections.forEach(id => {
+      const section = document.getElementById(id);
+      if (!section) return;
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              setIsLight(lightSections.includes(id));
+            }
+          });
+        },
+        { threshold: 0.3, rootMargin: '-64px 0px 0px 0px' }
+      );
+      observer.observe(section);
+      observers.push(observer);
+    });
+    return () => observers.forEach(o => o.disconnect());
   }, []);
 
   const menuItems = [
@@ -56,19 +81,9 @@ export default function Header() {
               key={item.href}
               href={item.href}
               style={{
-                color: '#ffffff', fontWeight: 400, fontSize: '14px',
+                color: isLight ? '#0f0f0f' : '#ededeb', fontWeight: 700, fontSize: '17px',
                 textDecoration: 'none', padding: '6px 14px',
                 borderRadius: '100px', transition: 'color 0.2s, background 0.2s',
-              }}
-              onMouseEnter={e => {
-                const el = e.currentTarget as HTMLElement;
-                el.style.color = '#ffc02a';
-                el.style.background = 'rgba(255, 255, 255, 0.37)';
-              }}
-              onMouseLeave={e => {
-                const el = e.currentTarget as HTMLElement;
-                el.style.color = '#ffffff';
-                el.style.background = 'transparent';
               }}
             >
               {item.name}

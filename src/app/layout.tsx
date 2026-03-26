@@ -6,7 +6,7 @@ import { CartProvider } from '@/contexts/CartContext';
 
 export const metadata: Metadata = {
   title: 'Door & Gate Sistem — Profesionalna automatizacija',
-  description: 'Motori za kapije, video interfoni i pametni sistemi. Prodaja i montaža širom Srbije.',
+  description: 'Motori za kapije, video interfoni i pametni sistemi. Dostava širom Srbije.',
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

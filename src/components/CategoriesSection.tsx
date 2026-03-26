@@ -82,7 +82,7 @@ export default function CategoriesSection() {
           }}>
             Kategorije
           </h2>
-          <p style={{ fontSize: '15px', color: '#666', maxWidth: '500px' }}>
+          <p style={{ fontSize: '15px', color: '#ededeb', maxWidth: '500px' }}>
             Sve što vam je potrebno za automatizaciju ulaza i kapija na jednom mestu.
           </p>
         </div>

@@ -104,8 +104,8 @@ body {
   }
 
   input::placeholder, textarea::placeholder {
-  color: #ededeb !important;    /* Tvoja boja */
-  opacity: 1 !important;        /* Potpuno vidljivo */
+  color: #acaca3 !important;    
+  opacity: 5 !important;        
 }
 
   .section {
