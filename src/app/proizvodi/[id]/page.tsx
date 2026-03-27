@@ -2,8 +2,12 @@
 import { useState, useEffect } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
+import Image from 'next/image';
 import { useCart } from '@/contexts/CartContext';
 
+const WC_URL = process.env.NEXT_PUBLIC_WC_URL;
+const WC_KEY = process.env.NEXT_PUBLIC_WC_CONSUMER_KEY;
+const WC_SECRET = process.env.NEXT_PUBLIC_WC_CONSUMER_SECRET;
 
 export default function ProductDetail() {
   const { id } = useParams();
@@ -14,270 +18,275 @@ export default function ProductDetail() {
   const [activeImg, setActiveImg] = useState(0);
   const router = useRouter();
 
-
-  useEffect(() => {
-    const header = document.querySelector('header') as HTMLElement;
-    if (!header) return;
-
-    // Postavi dark glass
-    header.style.background = 'rgba(14, 15, 17, 0.82)';
-    header.style.backdropFilter = 'blur(20px)';
-    (header.style as any).WebkitBackdropFilter = 'blur(20px)';
-    header.style.borderBottom = '1px solid rgba(255,255,255,0.08)';
-
-    // Meni linkovi – belo
-    const links = header.querySelectorAll<HTMLElement>('nav a');
-    links.forEach(link => { link.style.color = '#ededeb'; });
-
-    // ← NOVO: blokiraj scroll promenu boje
-    const lockHeaderOnScroll = () => {
-      header.style.background = 'rgba(14, 15, 17, 0.82)';
-      header.style.borderBottom = '1px solid rgba(255,255,255,0.08)';
-    };
-    window.addEventListener('scroll', lockHeaderOnScroll);
-
-    // CLEANUP
-    return () => {
-      window.removeEventListener('scroll', lockHeaderOnScroll);
-      header.style.background = '';
-      header.style.backdropFilter = '';
-      (header.style as any).WebkitBackdropFilter = 'blur(20px)';
-      header.style.borderBottom = '';
-      links.forEach(link => { link.style.color = ''; });
-    };
-  }, []);
   useEffect(() => {
     if (!id) return;
-    fetch(`${process.env.NEXT_PUBLIC_WC_URL}/products/${id}?consumer_key=${process.env.NEXT_PUBLIC_WC_CONSUMER_KEY}&consumer_secret=${process.env.NEXT_PUBLIC_WC_CONSUMER_SECRET}`)
+    fetch(`${WC_URL}/products/${id}?consumer_key=${WC_KEY}&consumer_secret=${WC_SECRET}`)
       .then(res => res.json())
       .then(data => { setProduct(data); setLoading(false); })
-      .catch(() => { setLoading(false); router.push('/proizvodi'); });
+      .catch(() => { setLoading(false); router.push('/shop'); });
   }, [id, router]);
 
-  const handleAddToCart = () => {
-    addToCart(product);
+  function handleAdd() {
+    addToCart({ id: product.id, name: product.name, price: parseFloat(product.price), quantity: 1 });
     setAdded(true);
     setTimeout(() => setAdded(false), 2000);
-  };
+  }
 
-  // LOADING
   if (loading) return (
-    <div className="min-h-screen flex items-center justify-center bg-white">
-      <div className="flex flex-col items-center gap-4">
-        <div className="w-10 h-10 border-4 border-#ffc02a border-t-transparent rounded-full animate-spin" />
-        <p className="text-#0f0f0f font-bold">Učitavam proizvod...</p>
+    <div style={{ background: '#0f0f0f', minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+      <div style={{ textAlign: 'center' }}>
+        <div style={{
+          width: '44px', height: '44px', borderRadius: '50%',
+          border: '3px solid #222', borderTopColor: '#ffc02a',
+          animation: 'spin 0.8s linear infinite', margin: '0 auto 16px',
+        }} />
+        <div style={{ color: '#555', fontSize: '14px', fontFamily: "'Manrope', sans-serif" }}>Učitavam proizvod...</div>
       </div>
+      <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
     </div>
   );
 
-  // NOT FOUND
-  if (!product) return (
-    <div className="min-h-screen flex items-center justify-center bg-white">
-      <div className="text-center space-y-6">
-        <p className="text-6xl">😕</p>
-        <h1 className="text-3xl font-bold text-var(--ink)">Proizvod nije pronađen</h1>
-        <Link href="/proizvodi" className="btn-primary">
-          ← Vrati se na proizvode
+  if (!product || !product.id) return (
+    <div style={{ background: '#0f0f0f', minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+      <div style={{ textAlign: 'center' }}>
+        <div style={{ fontSize: '48px', marginBottom: '16px' }}>🔍</div>
+        <h1 style={{ color: '#888', fontWeight: 700, fontSize: '22px', marginBottom: '24px', fontFamily: "'Manrope', sans-serif" }}>
+          Proizvod nije pronađen
+        </h1>
+        <Link href="/shop" style={{
+          background: '#ffc02a', color: '#0e0f11',
+          padding: '12px 28px', borderRadius: '100px',
+          fontWeight: 600, textDecoration: 'none', fontSize: '14px',
+          fontFamily: "'Space Grotesk', sans-serif",
+        }}>
+          ← Vrati se na shop
         </Link>
       </div>
     </div>
   );
 
-  const images = product.images || [];
-
   return (
-    <div className="min-h-screen text-var(--ink)" style={{ background: '#1a1a1a' }}>
-      <div className="container section mx-auto" style={{ paddingTop: '120px' }}>
+    <div style={{ background: '#0f0f0f', color: '#f0f0f0', minHeight: '100vh' }}>
+      <div style={{ maxWidth: '1152px', margin: '0 auto', padding: '140px 24px 80px' }}>
 
         {/* Breadcrumb */}
-        <nav className="flex items-center gap-2 text-sm mb-10" style={{ color: '#888', paddingLeft: '30px' }}>
-          <Link href="/" style={{ color: '#888', textDecoration: 'none', transition: 'color 0.2s' }}
-            onMouseEnter={e => (e.currentTarget.style.color = '#ffc02a')}
-            onMouseLeave={e => (e.currentTarget.style.color = '#888')}
-          >
-            Početna
-          </Link>
-          <span style={{ color: '#555' }}>/</span>
-          <Link href="/proizvodi" style={{ color: '#888', textDecoration: 'none', transition: 'color 0.2s' }}
-            onMouseEnter={e => (e.currentTarget.style.color = '#ffc02a')}
-            onMouseLeave={e => (e.currentTarget.style.color = '#888')}
-          >
-            Proizvodi
-          </Link>
-          <span style={{ color: '#555' }}>/</span>
-          <span style={{ color: '#ededeb', fontWeight: 500 }} className="truncate max-w-200px">
-            {product.name}
-          </span>
-        </nav>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '48px' }}>
+          <Link href="/" style={{ color: '#555', textDecoration: 'none', fontSize: '13px', fontFamily: "'Manrope', sans-serif", transition: 'color 0.2s' }}
+            onMouseEnter={e => ((e.currentTarget as HTMLElement).style.color = '#ffc02a')}
+            onMouseLeave={e => ((e.currentTarget as HTMLElement).style.color = '#555')}
+          >Početna</Link>
+          <span style={{ color: '#333', fontSize: '13px' }}>/</span>
+          <Link href="/shop" style={{ color: '#555', textDecoration: 'none', fontSize: '13px', fontFamily: "'Manrope', sans-serif", transition: 'color 0.2s' }}
+            onMouseEnter={e => ((e.currentTarget as HTMLElement).style.color = '#ffc02a')}
+            onMouseLeave={e => ((e.currentTarget as HTMLElement).style.color = '#555')}
+          >Shop</Link>
+          <span style={{ color: '#333', fontSize: '13px' }}>/</span>
+          <span style={{ color: '#888', fontSize: '13px', fontFamily: "'Manrope', sans-serif" }}>{product.name}</span>
+        </div>
 
-        {/* Glavni grid */}
-        <div className="grid md:grid-cols-2 gap-12 lg:gap-20 items-start">
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '64px', alignItems: 'start' }}>
 
-          {/* LEVO – Slika */}
-          <div className="space-y-4" style={{ paddingTop: '20%' }}>
-            {/* Glavna slika – smanjena 50% */}
-            <div className="card overflow-hidden flex items-center justify-center p-4"
-              style={{ height: '320px', maxWidth: '320px', margin: '0 auto' }}>
-              <img
-                src={images[activeImg]?.src || '/placeholder.jpg'}
-                alt={product.name}
-                style={{ maxHeight: '300px', maxWidth: '100%', objectFit: 'contain' }}
-              />
+          {/* LEVO — slike */}
+          <div>
+            {/* Glavna slika */}
+            <div style={{
+              width: '100%', aspectRatio: '1',
+              borderRadius: '20px', overflow: 'hidden',
+              background: '#1a1a1a', border: '1px solid #222',
+              position: 'relative',
+            }}>
+              {product.images?.[activeImg]?.src ? (
+                <Image
+                  src={product.images[activeImg].src}
+                  alt={product.name}
+                  fill
+                  style={{ objectFit: 'contain', padding: '24px' }}
+                />
+              ) : (
+                <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#333' }}>
+                  <svg width="64" height="64" viewBox="0 0 64 64" fill="none" stroke="currentColor" strokeWidth="1.5">
+                    <rect x="8" y="8" width="48" height="48" rx="8" />
+                    <circle cx="32" cy="32" r="12" />
+                  </svg>
+                </div>
+              )}
             </div>
 
-            {/* Thumbnails – PREMESTI OVDE unutar iste div */}
-            {images.length > 1 && (
-              <div className="flex gap-3 flex-wrap" style={{ maxWidth: '400px', margin: '0 auto' }}>
-                {images.slice(0, 5).map((img: any, i: number) => (
-                  <button
+            {/* Thumbnails */}
+            {product.images?.length > 1 && (
+              <div style={{ display: 'flex', gap: '10px', marginTop: '12px', flexWrap: 'wrap' }}>
+                {product.images.slice(0, 5).map((img: any, i: number) => (
+                  <div
                     key={i}
                     onClick={() => setActiveImg(i)}
                     style={{
-                      width: '64px',
-                      height: '64px',
-                      borderRadius: '10px',
-                      overflow: 'hidden',
-                      border: `2px solid ${activeImg === i ? '#ffc02a' : '#eeeef0'}`,
-                      boxShadow: activeImg === i ? '0 0 0 3px rgba(255,192,42,0.3)' : 'none',
-                      cursor: 'pointer',
-                      flexShrink: 0,
-                      background: 'white',
-                      padding: 0
+                      width: '72px', height: '72px', borderRadius: '10px',
+                      overflow: 'hidden', background: '#1a1a1a',
+                      border: `1.5px solid ${activeImg === i ? '#ffc02a' : '#222'}`,
+                      cursor: 'pointer', transition: 'border-color 0.2s',
+                      position: 'relative', flexShrink: 0,
                     }}
                   >
-                    <img
-                      src={img.src}
-                      alt=""
-                      style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-                    />
-                  </button>
+                    <Image src={img.src} alt="" fill style={{ objectFit: 'contain', padding: '6px' }} />
+                  </div>
                 ))}
               </div>
             )}
           </div>
-          {/* DESNO – Detalji */}
-          <div className="flex flex-col gap-10" style={{ maxWidth: '70%', width: '100%' }}>
 
-            {/* Tag + Naziv */}
-            <div className="space-y-2">
+          {/* DESNO — detalji */}
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
+
+            {/* Kategorija tag */}
+            {product.categories?.[0] && (
               <span style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: '6px',
-                fontSize: '11px',
-                fontWeight: 500,
-                letterSpacing: '0.8px',
-                textTransform: 'uppercase' as const,
-                color: '#ffc02a',
-                background: 'rgba(255,192,42,0.15)',
-                padding: '5px 12px',
-                borderRadius: '100px',
-                marginBottom: '20px',
+                display: 'inline-flex', alignItems: 'center', gap: '6px',
+                fontSize: '11px', fontWeight: 700, letterSpacing: '0.8px',
+                textTransform: 'uppercase', color: '#0f0f0f',
+                background: '#ffc02a', padding: '5px 12px',
+                borderRadius: '100px', alignSelf: 'flex-start',
+                fontFamily: "'Space Grotesk', sans-serif",
               }}>
-                <span style={{
-                  width: '6px',
-                  height: '6px',
-                  borderRadius: '50%',
-                  background: '#ffc02a',
-                  display: 'inline-block',
-                  flexShrink: 0,
-                }} />
-                Proizvod
+                <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#0f0f0f', display: 'inline-block' }} />
+                {product.categories[0].name}
               </span>
-              <h1 style={{ fontFamily: 'Syne, sans-serif', fontWeight: 800, fontSize: 'clamp(18px, 2vw, 26px)', lineHeight: 1.15, letterSpacing: '-1px', color: '#ededeb' }}>
-                {product.name}
-              </h1>
-            </div>
+            )}
+
+            {/* Naziv */}
+            <h1 style={{
+              color: '#f0f0f0', fontWeight: 800,
+              fontSize: 'clamp(22px, 3vw, 34px)',
+              lineHeight: 1.2, margin: 0,
+              letterSpacing: '-0.5px',
+              fontFamily: "'Manrope', sans-serif",
+            }}>
+              {product.name}
+            </h1>
 
             {/* Cena */}
-            <div className="flex flex-wrap items-center gap-2">
-              <span style={{ fontFamily: 'Syne, sans-serif', fontWeight: 800, fontSize: '28px', color: '#ededeb', letterSpacing: '-1px' }}>
-                {parseFloat(product.price).toLocaleString('sr-RS')}
-                <span style={{ fontSize: '14px', fontWeight: 600, color: '#ededeb', marginLeft: '6px' }}>RSD</span>
-              </span>
-              {/* <span style={{
-                background: 'rgba(34,197,94,0.1)',
-                color: '#16a34a',
-                border: '1px solid rgba(34,197,94,0.3)',
-                padding: '3px 10px',
-                borderRadius: '100px',
-                fontSize: '11px',
-                fontWeight: 700,
-                letterSpacing: '0.08em',
-                textTransform: 'uppercase' as const
-              }}>
-                ✓ Na lageru
-              </span>*/}
+            <div style={{
+              display: 'flex', alignItems: 'center', gap: '16px',
+              padding: '20px', background: '#1a1a1a',
+              borderRadius: '14px', border: '1px solid #222',
+            }}>
+              <div>
+                <div style={{ fontSize: '12px', color: '#555', marginBottom: '4px', fontFamily: "'Manrope', sans-serif" }}>Cena</div>
+                <div style={{
+                  color: '#ffc02a', fontWeight: 800, fontSize: '36px',
+                  fontFamily: "'Space Grotesk', sans-serif", letterSpacing: '-1px',
+                }}>
+                  {parseFloat(product.price).toLocaleString('sr-RS')}
+                  <span style={{ fontSize: '16px', color: '#888', marginLeft: '6px', fontWeight: 500 }}>RSD</span>
+                </div>
+              </div>
+              <div style={{ marginLeft: 'auto' }}>
+                <span style={{
+                  background: 'rgba(255,192,42,0.12)', color: '#ffc02a',
+                  border: '1px solid rgba(255,192,42,0.25)',
+                  padding: '6px 14px', borderRadius: '100px',
+                  fontWeight: 600, fontSize: '12px',
+                  fontFamily: "'Space Grotesk', sans-serif",
+                }}>
+                  ✓ Na lageru
+                </span>
+              </div>
             </div>
 
             {/* Kratak opis */}
             {product.short_description && (
               <div
-                className="leading-relaxed" style={{ color: '#ededeb', fontSize: '13px' }}
+                style={{
+                  color: '#888', fontSize: '15px', lineHeight: 1.7,
+                  fontFamily: "'Manrope', sans-serif",
+                }}
                 dangerouslySetInnerHTML={{ __html: product.short_description }}
               />
             )}
 
-            {/* Divider */}
-            <div style={{ height: '1px', background: 'var(--ink-10)' }} />
-
-            {/* CTA Dugmad */}
-            <div className="flex flex-col gap-2">
+            {/* Dugmad */}
+            <div style={{ display: 'flex', gap: '12px' }}>
               <button
-                onClick={handleAddToCart}
+                onClick={handleAdd}
                 style={{
-                  background: added ? '#16a34a' : 'var(--brand)',
-                  borderRadius: '10px',
-                  padding: '10px 16px',
-                  fontSize: '13px',
-                  fontWeight: 700,
+                  flex: 1,
+                  background: added ? '#22c55e' : '#ffc02a',
+                  color: added ? '#fff' : '#0e0f11',
+                  border: 'none', padding: '16px 24px',
+                  borderRadius: '100px', fontWeight: 700,
+                  fontSize: '15px', cursor: 'pointer',
                   transition: 'all 0.2s',
-                  color: added ? '#fff' : 'var(--ink)',
-                  border: 'none',
-                  cursor: 'pointer',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  gap: '6px',
-                  width: '100%',
+                  display: 'flex', alignItems: 'center',
+                  justifyContent: 'center', gap: '8px',
+                  fontFamily: "'Space Grotesk', sans-serif",
                 }}
+                onMouseEnter={e => { if (!added) (e.currentTarget as HTMLElement).style.background = '#ffcc4a'; }}
+                onMouseLeave={e => { if (!added) (e.currentTarget as HTMLElement).style.background = '#ffc02a'; }}
               >
-                {added ? '✅ Dodato u korpu!' : '🛒 Dodaj u korpu'}
+                {added ? '✓ Dodato u korpu!' : '+ Dodaj u korpu'}
               </button>
-              <Link
-                href="/kontakt"
-                style={{
-                  borderRadius: '10px',
-                  padding: '10px 16px',
-                  fontSize: '13px',
-                  fontWeight: 600,
-                  border: '1px solid #ffc02a',
-                  color: '#ffc02a',
-                  textDecoration: 'none',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  gap: '6px',
-                }}
+
+              <Link href="/kontakt" style={{
+                flex: 1, background: 'transparent',
+                color: '#f0f0f0', border: '1.5px solid #333',
+                padding: '16px 24px', borderRadius: '100px',
+                fontWeight: 600, fontSize: '15px',
+                textDecoration: 'none',
+                display: 'flex', alignItems: 'center',
+                justifyContent: 'center', gap: '8px',
+                transition: 'all 0.2s',
+                fontFamily: "'Space Grotesk', sans-serif",
+              }}
+                onMouseEnter={e => { const el = e.currentTarget as HTMLElement; el.style.borderColor = '#ffc02a'; el.style.color = '#ffc02a'; }}
+                onMouseLeave={e => { const el = e.currentTarget as HTMLElement; el.style.borderColor = '#333'; el.style.color = '#f0f0f0'; }}
               >
-                Kontakt
+                Konsultacija
               </Link>
             </div>
 
-            {/* Benefiti */}
-            <div style={{ background: 'var(--ink-05)', borderRadius: '12px', padding: '14px 16px' }} className="space-y-2">
+            {/* Info lista */}
+            <div style={{
+              display: 'flex', flexDirection: 'column', gap: '10px',
+              paddingTop: '20px', borderTop: '1px solid #1a1a1a',
+            }}>
               {[
-                { text: 'Isporuka na celoj teriroriji Republike Srbije' },
-                { text: 'Plaćanje pouzećem ili bankovnim transferom' },
-                /* { icon: '🔧', text: 'Profesionalna montaža u roku od 48h' },*/
-              ].map((b, i) => (
-                <div key={i} className="flex items-center gap-2" style={{ fontSize: '15px', color: '#0f0f0f' }}>
-                  {/* <span>{b.icon}</span>*/}
-                  <span>{b.text}</span>
+                'Besplatna dostava Vojvodina',
+                'Plaćanje pouzećem ili bankovnim transferom',
+                'Profesionalna montaža u roku od 48h',
+              ].map(text => (
+                <div key={text} style={{ display: 'flex', alignItems: 'center', gap: '10px', fontSize: '13px', color: '#555', fontFamily: "'Manrope', sans-serif" }}>
+                  <div style={{
+                    width: '20px', height: '20px', borderRadius: '50%',
+                    background: 'rgba(255,192,42,0.12)',
+                    display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0,
+                  }}>
+                    <svg width="10" height="10" viewBox="0 0 10 10" fill="none" stroke="#ffc02a" strokeWidth="2" strokeLinecap="round">
+                      <path d="M1.5 5l2.5 2.5 4.5-4.5" />
+                    </svg>
+                  </div>
+                  {text}
                 </div>
               ))}
             </div>
 
+            {/* Puni opis */}
+            {product.description && (
+              <div style={{
+                background: '#1a1a1a', border: '1px solid #222',
+                borderRadius: '14px', padding: '24px', marginTop: '8px',
+              }}>
+                <div style={{
+                  fontSize: '11px', fontWeight: 700, letterSpacing: '1px',
+                  textTransform: 'uppercase', color: '#444', marginBottom: '16px',
+                  fontFamily: "'Space Grotesk', sans-serif",
+                }}>
+                  Opis proizvoda
+                </div>
+                <div
+                  style={{ color: '#777', fontSize: '14px', lineHeight: 1.8, fontFamily: "'Manrope', sans-serif" }}
+                  dangerouslySetInnerHTML={{ __html: product.description }}
+                />
+              </div>
+            )}
           </div>
         </div>
       </div>
