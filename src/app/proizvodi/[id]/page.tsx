@@ -4,14 +4,48 @@ import { useParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { useCart } from '@/contexts/CartContext';
 
+
 export default function ProductDetail() {
   const { id } = useParams();
   const { addToCart } = useCart();
   const [product, setProduct] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [added, setAdded] = useState(false);
+  const [activeImg, setActiveImg] = useState(0);
   const router = useRouter();
 
+
+  useEffect(() => {
+    const header = document.querySelector('header') as HTMLElement;
+    if (!header) return;
+
+    // Postavi dark glass
+    header.style.background = 'rgba(14, 15, 17, 0.82)';
+    header.style.backdropFilter = 'blur(20px)';
+    (header.style as any).WebkitBackdropFilter = 'blur(20px)';
+    header.style.borderBottom = '1px solid rgba(255,255,255,0.08)';
+
+    // Meni linkovi – belo
+    const links = header.querySelectorAll<HTMLElement>('nav a');
+    links.forEach(link => { link.style.color = '#ededeb'; });
+
+    // ← NOVO: blokiraj scroll promenu boje
+    const lockHeaderOnScroll = () => {
+      header.style.background = 'rgba(14, 15, 17, 0.82)';
+      header.style.borderBottom = '1px solid rgba(255,255,255,0.08)';
+    };
+    window.addEventListener('scroll', lockHeaderOnScroll);
+
+    // CLEANUP
+    return () => {
+      window.removeEventListener('scroll', lockHeaderOnScroll);
+      header.style.background = '';
+      header.style.backdropFilter = '';
+      (header.style as any).WebkitBackdropFilter = 'blur(20px)';
+      header.style.borderBottom = '';
+      links.forEach(link => { link.style.color = ''; });
+    };
+  }, []);
   useEffect(() => {
     if (!id) return;
     fetch(`${process.env.NEXT_PUBLIC_WC_URL}/products/${id}?consumer_key=${process.env.NEXT_PUBLIC_WC_CONSUMER_KEY}&consumer_secret=${process.env.NEXT_PUBLIC_WC_CONSUMER_SECRET}`)
@@ -26,135 +60,224 @@ export default function ProductDetail() {
     setTimeout(() => setAdded(false), 2000);
   };
 
+  // LOADING
   if (loading) return (
-    <div style={{ background: '#0f0f0f' }} className="min-h-screen flex items-center justify-center">
-      <div style={{ color: '#e87c2a' }} className="text-3xl font-bold animate-pulse">Učitavam...</div>
+    <div className="min-h-screen flex items-center justify-center bg-white">
+      <div className="flex flex-col items-center gap-4">
+        <div className="w-10 h-10 border-4 border-#ffc02a border-t-transparent rounded-full animate-spin" />
+        <p className="text-#0f0f0f font-bold">Učitavam proizvod...</p>
+      </div>
     </div>
   );
 
+  // NOT FOUND
   if (!product) return (
-    <div style={{ background: '#0f0f0f' }} className="min-h-screen flex items-center justify-center">
-      <div className="text-center">
-        <h1 style={{ color: '#888' }} className="text-5xl font-black mb-8">Proizvod nije pronađen</h1>
-        <Link href="/proizvodi" style={{ background: '#e87c2a', color: '#fff' }} className="px-10 py-4 rounded-xl font-bold text-xl">
-          ← Vrati se
+    <div className="min-h-screen flex items-center justify-center bg-white">
+      <div className="text-center space-y-6">
+        <p className="text-6xl">😕</p>
+        <h1 className="text-3xl font-bold text-var(--ink)">Proizvod nije pronađen</h1>
+        <Link href="/proizvodi" className="btn-primary">
+          ← Vrati se na proizvode
         </Link>
       </div>
     </div>
   );
 
+  const images = product.images || [];
+
   return (
-    <div style={{ background: '#0f0f0f', color: '#f0f0f0' }} className="min-h-screen py-12">
-      <div className="max-w-6xl mx-auto px-6">
+    <div className="min-h-screen text-var(--ink)" style={{ background: '#1a1a1a' }}>
+      <div className="container section mx-auto" style={{ paddingTop: '120px' }}>
 
-        {/* Nazad */}
-        <Link href="/proizvodi" style={{ color: '#e87c2a', textDecoration: 'none', fontWeight: 600, fontSize: '16px', display: 'inline-flex', alignItems: 'center', gap: '6px', marginBottom: '32px' }}>
-          ← Nazad na proizvode
-        </Link>
+        {/* Breadcrumb */}
+        <nav className="flex items-center gap-2 text-sm mb-10" style={{ color: '#888', paddingLeft: '30px' }}>
+          <Link href="/" style={{ color: '#888', textDecoration: 'none', transition: 'color 0.2s' }}
+            onMouseEnter={e => (e.currentTarget.style.color = '#ffc02a')}
+            onMouseLeave={e => (e.currentTarget.style.color = '#888')}
+          >
+            Početna
+          </Link>
+          <span style={{ color: '#555' }}>/</span>
+          <Link href="/proizvodi" style={{ color: '#888', textDecoration: 'none', transition: 'color 0.2s' }}
+            onMouseEnter={e => (e.currentTarget.style.color = '#ffc02a')}
+            onMouseLeave={e => (e.currentTarget.style.color = '#888')}
+          >
+            Proizvodi
+          </Link>
+          <span style={{ color: '#555' }}>/</span>
+          <span style={{ color: '#ededeb', fontWeight: 500 }} className="truncate max-w-200px">
+            {product.name}
+          </span>
+        </nav>
 
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '64px', alignItems: 'start' }}>
+        {/* Glavni grid */}
+        <div className="grid md:grid-cols-2 gap-12 lg:gap-20 items-start">
 
-          {/* SLIKA – smanjena 50% */}
-          <div>
-            <div style={{ width: '100%', maxWidth: '420px', height: '320px', borderRadius: '16px', overflow: 'hidden', background: '#1a1a1a', border: '1px solid #2a2a2a', margin: '0 auto' }}>
+          {/* LEVO – Slika */}
+          <div className="space-y-4" style={{ paddingTop: '20%' }}>
+            {/* Glavna slika – smanjena 50% */}
+            <div className="card overflow-hidden flex items-center justify-center p-4"
+              style={{ height: '320px', maxWidth: '320px', margin: '0 auto' }}>
               <img
-                src={product.images?.[0]?.src || 'https://via.placeholder.com/420x320/1a1a1a/666?text=Proizvod'}
+                src={images[activeImg]?.src || '/placeholder.jpg'}
                 alt={product.name}
-                style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                style={{ maxHeight: '300px', maxWidth: '100%', objectFit: 'contain' }}
               />
             </div>
-            {/* Thumbnail slike */}
-            {product.images?.length > 1 && (
-              <div style={{ display: 'flex', gap: '8px', marginTop: '12px', justifyContent: 'center' }}>
-                {product.images.slice(1, 5).map((img: any, i: number) => (
-                  <div key={i} style={{ width: '72px', height: '72px', borderRadius: '8px', overflow: 'hidden', background: '#1a1a1a', border: '1px solid #333', cursor: 'pointer', flexShrink: 0 }}>
-                    <img src={img.src} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-                  </div>
+
+            {/* Thumbnails – PREMESTI OVDE unutar iste div */}
+            {images.length > 1 && (
+              <div className="flex gap-3 flex-wrap" style={{ maxWidth: '400px', margin: '0 auto' }}>
+                {images.slice(0, 5).map((img: any, i: number) => (
+                  <button
+                    key={i}
+                    onClick={() => setActiveImg(i)}
+                    style={{
+                      width: '64px',
+                      height: '64px',
+                      borderRadius: '10px',
+                      overflow: 'hidden',
+                      border: `2px solid ${activeImg === i ? '#ffc02a' : '#eeeef0'}`,
+                      boxShadow: activeImg === i ? '0 0 0 3px rgba(255,192,42,0.3)' : 'none',
+                      cursor: 'pointer',
+                      flexShrink: 0,
+                      background: 'white',
+                      padding: 0
+                    }}
+                  >
+                    <img
+                      src={img.src}
+                      alt=""
+                      style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                    />
+                  </button>
                 ))}
               </div>
             )}
           </div>
+          {/* DESNO – Detalji */}
+          <div className="flex flex-col gap-10" style={{ maxWidth: '70%', width: '100%' }}>
 
-          {/* DETALJI */}
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
-            <h1 style={{ color: '#f0f0f0', fontWeight: 900, fontSize: '36px', lineHeight: 1.2, margin: 0 }}>
-              {product.name}
-            </h1>
+            {/* Tag + Naziv */}
+            <div className="space-y-2">
+              <span style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '6px',
+                fontSize: '11px',
+                fontWeight: 500,
+                letterSpacing: '0.8px',
+                textTransform: 'uppercase' as const,
+                color: '#ffc02a',
+                background: 'rgba(255,192,42,0.15)',
+                padding: '5px 12px',
+                borderRadius: '100px',
+                marginBottom: '20px',
+              }}>
+                <span style={{
+                  width: '6px',
+                  height: '6px',
+                  borderRadius: '50%',
+                  background: '#ffc02a',
+                  display: 'inline-block',
+                  flexShrink: 0,
+                }} />
+                Proizvod
+              </span>
+              <h1 style={{ fontFamily: 'Syne, sans-serif', fontWeight: 800, fontSize: 'clamp(18px, 2vw, 26px)', lineHeight: 1.15, letterSpacing: '-1px', color: '#ededeb' }}>
+                {product.name}
+              </h1>
+            </div>
 
             {/* Cena */}
-            <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
-              <span style={{ color: '#e87c2a', fontWeight: 900, fontSize: '48px' }}>
-                {parseFloat(product.price).toLocaleString()} <span style={{ fontSize: '24px' }}>RSD</span>
+            <div className="flex flex-wrap items-center gap-2">
+              <span style={{ fontFamily: 'Syne, sans-serif', fontWeight: 800, fontSize: '28px', color: '#ededeb', letterSpacing: '-1px' }}>
+                {parseFloat(product.price).toLocaleString('sr-RS')}
+                <span style={{ fontSize: '14px', fontWeight: 600, color: '#ededeb', marginLeft: '6px' }}>RSD</span>
               </span>
-              <span style={{ background: 'rgba(232,124,42,0.1)', color: '#e87c2a', border: '1px solid rgba(232,124,42,0.3)', padding: '6px 14px', borderRadius: '8px', fontWeight: 700, fontSize: '14px' }}>
+              {/* <span style={{
+                background: 'rgba(34,197,94,0.1)',
+                color: '#16a34a',
+                border: '1px solid rgba(34,197,94,0.3)',
+                padding: '3px 10px',
+                borderRadius: '100px',
+                fontSize: '11px',
+                fontWeight: 700,
+                letterSpacing: '0.08em',
+                textTransform: 'uppercase' as const
+              }}>
                 ✓ Na lageru
-              </span>
+              </span>*/}
             </div>
 
-            {/* Opis */}
-            <div style={{ background: '#1a1a1a', border: '1px solid #2a2a2a', borderRadius: '14px', padding: '24px' }}>
-              <h3 style={{ color: '#888', fontWeight: 700, fontSize: '13px', letterSpacing: '2px', textTransform: 'uppercase', marginBottom: '12px', margin: '0 0 12px 0' }}>
-                Opis proizvoda
-              </h3>
+            {/* Kratak opis */}
+            {product.short_description && (
               <div
-                style={{ color: '#ccc', fontSize: '16px', lineHeight: 1.7 }}
-                dangerouslySetInnerHTML={{ __html: product.description || product.short_description }}
+                className="leading-relaxed" style={{ color: '#ededeb', fontSize: '13px' }}
+                dangerouslySetInnerHTML={{ __html: product.short_description }}
               />
-            </div>
+            )}
 
-            {/* DUGMAD */}
-            <div style={{ display: 'flex', gap: '12px', paddingTop: '8px' }}>
+            {/* Divider */}
+            <div style={{ height: '1px', background: 'var(--ink-10)' }} />
+
+            {/* CTA Dugmad */}
+            <div className="flex flex-col gap-2">
               <button
                 onClick={handleAddToCart}
                 style={{
-                  flex: 1,
-                  background: added ? '#22c55e' : '#e87c2a',
-                  color: '#fff',
-                  border: 'none',
-                  padding: '18px 24px',
-                  borderRadius: '12px',
-                  fontWeight: 900,
-                  fontSize: '18px',
-                  cursor: 'pointer',
+                  background: added ? '#16a34a' : 'var(--brand)',
+                  borderRadius: '10px',
+                  padding: '10px 16px',
+                  fontSize: '13px',
+                  fontWeight: 700,
                   transition: 'all 0.2s',
+                  color: added ? '#fff' : 'var(--ink)',
+                  border: 'none',
+                  cursor: 'pointer',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  gap: '8px'
+                  gap: '6px',
+                  width: '100%',
                 }}
               >
                 {added ? '✅ Dodato u korpu!' : '🛒 Dodaj u korpu'}
               </button>
-
               <Link
                 href="/kontakt"
                 style={{
-                  flex: 1,
-                  background: 'transparent',
-                  color: '#e87c2a',
-                  border: '2px solid #e87c2a',
-                  padding: '18px 24px',
-                  borderRadius: '12px',
-                  fontWeight: 700,
-                  fontSize: '18px',
+                  borderRadius: '10px',
+                  padding: '10px 16px',
+                  fontSize: '13px',
+                  fontWeight: 600,
+                  border: '1px solid #ffc02a',
+                  color: '#ffc02a',
                   textDecoration: 'none',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  gap: '8px',
-                  transition: 'all 0.2s'
+                  gap: '6px',
                 }}
               >
-                📞 Konsultacija
+                Kontakt
               </Link>
             </div>
 
-            {/* Info */}
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', paddingTop: '8px', borderTop: '1px solid #2a2a2a' }}>
-              <p style={{ color: '#555', fontSize: '14px', margin: 0 }}>✅ Besplatna dostava Vojvodina</p>
-              <p style={{ color: '#555', fontSize: '14px', margin: 0 }}>💰 Plaćanje pouzećem ili bankovnim transferom</p>
-              <p style={{ color: '#555', fontSize: '14px', margin: 0 }}>🔧 Profesionalna montaža u roku od 48h</p>
+            {/* Benefiti */}
+            <div style={{ background: 'var(--ink-05)', borderRadius: '12px', padding: '14px 16px' }} className="space-y-2">
+              {[
+                { text: 'Isporuka na celoj teriroriji Republike Srbije' },
+                { text: 'Plaćanje pouzećem ili bankovnim transferom' },
+                /* { icon: '🔧', text: 'Profesionalna montaža u roku od 48h' },*/
+              ].map((b, i) => (
+                <div key={i} className="flex items-center gap-2" style={{ fontSize: '15px', color: '#0f0f0f' }}>
+                  {/* <span>{b.icon}</span>*/}
+                  <span>{b.text}</span>
+                </div>
+              ))}
             </div>
+
           </div>
         </div>
       </div>
