@@ -3,7 +3,7 @@ import Image from 'next/image';
 import React from 'react';
 
 const trustItems = [
-  { icon: 'star',   text: 'Brza montaža u roku od 48h' },
+  { icon: 'star',   text: 'Brza montaža u roku od 48h na teritoriji Subotice' },
   { icon: 'shield', text: 'Garancija na sve proizvode' },
   { icon: 'pin',    text: 'Dostava na teritoriji Srbije' },
   { icon: 'mail',   text: 'Stručni savet i podrška' },

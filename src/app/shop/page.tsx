@@ -106,7 +106,7 @@ function ShopContent() {
           <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', gap: '20px', flexWrap: 'wrap' }}>
             <div>
               <h1 style={{ fontSize: 'clamp(32px, 4vw, 52px)', fontWeight: 800, letterSpacing: '-2px', color: '#f0f0f0', lineHeight: 1.05 }}>
-                Svi proizvodi
+                Naš asortiman
               </h1>
               <p style={{ fontSize: '15px', color: '#666', marginTop: '8px' }}>
                 {loading ? 'Učitavam...' : `${filtered.length} od ${products.length} proizvoda`}
@@ -287,7 +287,7 @@ function ShopContent() {
                     }}
                   >
                     <Link href={`/proizvodi/${product.id}`} style={{ textDecoration: 'none' }}>
-                      <div style={{ height: '180px', background: '#222', overflow: 'hidden', position: 'relative' }}>
+                      <div style={{ height: '180px', background: '#a2a297', overflow: 'hidden', position: 'relative' }}>
                         {product.images?.[0]?.src ? (
                           <Image
                             src={product.images[0].src}
@@ -306,7 +306,7 @@ function ShopContent() {
                       </div>
                     </Link>
                     <div style={{ padding: '16px' }}>
-                      <div style={{ fontSize: '11px', color: '#555', textTransform: 'uppercase', letterSpacing: '0.6px', marginBottom: '6px' }}>
+                      <div style={{ fontSize: '11px', color: '#ffc02a', textTransform: 'uppercase', letterSpacing: '0.6px', marginBottom: '6px' }}>
                         {product.categories?.[0]?.name ?? ''}
                       </div>
                       <Link href={`/proizvodi/${product.id}`} style={{ textDecoration: 'none' }}>
@@ -314,13 +314,13 @@ function ShopContent() {
                           {product.name}
                         </div>
                       </Link>
-                      <div style={{ fontSize: '12px', color: '#666', marginBottom: '14px', lineHeight: 1.5,
+                      <div style={{ fontSize: '12px', color: '#ededeb', marginBottom: '14px', lineHeight: 1.5,
                         overflow: 'hidden', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical' as const,
                       }}
                         dangerouslySetInnerHTML={{ __html: product.short_description ?? '' }}
                       />
                       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                        <span style={{ fontSize: '20px', fontWeight: 800, color: '#f0f0f0' }}>
+                        <span style={{ fontSize: '20px', fontWeight: 800, color: '#ffc02a' }}>
                           {parseFloat(product.price).toLocaleString('sr-RS')}
                           <span style={{ fontSize: '12px', color: '#666', marginLeft: '3px', fontWeight: 400 }}>RSD</span>
                         </span>

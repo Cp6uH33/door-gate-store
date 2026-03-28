@@ -112,7 +112,16 @@ export default function ContactSection() {
 
         {/* Header */}
         <div style={{ marginBottom: '48px' }}>
-          <span className="tag">Kontakt</span>
+           <span style={{
+            display: 'inline-flex', alignItems: 'center', gap: '6px',
+            fontSize: '11px', fontWeight: 500, letterSpacing: '0.8px',
+            textTransform: 'uppercase', color: '#ffc02a',
+            background: 'rgba(255,192,42,0.15)', padding: '5px 12px',
+            borderRadius: '100px', marginBottom: '16px',
+          }}>
+            <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#ffc02a', display: 'inline-block' }} />
+            Kontakt
+          </span>
           <h2 className="section-title">Pišite ili pozovite</h2>
           <p className="section-sub">Naš tim odgovara u roku od nekoliko sati.</p>
         </div>

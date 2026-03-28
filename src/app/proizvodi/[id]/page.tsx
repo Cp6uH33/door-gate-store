@@ -71,17 +71,17 @@ export default function ProductDetail() {
 
         {/* Breadcrumb */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '48px' }}>
-          <Link href="/" style={{ color: '#555', textDecoration: 'none', fontSize: '13px', fontFamily: "'Manrope', sans-serif", transition: 'color 0.2s' }}
+          <Link href="/" style={{ color: '#888', textDecoration: 'none', fontSize: '13px', fontFamily: "'Manrope', sans-serif", transition: 'color 0.2s' }}
             onMouseEnter={e => ((e.currentTarget as HTMLElement).style.color = '#ffc02a')}
             onMouseLeave={e => ((e.currentTarget as HTMLElement).style.color = '#555')}
           >Početna</Link>
-          <span style={{ color: '#333', fontSize: '13px' }}>/</span>
-          <Link href="/shop" style={{ color: '#555', textDecoration: 'none', fontSize: '13px', fontFamily: "'Manrope', sans-serif", transition: 'color 0.2s' }}
+          <span style={{ color: '#444', fontSize: '13px' }}>/</span>
+          <Link href="/shop" style={{ color: '#888', textDecoration: 'none', fontSize: '13px', fontFamily: "'Manrope', sans-serif", transition: 'color 0.2s' }}
             onMouseEnter={e => ((e.currentTarget as HTMLElement).style.color = '#ffc02a')}
             onMouseLeave={e => ((e.currentTarget as HTMLElement).style.color = '#555')}
           >Shop</Link>
-          <span style={{ color: '#333', fontSize: '13px' }}>/</span>
-          <span style={{ color: '#888', fontSize: '13px', fontFamily: "'Manrope', sans-serif" }}>{product.name}</span>
+          <span style={{ color: '#444', fontSize: '13px' }}>/</span>
+          <span style={{ color: '#aaa', fontSize: '13px', fontFamily: "'Manrope', sans-serif" }}>{product.name}</span>
         </div>
 
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '64px', alignItems: 'start' }}>
@@ -92,7 +92,7 @@ export default function ProductDetail() {
             <div style={{
               width: '100%', aspectRatio: '1',
               borderRadius: '20px', overflow: 'hidden',
-              background: '#1a1a1a', border: '1px solid #222',
+              background: '#ededeb', border: '1px solid #222',
               position: 'relative',
             }}>
               {product.images?.[activeImg]?.src ? (
@@ -121,13 +121,19 @@ export default function ProductDetail() {
                     onClick={() => setActiveImg(i)}
                     style={{
                       width: '72px', height: '72px', borderRadius: '10px',
-                      overflow: 'hidden', background: '#1a1a1a',
+                      overflow: 'hidden', background: '#ededeb',
                       border: `1.5px solid ${activeImg === i ? '#ffc02a' : '#222'}`,
                       cursor: 'pointer', transition: 'border-color 0.2s',
                       position: 'relative', flexShrink: 0,
                     }}
                   >
-                    <Image src={img.src} alt="" fill style={{ objectFit: 'contain', padding: '6px' }} />
+                    <Image
+                      src={img.src}
+                      alt=""
+                      fill
+                      sizes="72px"
+                      style={{ objectFit: 'contain', padding: '6px' }}
+                    />
                   </div>
                 ))}
               </div>
@@ -154,7 +160,7 @@ export default function ProductDetail() {
 
             {/* Naziv */}
             <h1 style={{
-              color: '#f0f0f0', fontWeight: 800,
+              color: '#ededeb', fontWeight: 800,
               fontSize: 'clamp(22px, 3vw, 34px)',
               lineHeight: 1.2, margin: 0,
               letterSpacing: '-0.5px',
@@ -170,25 +176,50 @@ export default function ProductDetail() {
               borderRadius: '14px', border: '1px solid #222',
             }}>
               <div>
-                <div style={{ fontSize: '12px', color: '#555', marginBottom: '4px', fontFamily: "'Manrope', sans-serif" }}>Cena</div>
+                <div style={{ fontSize: '12px', color: '#ffc02a', marginBottom: '4px', fontFamily: "'Manrope', sans-serif" }}>Proverite dostupnost pozivom!</div>
                 <div style={{
                   color: '#ffc02a', fontWeight: 800, fontSize: '36px',
                   fontFamily: "'Space Grotesk', sans-serif", letterSpacing: '-1px',
                 }}>
+                  <div style={{ fontSize: '16px', color: '#555', marginBottom: '4px', fontFamily: "'Manrope', sans-serif" }}>Cena</div>
+                  <div style={{
+                    color: '#ffc02a', fontWeight: 800, fontSize: '36px',
+                    fontFamily: "'Space Grotesk', sans-serif", letterSpacing: '-1px',
+                  }}></div>
                   {parseFloat(product.price).toLocaleString('sr-RS')}
                   <span style={{ fontSize: '16px', color: '#888', marginLeft: '6px', fontWeight: 500 }}>RSD</span>
                 </div>
               </div>
-              <div style={{ marginLeft: 'auto' }}>
-                <span style={{
-                  background: 'rgba(255,192,42,0.12)', color: '#ffc02a',
-                  border: '1px solid rgba(255,192,42,0.25)',
-                  padding: '6px 14px', borderRadius: '100px',
-                  fontWeight: 600, fontSize: '12px',
-                  fontFamily: "'Space Grotesk', sans-serif",
-                }}>
-                  ✓ Na lageru
-                </span>
+              <div style={{ marginLeft: 'auto', display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                {[
+                  { number: '+381631183898', display: '+381 63 118 3898' },
+                  { number: '+381691200104', display: '+381 69 120 0104' },
+                ].map(phone => (
+                  <a
+                    key={phone.number}
+                    href={'tel:' + phone.number}
+                    style={{
+                      display: 'flex', alignItems: 'center', gap: '8px',
+                      textDecoration: 'none', color: '#ffc02a',
+                      fontSize: '13px', fontWeight: 700,
+                      fontFamily: "'Space Grotesk', sans-serif",
+                      transition: 'color 0.2s',
+                    }}
+                    onMouseEnter={e => ((e.currentTarget as HTMLElement).style.color = '#ffcc4a')}
+                    onMouseLeave={e => ((e.currentTarget as HTMLElement).style.color = '#ffc02a')}
+                  >
+                    <div style={{
+                      width: '26px', height: '26px', borderRadius: '50%',
+                      background: 'rgba(255,192,42,0.12)', flexShrink: 0,
+                      display: 'flex', alignItems: 'center', justifyContent: 'center',
+                    }}>
+                      <svg width="12" height="12" viewBox="0 0 14 14" fill="none" stroke="#ffc02a" strokeWidth="1.8" strokeLinecap="round">
+                        <path d="M2 3a1 1 0 011-1h2l1 3-1.5 1.5a9 9 0 004 4L10 9l3 1v2a1 1 0 01-1 1C5 13 1 9 1 4a1 1 0 011-1z" />
+                      </svg>
+                    </div>
+                    {phone.display}
+                  </a>
+                ))}
               </div>
             </div>
 
@@ -196,7 +227,7 @@ export default function ProductDetail() {
             {product.short_description && (
               <div
                 style={{
-                  color: '#888', fontSize: '15px', lineHeight: 1.7,
+                  color: '#aaa', fontSize: '15px', lineHeight: 1.7,
                   fontFamily: "'Manrope', sans-serif",
                 }}
                 dangerouslySetInnerHTML={{ __html: product.short_description }}
@@ -227,7 +258,7 @@ export default function ProductDetail() {
 
               <Link href="/kontakt" style={{
                 flex: 1, background: 'transparent',
-                color: '#f0f0f0', border: '1.5px solid #333',
+                color: '#ededeb', border: '1.5px solid #333',
                 padding: '16px 24px', borderRadius: '100px',
                 fontWeight: 600, fontSize: '15px',
                 textDecoration: 'none',
@@ -249,11 +280,10 @@ export default function ProductDetail() {
               paddingTop: '20px', borderTop: '1px solid #1a1a1a',
             }}>
               {[
-                'Besplatna dostava Vojvodina',
+                'Dostava na teritoriji cele Srbije',
                 'Plaćanje pouzećem ili bankovnim transferom',
-                'Profesionalna montaža u roku od 48h',
               ].map(text => (
-                <div key={text} style={{ display: 'flex', alignItems: 'center', gap: '10px', fontSize: '13px', color: '#555', fontFamily: "'Manrope', sans-serif" }}>
+                <div key={text} style={{ display: 'flex', alignItems: 'center', gap: '10px', fontSize: '13px', color: '#888', fontFamily: "'Manrope', sans-serif" }}>
                   <div style={{
                     width: '20px', height: '20px', borderRadius: '50%',
                     background: 'rgba(255,192,42,0.12)',
@@ -266,6 +296,47 @@ export default function ProductDetail() {
                   {text}
                 </div>
               ))}
+
+              {/* Telefoni */}
+              <div style={{
+                marginTop: '8px', padding: '16px',
+                background: '#1a1a1a', borderRadius: '12px',
+                border: '1px solid #222',
+              }}>
+                <div style={{ fontSize: '11px', fontWeight: 700, letterSpacing: '1px', textTransform: 'uppercase', color: '#555', marginBottom: '12px', fontFamily: "'Space Grotesk', sans-serif" }}>
+                  Proverite dostupnost pozivom.
+                </div>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                  {[
+                    { label: 'Telefon 1', number: '+381631183898', display: '+381 63 118 3898' },
+                    { label: 'Telefon 2', number: '+381691200104', display: '+381 69 120 0104' },
+                  ].map(phone => (
+                    <a
+                      key={phone.number}
+                      href={'tel:' + phone.number}
+                      style={{
+                        display: 'flex', alignItems: 'center', gap: '10px',
+                        textDecoration: 'none', transition: 'color 0.2s',
+                        color: '#ffc02a', fontSize: '15px', fontWeight: 700,
+                        fontFamily: "'Space Grotesk', sans-serif",
+                      }}
+                      onMouseEnter={e => ((e.currentTarget as HTMLElement).style.color = '#ffcc4a')}
+                      onMouseLeave={e => ((e.currentTarget as HTMLElement).style.color = '#ffc02a')}
+                    >
+                      <div style={{
+                        width: '32px', height: '32px', borderRadius: '50%',
+                        background: 'rgba(255,192,42,0.12)',
+                        display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0,
+                      }}>
+                        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="#ffc02a" strokeWidth="1.8" strokeLinecap="round">
+                          <path d="M2 3a1 1 0 011-1h2l1 3-1.5 1.5a9 9 0 004 4L10 9l3 1v2a1 1 0 01-1 1C5 13 1 9 1 4a1 1 0 011-1z" />
+                        </svg>
+                      </div>
+                      {phone.display}
+                    </a>
+                  ))}
+                </div>
+              </div>
             </div>
 
             {/* Puni opis */}
@@ -276,13 +347,13 @@ export default function ProductDetail() {
               }}>
                 <div style={{
                   fontSize: '11px', fontWeight: 700, letterSpacing: '1px',
-                  textTransform: 'uppercase', color: '#444', marginBottom: '16px',
+                  textTransform: 'uppercase', color: '#666', marginBottom: '16px',
                   fontFamily: "'Space Grotesk', sans-serif",
                 }}>
                   Opis proizvoda
                 </div>
                 <div
-                  style={{ color: '#777', fontSize: '14px', lineHeight: 1.8, fontFamily: "'Manrope', sans-serif" }}
+                  style={{ color: '#aaa', fontSize: '14px', lineHeight: 1.8, fontFamily: "'Manrope', sans-serif" }}
                   dangerouslySetInnerHTML={{ __html: product.description }}
                 />
               </div>

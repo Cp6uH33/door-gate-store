@@ -9,8 +9,8 @@ const WC_SECRET = process.env.NEXT_PUBLIC_WC_CONSUMER_SECRET;
 
 const stats = [
   { num: '500', suffix: '+', label: 'Instalacija' },
-  { num: '48',  suffix: 'h', label: 'Montaža' },
-  { num: '5',   suffix: '★', label: 'Ocena usluge' },
+  { num: '20', suffix: 'g', label: 'Iskustva' },
+  { num: '5', suffix: '★', label: 'Ocena usluge' },
 ];
 
 type FeaturedProduct = {
@@ -29,7 +29,7 @@ export default function HeroSection() {
     fetch(`${WC_URL}/products?consumer_key=${WC_KEY}&consumer_secret=${WC_SECRET}&featured=true&per_page=1`)
       .then(res => res.json())
       .then(data => { if (data?.length > 0) setFeatured(data[0]); })
-      .catch(() => {});
+      .catch(() => { });
   }, []);
 
   useEffect(() => {
@@ -52,9 +52,10 @@ export default function HeroSection() {
       position: 'relative', paddingTop: '20px',
       overflow: 'hidden', minHeight: '100vh',
       display: 'flex', alignItems: 'center',
+      marginTop: '15px',
     }}>
       <Image
-        src="/hero.webp"
+        src="/hero2.png"
         alt="Hero background"
         fill
         style={{ objectFit: 'cover', objectPosition: 'center' }}
@@ -77,17 +78,18 @@ export default function HeroSection() {
         gap: '60px', alignItems: 'center', width: '100%',
       }}>
         {/* LEFT */}
-        <div style={{ paddingBottom: '80px', paddingTop: '80px' }}>
+        <div style={{ paddingBottom: '80px', paddingTop: '120px' }}>
           <div data-animate style={{ marginBottom: '20px' }}>
             <span style={{
-              display: 'inline-flex', alignItems: 'center', gap: '6px',
-              fontSize: '11px', fontWeight: 700, letterSpacing: '0.8px',
-              textTransform: 'uppercase', color: '#0f0f0f',
-              background: '#ffc02a', padding: '5px 12px', borderRadius: '100px',
-            }}>
-              <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#0f0f0f', display: 'inline-block' }} />
-              Profesionalna automatizacija
-            </span>
+            display: 'inline-flex', alignItems: 'center', gap: '6px',
+            fontSize: '11px', fontWeight: 500, letterSpacing: '0.8px',
+            textTransform: 'uppercase', color: '#ffc02a',
+            background: 'rgba(255,192,42,0.15)', padding: '5px 12px',
+            borderRadius: '100px', marginBottom: '16px',
+          }}>
+            <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#ffc02a', display: 'inline-block' }} />
+            Profesionalna automatizacija
+          </span>
           </div>
 
           <h1 data-animate style={{
@@ -112,7 +114,7 @@ export default function HeroSection() {
             fontFamily: "'Manrope', sans-serif",
           }}>
             Motori za kapije, video interfoni i pametni sistemi za kontrolu pristupa.
-            Prodaja, dostava i profesionalna montaža širom Srbije.
+            Prodaja i dostava širom Srbije.
           </p>
 
           <div data-animate style={{ display: 'flex', alignItems: 'center', gap: '12px', flexWrap: 'wrap' }}>
@@ -160,7 +162,7 @@ export default function HeroSection() {
                 }}>
                   {s.num}<span style={{ color: '#ffc02a' }}>{s.suffix}</span>
                 </div>
-                <div style={{ fontSize: '12px', color: 'rgba(255,255,255,0.5)', marginTop: '2px', fontFamily: "'Manrope', sans-serif" }}>{s.label}</div>
+                <div style={{ fontSize: '12px', color: '#ededeb', marginTop: '2px', fontFamily: "'Manrope', sans-serif" }}>{s.label}</div>
               </div>
             ))}
           </div>
@@ -192,15 +194,15 @@ export default function HeroSection() {
                 letterSpacing: '0.5px', textTransform: 'uppercase',
                 zIndex: 2,
               }}>
-                Bestseler
+                Najprodavaniji artikal
               </span>
 
               {/* Kategorija badge */}
               {featured?.categories?.[0] && (
                 <span style={{
                   position: 'absolute', top: '20px', left: '20px',
-                  background: 'rgba(255,255,255,0.1)', color: 'rgba(255,255,255,0.7)',
-                  fontSize: '10px', fontWeight: 500,
+                  background: 'rgba(255,255,255,0.1)', color: '#ffc02a', 
+                  fontSize: '11px', fontWeight: 500,
                   padding: '5px 12px', borderRadius: '100px',
                   fontFamily: "'Manrope', sans-serif",
                   backdropFilter: 'blur(4px)',
@@ -212,7 +214,7 @@ export default function HeroSection() {
 
               {/* Slika proizvoda */}
               <div style={{
-                width: '100%', height: '300px',
+                width: '100%', height: '380px',
                 display: 'flex', alignItems: 'center', justifyContent: 'center',
                 position: 'relative', marginTop: '20px',
               }}>
@@ -221,7 +223,7 @@ export default function HeroSection() {
                     src={featured.images[0].src}
                     alt={featured.name}
                     fill
-                    style={{ objectFit: 'contain', padding: '16px' }}
+                    style={{ objectFit: 'contain', padding: '24px' }}
                   />
                 ) : (
                   <div style={{ color: '#444', fontSize: '48px' }}>📦</div>
@@ -230,11 +232,11 @@ export default function HeroSection() {
 
               {/* Info kartica */}
               <div style={{
-                position: 'absolute', bottom: '20px', left: '20px', right: '20px',
                 background: 'rgba(10,10,10,0.92)', backdropFilter: 'blur(12px)',
                 border: '1px solid rgba(255,255,255,0.08)',
                 borderRadius: '14px', padding: '14px 18px',
                 display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+                margin: '0 0 24px 0',
               }}>
                 <div>
                   <div style={{

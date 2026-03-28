@@ -2,10 +2,12 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { useState, useEffect } from 'react';
+import { usePathname } from 'next/navigation';
 import { useCart } from '@/contexts/CartContext';
 
 export default function Header() {
   const [isOpen, setIsOpen] = useState(false);
+  const pathname = usePathname();
   const [scrolled, setScrolled] = useState(false);
   const [isLight, setIsLight] = useState(false);
   const { cartCount } = useCart();
@@ -47,14 +49,19 @@ export default function Header() {
     { name: 'Kontakt', href: '/kontakt' },
   ];
 
+  const onProductPage = pathname?.startsWith('/proizvodi');
+  const effectiveLight = isLight && !onProductPage;
+  const headerBg = effectiveLight ? 'rgba(237,237,235,0.97)' : 'rgba(26,26,26,0.92)';
+  const headerBorder = effectiveLight ? '1px solid rgba(0,0,0,0.08)' : '1px solid rgba(255,255,255,0.06)';
+
   return (
     <header style={{
       position: 'fixed', top: 0, left: 0, right: 0, zIndex: 50,
       transition: 'all 0.3s',
-      background: scrolled ? 'rgba(0, 0, 0, 0)' : 'rgba(255, 255, 255, 0)',
+      background: effectiveLight ? 'rgba(237,237,235,0.97)' : 'rgba(15,15,15,0.7)',
       backdropFilter: 'blur(12px)',
       WebkitBackdropFilter: 'blur(12px)',
-      borderBottom: `1px solid ${scrolled ? '#eeeef0' : 'transparent'}`,
+      borderBottom: '1px solid #ffc02a',
     }}>
       <div style={{
         maxWidth: '1152px', margin: '0 auto', padding: '0 24px',
@@ -81,7 +88,7 @@ export default function Header() {
               key={item.href}
               href={item.href}
               style={{
-                color: isLight ? '#0f0f0f' : '#ededeb', fontWeight: 700, fontSize: '17px',
+                color: effectiveLight ? '#0f0f0f' : '#ededeb', fontWeight: 700, fontSize: '17px',
                 textDecoration: 'none', padding: '6px 14px',
                 borderRadius: '100px', transition: 'color 0.2s, background 0.2s',
               }}

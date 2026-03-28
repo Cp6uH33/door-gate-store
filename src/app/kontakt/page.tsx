@@ -1,112 +1,236 @@
 "use client";
 import { useState } from 'react';
+import Link from 'next/link';
 
 export default function Kontakt() {
   const [form, setForm] = useState({ ime: '', email: '', telefon: '', poruka: '' });
   const [sent, setSent] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setLoading(true);
-    setTimeout(() => {
-      setSent(true);
-      setLoading(false);
-    }, 1200);
+    setTimeout(() => { setSent(true); setLoading(false); }, 1200);
+  }
+
+  const inputStyle: React.CSSProperties = {
+    width: '100%', background: '#1a1a1a',
+    border: '1.5px solid #222', color: '#ededeb',
+    padding: '12px 16px', borderRadius: '12px',
+    fontSize: '14px', outline: 'none',
+    boxSizing: 'border-box', fontFamily: "'Manrope', sans-serif",
+    transition: 'border-color 0.2s',
+  };
+
+  const labelStyle: React.CSSProperties = {
+    color: '#555', fontSize: '11px', fontWeight: 700,
+    letterSpacing: '1px', textTransform: 'uppercase',
+    display: 'block', marginBottom: '6px',
+    fontFamily: "'Space Grotesk', sans-serif",
   };
 
   return (
-    <div style={{background:'#0f0f0f', color:'#f0f0f0', minHeight:'100vh', padding:'48px 24px'}}>
-      <div style={{maxWidth:'1100px', margin:'0 auto'}}>
+    <div style={{ background: '#0f0f0f', color: '#ededeb', minHeight: '100vh' }}>
+      <div style={{ maxWidth: '1152px', margin: '0 auto', padding: '140px 24px 80px' }}>
 
-        <div style={{marginBottom:'48px'}}>
-          <h1 style={{fontWeight:900, fontSize:'56px', margin:'0 0 8px 0'}}>Kontakt</h1>
-          <p style={{color:'#555', fontSize:'18px', margin:0}}>Odgovaramo u roku od 1h • Besplatna procena</p>
+        {/* Breadcrumb */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '48px' }}>
+          <Link href="/" style={{ color: '#555', textDecoration: 'none', fontSize: '13px', fontFamily: "'Manrope', sans-serif", transition: 'color 0.2s' }}
+            onMouseEnter={e => ((e.currentTarget as HTMLElement).style.color = '#ffc02a')}
+            onMouseLeave={e => ((e.currentTarget as HTMLElement).style.color = '#555')}
+          >Početna</Link>
+          <span style={{ color: '#333', fontSize: '13px' }}>/</span>
+          <span style={{ color: '#888', fontSize: '13px', fontFamily: "'Manrope', sans-serif" }}>Kontakt</span>
         </div>
 
-        <div style={{display:'grid', gridTemplateColumns:'1fr 1fr', gap:'40px', alignItems:'start'}}>
+        {/* Header */}
+        <div style={{ marginBottom: '56px' }}>
+         <span style={{
+            display: 'inline-flex', alignItems: 'center', gap: '6px',
+            fontSize: '11px', fontWeight: 500, letterSpacing: '0.8px',
+            textTransform: 'uppercase', color: '#ffc02a',
+            background: 'rgba(255,192,42,0.15)', padding: '5px 12px',
+            borderRadius: '100px', marginBottom: '16px',
+          }}>
+            <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#ffc02a', display: 'inline-block' }} />
+            Kontakt
+          </span>
+          <h1 style={{
+            fontWeight: 800, fontSize: 'clamp(32px, 4vw, 52px)',
+            margin: '0 0 8px 0', letterSpacing: '-2px',
+            fontFamily: "'Manrope', sans-serif", color: '#ededeb',
+          }}>
+            Pišite ili pozovite
+          </h1>
+          <p style={{ color: '#555', fontSize: '16px', margin: 0, fontFamily: "'Manrope', sans-serif" }}>
+            Odgovaramo u roku od 1h • Besplatna procena
+          </p>
+        </div>
 
-          {/* Forma */}
-          <div style={{background:'#1a1a1a', border:'1px solid #2a2a2a', borderRadius:'16px', padding:'32px'}}>
-            <h2 style={{color:'#f0f0f0', fontWeight:800, fontSize:'24px', margin:'0 0 28px 0'}}>Pošalji upit</h2>
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '40px', alignItems: 'start' }}>
+
+          {/* FORMA */}
+          <div style={{
+            background: '#1a1a1a', border: '1px solid #222',
+            borderRadius: '20px', padding: '36px',
+          }}>
+            <h2 style={{
+              color: '#ededeb', fontWeight: 800, fontSize: '22px',
+              margin: '0 0 28px 0', letterSpacing: '-0.5px',
+              fontFamily: "'Manrope', sans-serif",
+            }}>Pošalji upit</h2>
 
             {sent ? (
-              <div style={{textAlign:'center', padding:'40px 0'}}>
-                <div style={{fontSize:'64px', marginBottom:'16px'}}>✅</div>
-                <h3 style={{color:'#e87c2a', fontWeight:900, fontSize:'24px', margin:'0 0 8px 0'}}>Poruka poslata!</h3>
-                <p style={{color:'#888', fontSize:'16px', margin:0}}>Kontaktiraćemo vas uskoro.</p>
+              <div style={{ textAlign: 'center', padding: '48px 0' }}>
+                <div style={{
+                  width: '64px', height: '64px', borderRadius: '50%',
+                  background: 'rgba(255,192,42,0.15)', border: '1px solid rgba(255,192,42,0.3)',
+                  display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  margin: '0 auto 20px', fontSize: '28px',
+                }}>✓</div>
+                <h3 style={{ color: '#ffc02a', fontWeight: 800, fontSize: '22px', margin: '0 0 8px 0', fontFamily: "'Manrope', sans-serif" }}>
+                  Poruka poslata!
+                </h3>
+                <p style={{ color: '#666', fontSize: '15px', margin: 0, fontFamily: "'Manrope', sans-serif" }}>
+                  Kontaktiraćemo vas uskoro.
+                </p>
               </div>
             ) : (
-              <form onSubmit={handleSubmit} style={{display:'flex', flexDirection:'column', gap:'16px'}}>
-                {[
-                  {label:'Ime i prezime', key:'ime', type:'text', placeholder:'Vaše ime...'},
-                  {label:'Email adresa', key:'email', type:'email', placeholder:'email@primer.com'},
-                  {label:'Telefon', key:'telefon', type:'tel', placeholder:'+381 ...'},
-                ].map(({label, key, type, placeholder}) => (
-                  <div key={key}>
-                    <label style={{color:'#888', fontSize:'13px', fontWeight:600, letterSpacing:'1px', textTransform:'uppercase', display:'block', marginBottom:'8px'}}>{label}</label>
-                    <input
-                      type={type}
-                      placeholder={placeholder}
-                      value={form[key as keyof typeof form]}
-                      onChange={e => setForm({...form, [key]: e.target.value})}
-                      required
-                      style={{width:'100%', background:'#111', border:'1px solid #333', color:'#f0f0f0', padding:'14px 16px', borderRadius:'10px', fontSize:'16px', outline:'none', boxSizing:'border-box'}}
-                      onFocus={e => (e.target as HTMLElement).style.borderColor = '#e87c2a'}
-                      onBlur={e => (e.target as HTMLElement).style.borderColor = '#333'}
-                    />
+              <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '18px' }}>
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
+                  <div>
+                    <label style={labelStyle}>Ime i prezime</label>
+                    <input type="text" placeholder="Vaše ime..." value={form.ime}
+                      onChange={e => setForm({ ...form, ime: e.target.value })} required style={inputStyle}
+                      onFocus={e => (e.target.style.borderColor = '#ffc02a')}
+                      onBlur={e => (e.target.style.borderColor = '#222')} />
                   </div>
-                ))}
+                  <div>
+                    <label style={labelStyle}>Telefon</label>
+                    <input type="tel" placeholder="+381 ..." value={form.telefon}
+                      onChange={e => setForm({ ...form, telefon: e.target.value })} required style={inputStyle}
+                      onFocus={e => (e.target.style.borderColor = '#ffc02a')}
+                      onBlur={e => (e.target.style.borderColor = '#222')} />
+                  </div>
+                </div>
                 <div>
-                  <label style={{color:'#888', fontSize:'13px', fontWeight:600, letterSpacing:'1px', textTransform:'uppercase', display:'block', marginBottom:'8px'}}>Poruka</label>
-                  <textarea
-                    placeholder="Opišite šta vam treba..."
-                    value={form.poruka}
-                    onChange={e => setForm({...form, poruka: e.target.value})}
-                    required
-                    rows={5}
-                    style={{width:'100%', background:'#111', border:'1px solid #333', color:'#f0f0f0', padding:'14px 16px', borderRadius:'10px', fontSize:'16px', outline:'none', resize:'vertical', boxSizing:'border-box', fontFamily:'inherit'}}
-                    onFocus={e => (e.target as HTMLElement).style.borderColor = '#e87c2a'}
-                    onBlur={e => (e.target as HTMLElement).style.borderColor = '#333'}
-                  />
+                  <label style={labelStyle}>Email adresa</label>
+                  <input type="email" placeholder="email@primer.com" value={form.email}
+                    onChange={e => setForm({ ...form, email: e.target.value })} required style={inputStyle}
+                    onFocus={e => (e.target.style.borderColor = '#ffc02a')}
+                    onBlur={e => (e.target.style.borderColor = '#222')} />
+                </div>
+                <div>
+                  <label style={labelStyle}>Poruka</label>
+                  <textarea placeholder="Opišite šta vam treba..." value={form.poruka}
+                    onChange={e => setForm({ ...form, poruka: e.target.value })} required rows={5}
+                    style={{ ...inputStyle, resize: 'vertical', minHeight: '120px' }}
+                    onFocus={e => (e.target.style.borderColor = '#ffc02a')}
+                    onBlur={e => (e.target.style.borderColor = '#222')} />
                 </div>
                 <button
-                  type="submit"
-                  disabled={loading}
-                  style={{background:'#e87c2a', color:'#fff', border:'none', padding:'18px', borderRadius:'10px', fontWeight:900, fontSize:'18px', cursor:'pointer', opacity: loading ? 0.7 : 1, marginTop:'8px'}}
+                  type="submit" disabled={loading}
+                  style={{
+                    background: loading ? '#e6a800' : '#ffc02a',
+                    color: '#0e0f11', border: 'none',
+                    padding: '15px', borderRadius: '100px',
+                    fontWeight: 700, fontSize: '15px',
+                    cursor: loading ? 'not-allowed' : 'pointer',
+                    fontFamily: "'Space Grotesk', sans-serif",
+                    transition: 'all 0.2s', marginTop: '4px',
+                    display: 'flex', alignItems: 'center',
+                    justifyContent: 'center', gap: '8px',
+                  }}
+                  onMouseEnter={e => { if (!loading) (e.currentTarget as HTMLElement).style.background = '#ffcc4a'; }}
+                  onMouseLeave={e => { if (!loading) (e.currentTarget as HTMLElement).style.background = '#ffc02a'; }}
                 >
-                  {loading ? '⏳ Šaljem...' : '📤 Pošalji upit'}
+                  {loading ? 'Šaljem...' : 'Pošalji upit'}
+                  {!loading && (
+                    <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+                      <path d="M3 7h8M8 4l3 3-3 3" />
+                    </svg>
+                  )}
                 </button>
               </form>
             )}
           </div>
 
-          {/* Info */}
-          <div style={{display:'flex', flexDirection:'column', gap:'16px'}}>
+          {/* INFO */}
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
             {[
-              {icon:'📞', title:'Telefon', value:'+381 64 123 4567', sub:'Dostupni pon-sub 8-20h'},
-              {icon:'📧', title:'Email', value:'info@doorgatesistem.com', sub:'Odgovaramo u roku od 1h'},
-              {icon:'📍', title:'Lokacija', value:'Novi Sad, Vojvodina', sub:'Servis i montaža na terenu'},
-              {icon:'⏰', title:'Radno vreme', value:'Pon – Sub: 8:00 – 20:00', sub:'Ned: Po dogovoru'},
-            ].map(({icon, title, value, sub}) => (
-              <div key={title} style={{background:'#1a1a1a', border:'1px solid #2a2a2a', borderRadius:'14px', padding:'24px', display:'flex', gap:'20px', alignItems:'flex-start'}}>
-                <div style={{width:'52px', height:'52px', background:'rgba(232,124,42,0.1)', border:'1px solid rgba(232,124,42,0.2)', borderRadius:'12px', display:'flex', alignItems:'center', justifyContent:'center', fontSize:'22px', flexShrink:0}}>
+              { icon: '📞', title: 'Telefon', value: '+381 63 118 3898', sub: 'Dostupni pon-sub 8-18h', href: 'tel:+381631183898' },
+              { icon: '📞', title: 'Telefon 2', value: '+381 69 120 0104', sub: 'Dostupni pon-sub 8-18h', href: 'tel:+381691200104' },
+              { icon: '📧', title: 'Email', value: 'info@doorgatesistem.com', sub: 'Odgovaramo u roku od 1h', href: 'mailto:info@doorgatesistem.com' },
+              { icon: '📍', title: 'Lokacija', value: 'Srbija', sub: 'Servis i montaža na terenu', href: null },
+              { icon: '⏰', title: 'Radno vreme', value: 'Pon – Sub: 8:00 – 18:00', sub: 'Ned: Po dogovoru', href: null },
+            ].map(({ icon, title, value, sub, href }) => (
+              <div key={title} style={{
+                background: '#1a1a1a', border: '1px solid #222',
+                borderRadius: '14px', padding: '20px 24px',
+                display: 'flex', gap: '16px', alignItems: 'flex-start',
+                transition: 'border-color 0.2s',
+              }}
+                onMouseEnter={e => ((e.currentTarget as HTMLElement).style.borderColor = '#ffc02a')}
+                onMouseLeave={e => ((e.currentTarget as HTMLElement).style.borderColor = '#222')}
+              >
+                <div style={{
+                  width: '44px', height: '44px',
+                  background: 'rgba(255,192,42,0.10)',
+                  border: '1px solid rgba(255,192,42,0.2)',
+                  borderRadius: '12px', display: 'flex',
+                  alignItems: 'center', justifyContent: 'center',
+                  fontSize: '18px', flexShrink: 0,
+                }}>
                   {icon}
                 </div>
                 <div>
-                  <p style={{color:'#555', fontSize:'12px', fontWeight:700, letterSpacing:'2px', textTransform:'uppercase', margin:'0 0 4px 0'}}>{title}</p>
-                  <p style={{color:'#f0f0f0', fontWeight:800, fontSize:'18px', margin:'0 0 4px 0'}}>{value}</p>
-                  <p style={{color:'#555', fontSize:'14px', margin:0}}>{sub}</p>
+                  <p style={{ color: '#555', fontSize: '11px', fontWeight: 700, letterSpacing: '1px', textTransform: 'uppercase', margin: '0 0 4px 0', fontFamily: "'Space Grotesk', sans-serif" }}>
+                    {title}
+                  </p>
+                  {href ? (
+                    <a href={href} style={{ color: '#ffc02a', fontWeight: 700, fontSize: '16px', margin: '0 0 2px 0', display: 'block', textDecoration: 'none', fontFamily: "'Space Grotesk', sans-serif", transition: 'color 0.2s' }}
+                      onMouseEnter={e => ((e.currentTarget as HTMLElement).style.color = '#ffcc4a')}
+                      onMouseLeave={e => ((e.currentTarget as HTMLElement).style.color = '#ffc02a')}
+                    >
+                      {value}
+                    </a>
+                  ) : (
+                    <p style={{ color: '#ededeb', fontWeight: 700, fontSize: '16px', margin: '0 0 2px 0', fontFamily: "'Manrope', sans-serif" }}>{value}</p>
+                  )}
+                  <p style={{ color: '#555', fontSize: '13px', margin: 0, fontFamily: "'Manrope', sans-serif" }}>{sub}</p>
                 </div>
               </div>
             ))}
 
-            {/* CTA */}
-            <div style={{background:'linear-gradient(135deg, rgba(232,124,42,0.15), rgba(232,124,42,0.05))', border:'1px solid rgba(232,124,42,0.3)', borderRadius:'14px', padding:'24px', textAlign:'center', marginTop:'8px'}}>
-              <p style={{color:'#e87c2a', fontWeight:900, fontSize:'20px', margin:'0 0 8px 0'}}>⚡ Brza procena</p>
-              <p style={{color:'#888', fontSize:'15px', margin:'0 0 16px 0'}}>Pozovite za besplatnu procenu i ponudu na licu mesta</p>
-              <a href="tel:+381641234567" style={{background:'#e87c2a', color:'#fff', padding:'14px 28px', borderRadius:'10px', fontWeight:700, fontSize:'16px', textDecoration:'none', display:'inline-block'}}>
-                📞 Pozovi odmah
+            {/* CTA poziv */}
+            <div style={{
+              background: 'rgba(255,192,42,0.06)',
+              border: '1px solid rgba(255,192,42,0.2)',
+              borderRadius: '14px', padding: '24px',
+              textAlign: 'center', marginTop: '4px',
+            }}>
+              <p style={{ color: '#ffc02a', fontWeight: 800, fontSize: '18px', margin: '0 0 6px 0', fontFamily: "'Manrope', sans-serif" }}>
+                Besplatna procena
+              </p>
+              <p style={{ color: '#666', fontSize: '14px', margin: '0 0 20px 0', fontFamily: "'Manrope', sans-serif" }}>
+                Pozovite za besplatnu procenu i ponudu na licu mesta
+              </p>
+              <a href="tel:+381631183898" style={{
+                background: '#ffc02a', color: '#0e0f11',
+                padding: '12px 28px', borderRadius: '100px',
+                fontWeight: 700, fontSize: '14px',
+                textDecoration: 'none', display: 'inline-flex',
+                alignItems: 'center', gap: '8px',
+                fontFamily: "'Space Grotesk', sans-serif",
+                transition: 'all 0.2s',
+              }}
+                onMouseEnter={e => { const el = e.currentTarget as HTMLElement; el.style.background = '#ffcc4a'; el.style.transform = 'translateY(-2px)'; }}
+                onMouseLeave={e => { const el = e.currentTarget as HTMLElement; el.style.background = '#ffc02a'; el.style.transform = 'translateY(0)'; }}
+              >
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round">
+                  <path d="M2 3a1 1 0 011-1h2l1 3-1.5 1.5a9 9 0 004 4L10 9l3 1v2a1 1 0 01-1 1C5 13 1 9 1 4a1 1 0 011-1z" />
+                </svg>
+                Pozovi odmah
               </a>
             </div>
           </div>

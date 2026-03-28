@@ -112,22 +112,23 @@ export default function ProductsSection() {
         {/* Header */}
         <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', gap: '20px', marginBottom: '32px' }}>
           <div>
-            <span style={{
-              display: 'inline-flex', alignItems: 'center', gap: '6px',
-              fontSize: '11px', fontWeight: 700, letterSpacing: '0.8px',
-              textTransform: 'uppercase', color: '#0f0f0f',
-              background: '#ffc02a', padding: '5px 12px', borderRadius: '100px',
-            }}>
-              <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#0f0f0f', display: 'inline-block' }} />
-              Web Shop
-            </span>
+              <span style={{
+            display: 'inline-flex', alignItems: 'center', gap: '6px',
+            fontSize: '11px', fontWeight: 500, letterSpacing: '0.8px',
+            textTransform: 'uppercase', color: '#0f0f0f',
+            background: 'rgba(255,192,42,0.80)', padding: '5px 12px',
+            borderRadius: '100px', marginBottom: '16px',
+          }}>
+            <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#0f0f0f', display: 'inline-block' }} />
+            Web Shop
+          </span>
             <h2 style={{
               fontSize: 'clamp(28px, 3.5vw, 40px)', fontWeight: 800,
               letterSpacing: '-1.5px', lineHeight: 1.1,
               color: '#0f0f0f', marginTop: '12px',
               fontFamily: "'Manrope', sans-serif",
             }}>
-              Bestseler proizvodi
+              Naši najtraženiji proizvodi
             </h2>
             <p style={{ fontSize: '15px', color: '#555', marginTop: '8px', maxWidth: '500px', fontFamily: "'Manrope', sans-serif" }}>
               Najprodavaniji artikli — provereni od strane naših klijenata.
@@ -174,7 +175,7 @@ export default function ProductsSection() {
 
         {/* Skeleton */}
         {loading && (
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '20px' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '20px', alignItems: 'stretch' }}>
             {[...Array(6)].map((_, i) => (
               <div key={i} style={{
                 background: '#e0dfd8', borderRadius: '14px', height: '320px',
@@ -187,7 +188,7 @@ export default function ProductsSection() {
 
         {/* Grid */}
         {!loading && (
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '20px' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '20px', alignItems: 'stretch' }}>
             {products.map(product => (
               <div
                 key={product.id}
@@ -195,6 +196,7 @@ export default function ProductsSection() {
                 style={{
                   background: '#fff', borderRadius: '14px', overflow: 'hidden',
                   border: '1.5px solid #e0dfd8', transition: 'all 0.25s', cursor: 'pointer',
+                  display: 'flex', flexDirection: 'column', height: '100%',
                 }}
                 onMouseEnter={e => {
                   const el = e.currentTarget;
@@ -254,9 +256,9 @@ export default function ProductsSection() {
                 </div>
 
                 {/* Body */}
-                <div style={{ padding: '16px 18px 18px' }}>
+                <div style={{ padding: '16px 18px 18px', background: '#0f0f0f', flex: 1, display: 'flex', flexDirection: 'column' }}>
                   <div style={{
-                    fontSize: '11px', color: '#999', textTransform: 'uppercase',
+                    fontSize: '11px', color: '#ffc02a', textTransform: 'uppercase',
                     letterSpacing: '0.8px', fontWeight: 500, marginBottom: '6px',
                     fontFamily: "'Manrope', sans-serif",
                   }}>
@@ -264,13 +266,13 @@ export default function ProductsSection() {
                   </div>
                   <div style={{
                     fontSize: '15px', fontWeight: 700, marginBottom: '6px',
-                    lineHeight: 1.3, color: '#0f0f0f',
+                    lineHeight: 1.3, color: '#ededeb',
                     fontFamily: "'Manrope', sans-serif",
                   }}>
                     {product.name}
                   </div>
                   <div style={{
-                    fontSize: '13px', color: '#888', lineHeight: 1.5, marginBottom: '14px',
+                    fontSize: '13px', color: '#ededeb', lineHeight: 1.5, marginBottom: '14px',
                     overflow: 'hidden', display: '-webkit-box',
                     WebkitLineClamp: 2, WebkitBoxOrient: 'vertical' as const,
                     fontFamily: "'Manrope', sans-serif",
@@ -279,7 +281,7 @@ export default function ProductsSection() {
                   />
                   <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                     <span style={{
-                      fontSize: '20px', fontWeight: 800, color: '#0f0f0f',
+                      fontSize: '20px', fontWeight: 800, color: '#ffc02a',
                       fontFamily: "'Space Grotesk', sans-serif",
                     }}>
                       {parseFloat(product.price).toLocaleString('sr-RS')}
@@ -289,8 +291,8 @@ export default function ProductsSection() {
                       onClick={(e) => { e.stopPropagation(); handleAdd(product); }}
                       style={{
                         width: '38px', height: '38px', borderRadius: '50%',
-                        background: added[product.id] ? '#ffc02a' : '#0f0f0f',
-                        color: added[product.id] ? '#0e0f11' : '#fff',
+                        background: added[product.id] ? '#fff' : '#ffc02a',
+                        color: added[product.id] ? '#ffc02a' : '#0e0f11',
                         display: 'flex', alignItems: 'center', justifyContent: 'center',
                         border: 'none', cursor: 'pointer', fontSize: '18px',
                         transition: 'all 0.2s',

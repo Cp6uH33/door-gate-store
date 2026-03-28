@@ -13,7 +13,7 @@ const features = [
     ),
   },
   {
-    title: 'Montaža za 48 sati',
+    title: 'Montaža za 48 sati na teritoriji Subotice',
     text: 'Naš tim dolazi do vas i profesionalno instalira sistem. Od narudžbine do funkcionalne kapije za dva dana.',
     icon: (
       <svg viewBox="0 0 22 22" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round">
@@ -78,8 +78,8 @@ export default function WhyUsSection() {
               }}>
                 Vaša sigurnost<br />je naš posao
               </h2>
-              <p style={{ fontSize: '15px', color: '#999', marginTop: '8px', maxWidth: '500px' }}>
-                Više od 500 instalacija i 5 godina iskustva govore umesto nas.
+              <p style={{ fontSize: '15px', color: '#ededeb', marginTop: '8px', maxWidth: '500px' }}>
+                Više od 500 instalacija i 20 godina iskustva govore umesto nas.
               </p>
             </div>
 
