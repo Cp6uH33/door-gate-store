@@ -7,7 +7,7 @@ const contactCards = [
     value: (
       <>
         <a href="tel:+381631183898" style={{
-          color: '#fffbf0',
+          color: '#ffc02a',
           textDecoration: 'none',
           display: 'block',
           fontWeight: 500,
@@ -18,7 +18,7 @@ const contactCards = [
           +381 631 183 898
         </a>
         <a href="tel:+381691200104" style={{
-          color: '#fffbf0',
+          color: '#ffc02a',
           textDecoration: 'none',
           display: 'block',
           fontWeight: 500,
@@ -39,7 +39,7 @@ const contactCards = [
     label: 'Email',
     value: (
       <a href="mailto:doorgatesistem@gmail.com" style={{
-        color: '#fffbf0',
+        color: '#ffc02a',
         textDecoration: 'none',
         display: 'block',
         fontWeight: 500,
@@ -59,7 +59,7 @@ const contactCards = [
     label: 'Adresa',
     value: (
       <a href="https://maps.google.com/?q=Bregalnicka7+Subotica,+Srbija" target="_blank" style={{
-        color: '#fffbf0',
+        color: '#ffc02a',
         textDecoration: 'none',
         display: 'block',
         fontWeight: 500,
@@ -78,7 +78,7 @@ const contactCards = [
   },
   {
     label: 'Radno vreme',
-    value: 'Pon – Sub: 08:00 – 16:00',
+    value: 'Ponedeljak – Subota: 08h – 16h',
     icon: (
       <svg viewBox="0 0 18 18" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round">
         <circle cx="9" cy="9" r="7" /><path d="M9 5v4l2.5 2.5" />
@@ -100,7 +100,7 @@ export default function ContactSection() {
 
   const inputStyle: React.CSSProperties = {
     width: '100%', padding: '12px 16px',
-    background: '#222', border: '1.5px solid #2a2a2a',
+    background: '#222', border: '1.5px solid #ffc02a',
     borderRadius: '12px', fontSize: '14px',
     fontFamily: "'DM Sans', sans-serif", color: '#0f0f0f',
     outline: 'none', transition: 'border-color 0.2s, background 0.2s',
@@ -261,14 +261,14 @@ export default function ContactSection() {
                     <div style={{ fontSize: '11px', textTransform: 'uppercase', letterSpacing: '0.6px', color: '#fffbf0', fontWeight: 500, marginBottom: '3px' }}>
                       {card.label}
                     </div>
-                    <div style={{ fontSize: '14px', fontWeight: 500, color: '#fffbf0' }}>{card.value}</div>
+                    <div style={{ fontSize: '14px', fontWeight: 500, color: '#ffc02a' }}>{card.value}</div>
                   </div>
                 </div>
               ))}
             </div>
 
             {/* Map placeholder */}
-            <div style={{ borderRadius: '20px', overflow: 'hidden', border: '1.5px solid #ffc02a' }}>
+            <div style={{ borderRadius: '20px', overflow: 'hidden', border: '1.5px solid #ffc02a', position: 'relative' }}>
               <iframe
                 src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2767.7527004349085!2d19.66795608578743!3d46.075972017884936!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x474360d07374fe75%3A0x8a4cbefda79c09b1!2sBregalni%C4%8Dka%207%2C%20Subotica%2024106!5e0!3m2!1sen!2srs!4v1774380965444!5m2!1sen!2srs"
                 height="220"
@@ -276,6 +276,29 @@ export default function ContactSection() {
                 style={{ border: 0, display: 'block' }}
                 loading="lazy"
               />
+              {/* Overlay */}
+              <div style={{
+                position: 'absolute', inset: 0,
+                background: 'linear-gradient(to top, rgba(15,15,15,0.5) 0%, transparent 50%)',
+                pointerEvents: 'none', borderRadius: '20px',
+              }} />
+              {/* Label */}
+              <div style={{
+                position: 'absolute', bottom: '12px', left: '12px',
+                background: 'rgba(15,15,15,0.85)', backdropFilter: 'blur(8px)',
+                border: '1px solid rgba(255,192,42,0.3)',
+                borderRadius: '8px', padding: '6px 12px',
+                display: 'flex', alignItems: 'center', gap: '6px',
+                pointerEvents: 'none',
+              }}>
+                <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="#ffc02a" strokeWidth="1.8" strokeLinecap="round">
+                  <path d="M6 1C4.1 1 2.5 2.6 2.5 4.5c0 2.5 3.5 6.5 3.5 6.5s3.5-4 3.5-6.5C9.5 2.6 7.9 1 6 1z"/>
+                  <circle cx="6" cy="4.5" r="1"/>
+                </svg>
+                <span style={{ fontSize: '11px', color: '#ffc02a', fontWeight: 600, fontFamily: "'Space Grotesk', sans-serif" }}>
+                  Bregalnička 7, Subotica
+                </span>
+              </div>
             </div>
           </div>
         </div>

@@ -14,8 +14,8 @@ export default function Kontakt() {
   }
 
   const inputStyle: React.CSSProperties = {
-    width: '100%', background: '#1a1a1a',
-    border: '1.5px solid #222', color: '#ededeb',
+    width: '100%', background: '#0f0f0f',
+    border: '1.5px solid #ffc02a', color: '#ededeb',
     padding: '12px 16px', borderRadius: '12px',
     fontSize: '14px', outline: 'none',
     boxSizing: 'border-box', fontFamily: "'Manrope', sans-serif",
@@ -23,7 +23,7 @@ export default function Kontakt() {
   };
 
   const labelStyle: React.CSSProperties = {
-    color: '#555', fontSize: '11px', fontWeight: 700,
+    color: '#ededeb', fontSize: '11px', fontWeight: 700,
     letterSpacing: '1px', textTransform: 'uppercase',
     display: 'block', marginBottom: '6px',
     fontFamily: "'Space Grotesk', sans-serif",
@@ -39,8 +39,8 @@ export default function Kontakt() {
             onMouseEnter={e => ((e.currentTarget as HTMLElement).style.color = '#ffc02a')}
             onMouseLeave={e => ((e.currentTarget as HTMLElement).style.color = '#555')}
           >Početna</Link>
-          <span style={{ color: '#333', fontSize: '13px' }}>/</span>
-          <span style={{ color: '#888', fontSize: '13px', fontFamily: "'Manrope', sans-serif" }}>Kontakt</span>
+          <span style={{ color: '#ededeb', fontSize: '13px' }}>/</span>
+          <span style={{ color: '#ededeb', fontSize: '13px', fontFamily: "'Manrope', sans-serif" }}>Kontakt</span>
         </div>
 
         {/* Header */}
@@ -62,7 +62,7 @@ export default function Kontakt() {
           }}>
             Pišite ili pozovite
           </h1>
-          <p style={{ color: '#555', fontSize: '16px', margin: 0, fontFamily: "'Manrope', sans-serif" }}>
+          <p style={{ color: '#ededeb', fontSize: '16px', margin: 0, fontFamily: "'Manrope', sans-serif" }}>
             Odgovaramo u roku od 1h • Besplatna procena
           </p>
         </div>
@@ -71,7 +71,7 @@ export default function Kontakt() {
 
           {/* FORMA */}
           <div style={{
-            background: '#1a1a1a', border: '1px solid #222',
+            background: 'rgba(255,192,42,0.06)', border: '1px solid #ffc02a',
             borderRadius: '20px', padding: '36px',
           }}>
             <h2 style={{
@@ -158,33 +158,49 @@ export default function Kontakt() {
           {/* INFO */}
           <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
             {[
-              { icon: '📞', title: 'Telefon', value: '+381 63 118 3898', sub: 'Dostupni pon-sub 8-18h', href: 'tel:+381631183898' },
-              { icon: '📞', title: 'Telefon 2', value: '+381 69 120 0104', sub: 'Dostupni pon-sub 8-18h', href: 'tel:+381691200104' },
-              { icon: '📧', title: 'Email', value: 'info@doorgatesistem.com', sub: 'Odgovaramo u roku od 1h', href: 'mailto:info@doorgatesistem.com' },
-              { icon: '📍', title: 'Lokacija', value: 'Srbija', sub: 'Servis i montaža na terenu', href: null },
-              { icon: '⏰', title: 'Radno vreme', value: 'Pon – Sub: 8:00 – 18:00', sub: 'Ned: Po dogovoru', href: null },
+              { icon: 'phone', title: 'Telefon', value: '+381 63 118 3898', sub: '', href: 'tel:+381631183898' },
+              { icon: 'phone', title: 'Telefon 2', value: '+381 69 120 0104', sub: '', href: 'tel:+381691200104' },
+              { icon: 'email', title: 'Email', value: 'doorgatesistem@gmail.com', sub: '', href: 'mailto:info@doorgatesistem.com' },
+              { icon: 'clock', title: 'Radno vreme', value: 'Ponedeljak – Subota: 7:00h – 16:00h', sub: '', href: null },
             ].map(({ icon, title, value, sub, href }) => (
               <div key={title} style={{
-                background: '#1a1a1a', border: '1px solid #222',
+                background: '#0f0f0f', border: '1px solid #ffc02a',
                 borderRadius: '14px', padding: '20px 24px',
                 display: 'flex', gap: '16px', alignItems: 'flex-start',
                 transition: 'border-color 0.2s',
               }}
-                onMouseEnter={e => ((e.currentTarget as HTMLElement).style.borderColor = '#ffc02a')}
-                onMouseLeave={e => ((e.currentTarget as HTMLElement).style.borderColor = '#222')}
+               /* onMouseEnter={e => ((e.currentTarget as HTMLElement).style.borderColor = '#ffc02a')}
+                onMouseLeave={e => ((e.currentTarget as HTMLElement).style.borderColor = '#ffc02a')}*/
               >
                 <div style={{
                   width: '44px', height: '44px',
-                  background: 'rgba(255,192,42,0.10)',
-                  border: '1px solid rgba(255,192,42,0.2)',
+                  background: '#0f0f0f',
+                  border: '1px solid #ffc02a',
                   borderRadius: '12px', display: 'flex',
                   alignItems: 'center', justifyContent: 'center',
                   fontSize: '18px', flexShrink: 0,
                 }}>
-                  {icon}
+                  {icon === 'phone' ? (
+                    <svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="#ffc02a" strokeWidth="1.8" strokeLinecap="round">
+                      <path d="M3 4a1 1 0 011-1h2.5l1 3-1.5 1.5a10 10 0 004.5 4.5L12 10.5l3 1V14a1 1 0 01-1 1C7 15 3 11 3 4z"/>
+                    </svg>
+                  ) : icon === 'email' ? (
+                    <svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="#ffc02a" strokeWidth="1.8" strokeLinecap="round">
+                      <path d="M3 5l6 4 6-4"/><rect x="2" y="4" width="14" height="10" rx="1.5"/>
+                    </svg>
+                  ) : icon === 'location' ? (
+                    <svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="#ffc02a" strokeWidth="1.8" strokeLinecap="round">
+                      <path d="M9 2C6.2 2 4 4.2 4 7c0 3.5 5 9 5 9s5-5.5 5-9c0-2.8-2.2-5-5-5z"/>
+                      <circle cx="9" cy="7" r="1.5"/>
+                    </svg>
+                  ) : (
+                    <svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="#ffc02a" strokeWidth="1.8" strokeLinecap="round">
+                      <circle cx="9" cy="9" r="7"/><path d="M9 5v4l2.5 2.5"/>
+                    </svg>
+                  )}
                 </div>
                 <div>
-                  <p style={{ color: '#555', fontSize: '11px', fontWeight: 700, letterSpacing: '1px', textTransform: 'uppercase', margin: '0 0 4px 0', fontFamily: "'Space Grotesk', sans-serif" }}>
+                  <p style={{ color: '#ededeb', fontSize: '11px', fontWeight: 700, letterSpacing: '1px', textTransform: 'uppercase', margin: '0 0 4px 0', fontFamily: "'Space Grotesk', sans-serif" }}>
                     {title}
                   </p>
                   {href ? (
@@ -195,9 +211,9 @@ export default function Kontakt() {
                       {value}
                     </a>
                   ) : (
-                    <p style={{ color: '#ededeb', fontWeight: 700, fontSize: '16px', margin: '0 0 2px 0', fontFamily: "'Manrope', sans-serif" }}>{value}</p>
+                    <p style={{ color: '#ffc02a', fontWeight: 700, fontSize: '16px', margin: '0 0 2px 0', fontFamily: "'Manrope', sans-serif" }}>{value}</p>
                   )}
-                  <p style={{ color: '#555', fontSize: '13px', margin: 0, fontFamily: "'Manrope', sans-serif" }}>{sub}</p>
+                  <p style={{ color: '#ededeb', fontSize: '13px', margin: 0, fontFamily: "'Manrope', sans-serif" }}>{sub}</p>
                 </div>
               </div>
             ))}
@@ -205,14 +221,14 @@ export default function Kontakt() {
             {/* CTA poziv */}
             <div style={{
               background: 'rgba(255,192,42,0.06)',
-              border: '1px solid rgba(255,192,42,0.2)',
+              border: '1px solid #ffc02a',
               borderRadius: '14px', padding: '24px',
               textAlign: 'center', marginTop: '4px',
             }}>
               <p style={{ color: '#ffc02a', fontWeight: 800, fontSize: '18px', margin: '0 0 6px 0', fontFamily: "'Manrope', sans-serif" }}>
                 Besplatna procena
               </p>
-              <p style={{ color: '#666', fontSize: '14px', margin: '0 0 20px 0', fontFamily: "'Manrope', sans-serif" }}>
+              <p style={{ color: '#ededeb', fontSize: '14px', margin: '0 0 20px 0', fontFamily: "'Manrope', sans-serif" }}>
                 Pozovite za besplatnu procenu i ponudu na licu mesta
               </p>
               <a href="tel:+381631183898" style={{

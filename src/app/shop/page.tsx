@@ -287,7 +287,7 @@ function ShopContent() {
                     }}
                   >
                     <Link href={`/proizvodi/${product.id}`} style={{ textDecoration: 'none' }}>
-                      <div style={{ height: '180px', background: '#a2a297', overflow: 'hidden', position: 'relative' }}>
+                      <div style={{ height: '180px', background: '#ededeb', overflow: 'hidden', position: 'relative' }}>
                         {product.images?.[0]?.src ? (
                           <Image
                             src={product.images[0].src}

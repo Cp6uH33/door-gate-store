@@ -1,19 +1,20 @@
 "use client";
 import Link from 'next/link';
+import Image from 'next/image';  
 
 const cols = [
   {
     title: 'Shop',
     links: [
       { label: 'Video interfoni', href: '/shop?cat=interfoni' },
-      { label: 'Motori za kapije', href: '/shop?cat=motori' },
-      { label: 'RFID sistemi', href: '/shop?cat=rfid' },
-      { label: 'Brave i cilindri', href: '/shop?cat=brave' },
-      { label: 'Smart Home', href: '/shop?cat=smart' },
+      { label: 'Motori za klizne kapije', href: '/shop?cat=motori-za-klizne-kapije' },
+      { label: 'Motori za krilne kapije', href: '/shop?cat=motori-za-krilne-kapije' },
+      { label: 'Delovi za kap[ije', href: '/shop?cat=delovi-za-kapije' },
+      { label: 'Smart Home', href: '/shop?cat=smart-home-sistemi' },
     ],
   },
   {
-    title: 'Firma',
+    title: 'Door & Gate Sistem',
     links: [
       { label: 'O nama', href: '/' },
       { label: 'Reference', href: '/' },
@@ -50,19 +51,13 @@ export default function Footer() {
           {/* Brand col */}
           <div>
             <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '14px' }}>
-              <div style={{
-                width: '32px', height: '32px', background: '#ffc02a',
-                borderRadius: '8px', display: 'flex', alignItems: 'center', justifyContent: 'center',
-              }}>
-                <svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="#0e0f11" strokeWidth="2" strokeLinecap="round">
-                  <rect x="3" y="2" width="12" height="14" rx="2" />
-                  <circle cx="11" cy="9" r="1.5" />
-                  <line x1="3" y1="6" x2="15" y2="6" />
-                </svg>
-              </div>
-              <span style={{ fontSize: '15px', fontWeight: 700, color: '#f0f0f0' }}>
-                Door & Gate Sistem
-              </span>
+              <Image
+                src="/logodoorgatesistem.webp"
+                alt="Door & Gate Sistem logo"
+                width={120}
+                height={40}
+                style={{ height: 'auto' }}
+              />
             </div>
             <p style={{ fontSize: '13px', color: '#555', lineHeight: 1.7, maxWidth: '260px' }}>
               Profesionalna automatizacija kapija, interfoni i sistemi za kontrolu pristupa. Prodaja i montaža širom Srbije.
