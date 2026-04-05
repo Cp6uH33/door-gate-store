@@ -100,7 +100,7 @@ export default function ProductsSection() {
   }, [loading, active]);
 
   function handleAdd(product: Product) {
-    addToCart({ id: product.id, name: product.name, price: parseFloat(product.price), quantity: 1 });
+    addToCart({ id: product.id, name: product.name, price: parseFloat(product.price), images: product.images || [], short_description: product.short_description || '', quantity: 1 });
     setAdded(prev => ({ ...prev, [product.id]: true }));
     setTimeout(() => setAdded(prev => ({ ...prev, [product.id]: false })), 1200);
   }
