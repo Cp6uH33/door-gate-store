@@ -3,7 +3,7 @@ import Image from 'next/image';
 import React from 'react';
 
 const trustItems = [
-  { icon: 'star',   text: 'Brza montaža u roku od 48h na teritoriji Subotice' },
+  { icon: 'star',   text: 'Brza montaža u roku od 48h' },
   { icon: 'shield', text: 'Garancija na sve proizvode' },
   { icon: 'pin',    text: 'Dostava na teritoriji Srbije' },
   { icon: 'mail',   text: 'Stručni savet i podrška' },
@@ -45,7 +45,6 @@ const logos = [
   '/logo4.png', '/logo5.png', '/logo6.png',
 ];
 
-// Dupliraj 4x za beskonačan loop bez ponavljanja
 const loopedLogos = [...logos, ...logos, ...logos, ...logos];
 
 export default function TrustBar() {
@@ -58,7 +57,6 @@ export default function TrustBar() {
       borderBottom: '1px solid #1a1a1a',
       overflow: 'hidden',
     }}>
-
       {/* Traka 1 — tekst */}
       <div style={{ padding: '12px 0', overflow: 'hidden', borderBottom: '1px solid #1a1a1a' }}>
         <div style={{
@@ -81,12 +79,12 @@ export default function TrustBar() {
         </div>
       </div>
 
-      {/* Traka 2 — logoi partnera, full width loop */}
-      <div style={{ padding: '20px 0', overflow: 'hidden' }}>
+      {/* Traka 2 — logoi */}
+      <div style={{ padding: '16px 0', overflow: 'hidden' }}>
         <div style={{
-          display: 'flex', alignItems: 'center', gap: '64px',
+          display: 'flex', alignItems: 'center', gap: '56px',
           width: 'max-content',
-          animation: 'marquee-right 35s linear infinite',
+          animation: 'marquee-left 35s linear infinite',
         }}>
           {loopedLogos.map((src, i) => (
             <div key={i} style={{
@@ -99,8 +97,8 @@ export default function TrustBar() {
               <Image
                 src={src}
                 alt={`Partner ${(i % logos.length) + 1}`}
-                width={110}
-                height={44}
+                width={100}
+                height={40}
                 style={{ objectFit: 'contain', filter: 'brightness(0) invert(1)' }}
               />
             </div>
@@ -110,10 +108,6 @@ export default function TrustBar() {
 
       <style>{`
         @keyframes marquee-left {
-          from { transform: translateX(0); }
-          to   { transform: translateX(-25%); }
-        }
-        @keyframes marquee-right {
           from { transform: translateX(0); }
           to   { transform: translateX(-25%); }
         }
