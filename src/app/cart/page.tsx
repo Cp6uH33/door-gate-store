@@ -1,13 +1,13 @@
 "use client";
 import { useState } from 'react';
-import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 import { useCart } from '@/contexts/CartContext';
 
 export default function Cart() {
   const { cart, removeFromCart, updateQuantity, totalPrice } = useCart();
-  const [loading, setLoading] = useState(false);
   const router = useRouter();
+  const [loading, setLoading] = useState(false);
 
   function checkout() {
     setLoading(true);
@@ -29,7 +29,7 @@ export default function Cart() {
         <h1 style={{ color: '#ededeb', fontWeight: 800, fontSize: '32px', margin: '0 0 8px 0', fontFamily: "'Manrope', sans-serif", letterSpacing: '-1px' }}>
           Korpa je prazna
         </h1>
-        <p style={{ color: '#555', fontSize: '15px', margin: '0 0 32px 0', fontFamily: "'Manrope', sans-serif" }}>
+        <p style={{ color: '#ededeb', fontSize: '15px', margin: '0 0 32px 0', fontFamily: "'Manrope', sans-serif" }}>
           Dodajte proizvode iz našeg shopa
         </p>
         <Link href="/shop" style={{
@@ -85,8 +85,8 @@ export default function Cart() {
           <h1 style={{ fontWeight: 800, fontSize: 'clamp(28px, 4vw, 48px)', margin: '0 0 6px 0', letterSpacing: '-2px', fontFamily: "'Manrope', sans-serif", color: '#ededeb' }}>
             Vaša korpa
           </h1>
-          <p style={{ color: '#555', fontSize: '15px', margin: 0, fontFamily: "'Manrope', sans-serif" }}>
-            {cart.length} {cart.length === 1 ? 'artikal' : 'artikala'} • Besplatna dostava Vojvodina
+          <p style={{ color: '#ededeb', fontSize: '15px', margin: 0, fontFamily: "'Manrope', sans-serif" }}>
+            {cart.length} {cart.length === 1 ? 'artikal' : 'artikala'} • Dostava na celoj teritoriji Republike Srbije
           </p>
         </div>
 
@@ -261,26 +261,25 @@ export default function Cart() {
                 { label: 'Količina', value: cart.reduce((s, i) => s + i.quantity, 0).toString() },
               ].map(row => (
                 <div key={row.label} style={{ display: 'flex', justifyContent: 'space-between', fontSize: '14px' }}>
-                  <span style={{ color: '#555', fontFamily: "'Manrope', sans-serif" }}>{row.label}</span>
+                  <span style={{ color: '#ededeb', fontFamily: "'Manrope', sans-serif" }}>{row.label}</span>
                   <span style={{ color: '#ededeb', fontWeight: 600, fontFamily: "'Space Grotesk', sans-serif" }}>{row.value}</span>
                 </div>
               ))}
-              <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '14px' }}>
-                <span style={{ color: '#555', fontFamily: "'Manrope', sans-serif" }}>Dostava</span>
-                <span style={{ color: '#ffc02a', fontWeight: 700, fontFamily: "'Space Grotesk', sans-serif" }}>Besplatna</span>
+              <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '12px' }}>
+                <span style={{ color: '#ffc02a', fontWeight: 700, fontFamily: "'Space Grotesk', sans-serif" }}>Dostava se naplaćuje po cenovniku kurirske službe</span>
               </div>
               <div style={{ height: '1px', background: '#222', margin: '8px 0' }} />
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline' }}>
-                <span style={{ color: '#555', fontSize: '13px', fontFamily: "'Manrope', sans-serif", textTransform: 'uppercase', letterSpacing: '1px' }}>Ukupno</span>
+                <span style={{ color: '#ededeb', fontSize: '13px', fontFamily: "'Manrope', sans-serif", textTransform: 'uppercase', letterSpacing: '1px' }}>Ukupno</span>
                 <span style={{ color: '#ffc02a', fontWeight: 800, fontSize: '26px', fontFamily: "'Space Grotesk', sans-serif", letterSpacing: '-1px' }}>
-                  {totalPrice.toLocaleString('sr-RS')} <span style={{ fontSize: '14px', fontWeight: 500, color: '#888' }}>RSD</span>
+                  {totalPrice.toLocaleString('sr-RS')} <span style={{ fontSize: '14px', fontWeight: 500, color: '#ededeb' }}>RSD</span>
                 </span>
               </div>
             </div>
 
             <Link href="/shop" style={{
               display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px',
-              background: 'transparent', color: '#666',
+              background: 'transparent', color: '#ededeb',
               border: '1px solid #2a2a2a', padding: '12px',
               borderRadius: '100px', fontWeight: 500,
               textDecoration: 'none', marginBottom: '10px',
@@ -319,11 +318,11 @@ export default function Cart() {
 
             <div style={{ marginTop: '20px', paddingTop: '20px', borderTop: '1px solid #1f1f1f', display: 'flex', flexDirection: 'column', gap: '8px' }}>
               {[
-                'Besplatna dostava Vojvodina',
+                'Dostava na celoj teritoriji Republike Srbije',
                 'Plaćanje pouzećem ili transferom',
-                'Montaža u roku od 48h',
+                'Montaža garažnih vrata samo na teritoriji opštine grada Subotice',
               ].map(text => (
-                <div key={text} style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '12px', color: '#444', fontFamily: "'Manrope', sans-serif" }}>
+                <div key={text} style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '12px', color: '#ededeb', fontFamily: "'Manrope', sans-serif" }}>
                   <div style={{ width: '16px', height: '16px', borderRadius: '50%', background: 'rgba(255,192,42,0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
                     <svg width="8" height="8" viewBox="0 0 8 8" fill="none" stroke="#ffc02a" strokeWidth="2" strokeLinecap="round">
                       <path d="M1 4l2 2 4-3.5" />
