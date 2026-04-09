@@ -1,5 +1,13 @@
 import type { NextConfig } from 'next';
 const nextConfig: NextConfig = {
+  async rewrites() {
+    return [
+      {
+        source: '/wp-json/:path*',
+        destination: 'http://195.35.49.191/wp-json/:path*',
+      },
+    ];
+  },
   images: {
     remotePatterns: [
       {
@@ -24,12 +32,6 @@ const nextConfig: NextConfig = {
         protocol: 'https',
         hostname: 'via.placeholder.com',
         port: '',
-        pathname: '/**',
-      },
-      {
-        protocol: 'http',
-        hostname: 'localhost',
-        port: '8080',
         pathname: '/**',
       },
     ],
