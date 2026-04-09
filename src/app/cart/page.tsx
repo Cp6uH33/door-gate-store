@@ -90,17 +90,12 @@ export default function Cart() {
           </p>
         </div>
 
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 360px', gap: '32px', alignItems: 'start' }}>
+        <div className="cart-grid">
 
           {/* LISTA */}
           <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
             {cart.map(item => (
-              <div key={item.id} style={{
-                background: '#1a1a1a', border: '1px solid #222',
-                borderRadius: '16px', padding: '20px',
-                display: 'flex', gap: '20px', alignItems: 'center',
-                transition: 'border-color 0.2s',
-              }}
+              <div key={item.id} className="cart-item"
                 onMouseEnter={e => ((e.currentTarget as HTMLElement).style.borderColor = '#ffc02a')}
                 onMouseLeave={e => ((e.currentTarget as HTMLElement).style.borderColor = '#222')}
               >
@@ -109,23 +104,15 @@ export default function Cart() {
                   <div style={{
                     width: '88px', height: '88px', borderRadius: '12px',
                     overflow: 'hidden', background: '#222', flexShrink: 0,
-                    border: '1px solid #2a2a2a', position: 'relative',
+                    border: '1px solid #2a2a2a',
                     transition: 'border-color 0.2s',
                   }}
                     onMouseEnter={e => ((e.currentTarget as HTMLElement).style.borderColor = '#ffc02a')}
                     onMouseLeave={e => ((e.currentTarget as HTMLElement).style.borderColor = '#2a2a2a')}
                   >
                     {item.images?.[0]?.src ? (
-                      <img
-                        src={item.images[0].src}
-                        alt={item.name}
-                        style={{
-                          width: '100%',
-                          height: '100%',
-                          objectFit: 'contain',
-                          padding: '6px',
-                          display: 'block',
-                        }}
+                      <img src={item.images[0].src} alt={item.name}
+                        style={{ width: '100%', height: '100%', objectFit: 'contain', padding: '6px', display: 'block' }}
                       />
                     ) : (
                       <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#444', fontSize: '24px' }}>
@@ -136,7 +123,7 @@ export default function Cart() {
                 </Link>
 
                 {/* Info */}
-                <div style={{ flex: 1, minWidth: 0 }}>
+                <div style={{ flex: 1, minWidth: 0, overflow: 'hidden' }}>
                   <Link href={`/proizvodi/${item.id}`} style={{ textDecoration: 'none' }}>
                     <h3 style={{
                       color: '#ededeb',
@@ -146,6 +133,8 @@ export default function Cart() {
                       fontFamily: "'Manrope', sans-serif",
                       lineHeight: 1.3,
                       transition: 'color 0.2s',
+                      wordBreak: 'break-word',
+                      overflowWrap: 'break-word',
                     }}
                       onMouseEnter={e => ((e.currentTarget as HTMLElement).style.color = '#ffc02a')}
                       onMouseLeave={e => ((e.currentTarget as HTMLElement).style.color = '#ededeb')}
@@ -246,27 +235,36 @@ export default function Cart() {
           </div>
 
           {/* CHECKOUT */}
-          <div style={{
-            background: '#1a1a1a', border: '1px solid #222',
-            borderRadius: '20px', padding: '28px',
-            position: 'sticky', top: '130px',
-          }}>
+          <div className="cart-summary">
             <h2 style={{ color: '#ededeb', fontWeight: 800, fontSize: '20px', margin: '0 0 24px 0', fontFamily: "'Manrope', sans-serif", letterSpacing: '-0.5px' }}>
               Pregled porudžbine
             </h2>
 
             <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', marginBottom: '24px' }}>
-              {[
-                { label: 'Artikala', value: cart.length.toString() },
-                { label: 'Količina', value: cart.reduce((s, i) => s + i.quantity, 0).toString() },
-              ].map(row => (
-                <div key={row.label} style={{ display: 'flex', justifyContent: 'space-between', fontSize: '14px' }}>
-                  <span style={{ color: '#ededeb', fontFamily: "'Manrope', sans-serif" }}>{row.label}</span>
-                  <span style={{ color: '#ededeb', fontWeight: 600, fontFamily: "'Space Grotesk', sans-serif" }}>{row.value}</span>
+              {cart.map(item => (
+                <div key={item.id} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '8px' }}>
+                  <span style={{ color: '#ededeb', fontSize: '13px', fontFamily: "'Manrope', sans-serif", flex: 1, minWidth: 0, wordBreak: 'break-word', overflowWrap: 'break-word' }}>
+                    {item.name}
+                  </span>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '6px', flexShrink: 0 }}>
+                    <button onClick={() => updateQuantity(item.id, item.quantity - 1)} style={{
+                      width: '26px', height: '26px', background: '#222', border: '1px solid #333',
+                      color: '#ededeb', borderRadius: '6px', fontWeight: 700, fontSize: '16px',
+                      cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center',
+                    }}>−</button>
+                    <span style={{ color: '#ededeb', fontWeight: 600, fontSize: '14px', fontFamily: "'Space Grotesk', sans-serif", minWidth: '20px', textAlign: 'center' }}>
+                      {item.quantity}
+                    </span>
+                    <button onClick={() => updateQuantity(item.id, item.quantity + 1)} style={{
+                      width: '26px', height: '26px', background: '#222', border: '1px solid #333',
+                      color: '#ededeb', borderRadius: '6px', fontWeight: 700, fontSize: '16px',
+                      cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center',
+                    }}>+</button>
+                  </div>
                 </div>
               ))}
               <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '12px' }}>
-                <span style={{ color: '#ffc02a', fontWeight: 700, fontFamily: "'Space Grotesk', sans-serif" }}>Dostava se naplaćuje po cenovniku kurirske službe</span>
+                <span style={{ color: '#ffc02a', fontWeight: 700, fontFamily: "'Space Grotesk', sans-serif" }}>Cena sa porezom, bez troškova dostave</span>
               </div>
               <div style={{ height: '1px', background: '#222', margin: '8px 0' }} />
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline' }}>
@@ -341,6 +339,63 @@ export default function Cart() {
         input[type=number]::-webkit-inner-spin-button {
           -webkit-appearance: none;
           margin: 0;
+        }
+        .cart-grid {
+          display: grid;
+          grid-template-columns: 1fr 360px;
+          gap: 32px;
+          align-items: start;
+        }
+        .cart-item {
+          background: #1a1a1a;
+          border: 1px solid #222;
+          border-radius: 16px;
+          padding: 20px;
+          display: flex;
+          gap: 20px;
+          align-items: center;
+          transition: border-color 0.2s;
+          box-sizing: border-box;
+          width: 100%;
+          overflow: hidden;
+        }
+        .cart-summary {
+          background: #1a1a1a;
+          border: 1px solid #222;
+          border-radius: 20px;
+          padding: 28px;
+          position: sticky;
+          top: 130px;
+          box-sizing: border-box;
+          width: 100%;
+          overflow: hidden;
+        }
+        @media (max-width: 768px) {
+          .cart-grid {
+            grid-template-columns: 1fr;
+            gap: 24px;
+          }
+          .cart-grid > div:last-child {
+            position: static !important;
+          }
+          .cart-summary {
+            position: static;
+          }
+          .cart-item {
+            flex-wrap: wrap;
+            gap: 12px;
+            padding: 16px;
+          }
+          .cart-item > a {
+            flex-shrink: 0;
+          }
+          .cart-item > div:first-of-type {
+            flex: 1;
+            min-width: 0;
+          }
+          .cart-item > button:last-child {
+            margin-left: auto;
+          }
         }
       `}</style>
     </div>

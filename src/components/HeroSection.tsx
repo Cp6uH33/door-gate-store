@@ -209,6 +209,7 @@ export default function HeroSection() {
                       src={featured.images[0].src}
                       alt={featured.name}
                       fill
+                      sizes="(max-width: 768px) 100vw, 50vw"
                       style={{ objectFit: 'contain', padding: '24px' }}
                     />
                   ) : (
@@ -260,9 +261,18 @@ export default function HeroSection() {
           .hero-grid {
             grid-template-columns: 1fr !important;
             gap: 0 !important;
+            padding-bottom: 0 !important;
           }
           .hero-product {
-            display: none !important;
+            display: block !important;
+          }
+          .hero-product > a > div {
+            border-radius: 20px 20px 0 0 !important;
+            padding: 28px 20px 0 !important;
+          }
+          .hero-product > a > div > div:first-of-type {
+            height: 220px !important;
+            margin-top: 36px !important;
           }
         }
       `}</style>

@@ -2,7 +2,6 @@
 import { useState, useEffect } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
-import Image from 'next/image';
 import { useCart } from '@/contexts/CartContext';
 
 const WC_URL = process.env.NEXT_PUBLIC_WC_URL;
@@ -76,42 +75,8 @@ export default function ProductDetail() {
 
           <div className="product-grid">
 
-            {/* LEVO — slike */}
-            <div>
-              <div style={{ width: '100%', aspectRatio: '1', borderRadius: '20px', overflow: 'hidden', background: '#1a1a1a', border: '1px solid #222', position: 'relative' }}>
-                {product.images?.[activeImg]?.src ? (
-                  <Image src={product.images[activeImg].src} alt={product.name} fill
-                    sizes="(max-width: 768px) 100vw, 50vw"
-                    style={{ objectFit: 'contain', padding: '24px' }} />
-                ) : (
-                  <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#333' }}>
-                    <svg width="64" height="64" viewBox="0 0 64 64" fill="none" stroke="currentColor" strokeWidth="1.5">
-                      <rect x="8" y="8" width="48" height="48" rx="8" /><circle cx="32" cy="32" r="12" />
-                    </svg>
-                  </div>
-                )}
-              </div>
-
-              {product.images?.length > 1 && (
-                <div style={{ display: 'flex', gap: '10px', marginTop: '12px', flexWrap: 'wrap' }}>
-                  {product.images.slice(0, 5).map((img: any, i: number) => (
-                    <div key={i} onClick={() => setActiveImg(i)} style={{
-                      width: '64px', height: '64px', borderRadius: '10px',
-                      overflow: 'hidden', background: '#1a1a1a',
-                      border: `1.5px solid ${activeImg === i ? '#ffc02a' : '#222'}`,
-                      cursor: 'pointer', transition: 'border-color 0.2s',
-                      position: 'relative', flexShrink: 0,
-                    }}>
-                      <Image src={img.src} alt="" fill sizes="64px" style={{ objectFit: 'contain', padding: '6px' }} />
-                    </div>
-                  ))}
-                </div>
-              )}
-            </div>
-
-            {/* DESNO — detalji */}
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
-
+            {/* GORNJI DEO desne kolone — kategorija + naziv (na mobilnom dolazi prvo) */}
+            <div className="product-right-top">
               {product.categories?.[0] && (
                 <span style={{
                   display: 'inline-flex', alignItems: 'center', gap: '6px',
@@ -125,14 +90,110 @@ export default function ProductDetail() {
                   {product.categories[0].name}
                 </span>
               )}
-
-              <h1 style={{ color: '#ededeb', fontWeight: 800, fontSize: 'clamp(20px, 3vw, 34px)', lineHeight: 1.2, margin: 0, letterSpacing: '-0.5px', fontFamily: "'Manrope', sans-serif" }}>
+              <h1 style={{ color: '#ededeb', fontWeight: 800, fontSize: 'clamp(20px, 3vw, 34px)', lineHeight: 1.2, margin: '12px 0 0', letterSpacing: '-0.5px', fontFamily: "'Manrope', sans-serif" }}>
                 {product.name}
               </h1>
+            </div>
+
+            {/* LEVO — slike */}
+            <div className="product-images">
+              {/* Glavna slika sa strelicama */}
+              <div style={{ width: '100%', height: '480px', borderRadius: '20px', overflow: 'hidden', background: '#1a1a1a', border: '1px solid #222', position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                {product.images?.[activeImg]?.src ? (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img src={product.images[activeImg].src} alt={product.name}
+                    style={{ maxWidth: '100%', maxHeight: '100%', width: '100%', height: '100%', objectFit: 'contain', padding: '24px', display: 'block' }} />
+                ) : (
+                  <div style={{ color: '#333' }}>
+                    <svg width="64" height="64" viewBox="0 0 64 64" fill="none" stroke="currentColor" strokeWidth="1.5">
+                      <rect x="8" y="8" width="48" height="48" rx="8" /><circle cx="32" cy="32" r="12" />
+                    </svg>
+                  </div>
+                )}
+
+                {/* Strelice */}
+                {product.images?.length > 1 && (
+                  <>
+                    <button
+                      onClick={() => setActiveImg(i => (i - 1 + product.images.length) % product.images.length)}
+                      style={{
+                        position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)',
+                        background: 'rgba(0,0,0,0.55)', border: '1px solid #333',
+                        borderRadius: '50%', width: '36px', height: '36px',
+                        display: 'flex', alignItems: 'center', justifyContent: 'center',
+                        cursor: 'pointer', color: '#ededeb', transition: 'background 0.2s',
+                        zIndex: 2,
+                      }}
+                      onMouseEnter={e => ((e.currentTarget as HTMLElement).style.background = 'rgba(255,192,42,0.25)')}
+                      onMouseLeave={e => ((e.currentTarget as HTMLElement).style.background = 'rgba(0,0,0,0.55)')}
+                    >
+                      <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M9 2L4 7l5 5" />
+                      </svg>
+                    </button>
+                    <button
+                      onClick={() => setActiveImg(i => (i + 1) % product.images.length)}
+                      style={{
+                        position: 'absolute', right: '12px', top: '50%', transform: 'translateY(-50%)',
+                        background: 'rgba(0,0,0,0.55)', border: '1px solid #333',
+                        borderRadius: '50%', width: '36px', height: '36px',
+                        display: 'flex', alignItems: 'center', justifyContent: 'center',
+                        cursor: 'pointer', color: '#ededeb', transition: 'background 0.2s',
+                        zIndex: 2,
+                      }}
+                      onMouseEnter={e => ((e.currentTarget as HTMLElement).style.background = 'rgba(255,192,42,0.25)')}
+                      onMouseLeave={e => ((e.currentTarget as HTMLElement).style.background = 'rgba(0,0,0,0.55)')}
+                    >
+                      <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M5 2l5 5-5 5" />
+                      </svg>
+                    </button>
+
+                    {/* Brojac slika */}
+                    <div style={{
+                      position: 'absolute', bottom: '12px', right: '14px',
+                      background: 'rgba(0,0,0,0.6)', borderRadius: '100px',
+                      padding: '3px 10px', fontSize: '11px', color: '#aaa',
+                      fontFamily: "'Space Grotesk', sans-serif", zIndex: 2,
+                    }}>
+                      {activeImg + 1} / {product.images.length}
+                    </div>
+                  </>
+                )}
+              </div>
+
+              {/* Thumbnails — scrollable */}
+              {product.images?.length > 1 && (
+                <div style={{
+                  display: 'flex', gap: '8px', marginTop: '12px',
+                  overflowX: 'auto', paddingBottom: '4px',
+                }}>
+                  {product.images.map((img: any, i: number) => (
+                    <div key={i} onClick={() => setActiveImg(i)} style={{
+                      width: '68px', height: '68px', borderRadius: '10px',
+                      overflow: 'hidden', background: '#1a1a1a',
+                      border: `1.5px solid ${activeImg === i ? '#ffc02a' : '#222'}`,
+                      cursor: 'pointer', transition: 'border-color 0.2s',
+                      position: 'relative', flexShrink: 0,
+                      opacity: activeImg === i ? 1 : 0.6,
+                    }}
+                      onMouseEnter={e => { if (activeImg !== i) (e.currentTarget as HTMLElement).style.opacity = '1'; }}
+                      onMouseLeave={e => { if (activeImg !== i) (e.currentTarget as HTMLElement).style.opacity = '0.6'; }}
+                    >
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img src={img.src} alt="" style={{ width: '100%', height: '100%', objectFit: 'contain', padding: '6px' }} />
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            {/* DESNO — detalji (bez kategorije i naziva koji su u product-right-top) */}
+            <div className="product-right-bottom" style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
 
               {/* Cena + telefoni */}
               <div style={{ padding: '20px', background: '#1a1a1a', borderRadius: '14px', border: '1px solid #222' }}>
-                <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', flexWrap: 'wrap', gap: '16px' }}>
+                <div className="price-phones">
                   <div>
                     <div style={{ fontSize: '12px', color: '#ededeb', marginBottom: '4px', fontFamily: "'Manrope', sans-serif" }}>Cena</div>
                     <div style={{ color: '#ffc02a', fontWeight: 800, fontSize: 'clamp(24px, 4vw, 36px)', fontFamily: "'Space Grotesk', sans-serif", letterSpacing: '-1px' }}>
@@ -167,7 +228,7 @@ export default function ProductDetail() {
               </div>
 
               {product.short_description && (
-                <div style={{ color: '#ededeb', fontSize: '15px', lineHeight: 1.7, fontFamily: "'Manrope', sans-serif" }}
+                <div className="product-description" style={{ color: '#ededeb', fontSize: '15px', lineHeight: 1.7, fontFamily: "'Manrope', sans-serif", overflowX: 'hidden', wordBreak: 'break-word', overflowWrap: 'break-word' }}
                   dangerouslySetInnerHTML={{ __html: product.short_description }} />
               )}
 
@@ -224,7 +285,7 @@ export default function ProductDetail() {
                   <div style={{ fontSize: '11px', fontWeight: 700, letterSpacing: '1px', textTransform: 'uppercase', color: '#666', marginBottom: '16px', fontFamily: "'Space Grotesk', sans-serif" }}>
                     Opis proizvoda
                   </div>
-                  <div style={{ color: '#aaa', fontSize: '14px', lineHeight: 1.8, fontFamily: "'Manrope', sans-serif" }}
+                  <div className="product-description" style={{ color: '#aaa', fontSize: '14px', lineHeight: 1.8, fontFamily: "'Manrope', sans-serif", overflowX: 'hidden', wordBreak: 'break-word', overflowWrap: 'break-word' }}
                     dangerouslySetInnerHTML={{ __html: product.description }} />
                 </div>
               )}
@@ -237,14 +298,91 @@ export default function ProductDetail() {
         .product-grid {
           display: grid;
           grid-template-columns: 1fr 1fr;
-          gap: 64px;
+          grid-template-rows: auto 1fr;
+          column-gap: 64px;
+          row-gap: 24px;
           align-items: start;
+        }
+        .product-main-image {
+          width: 100%;
+          height: 480px;
+          border-radius: 20px;
+          overflow: hidden;
+          background: #1a1a1a;
+          border: 1px solid #222;
+          position: relative;
+        }
+        .product-right-top {
+          grid-column: 2;
+          grid-row: 1;
+          display: flex;
+          flex-direction: column;
+        }
+        .product-images {
+          grid-column: 1;
+          grid-row: 1 / 3;
+        }
+        .product-right-bottom {
+          grid-column: 2;
+          grid-row: 2;
         }
         @media (max-width: 768px) {
           .product-grid {
-            grid-template-columns: 1fr;
-            gap: 32px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
           }
+          .product-right-top { order: 1; }
+          .product-images    { order: 2; }
+          .product-right-bottom { order: 3; }
+          .product-main-image { height: 320px; }
+        }
+        .price-phones {
+          display: flex;
+          align-items: flex-start;
+          justify-content: space-between;
+          flex-wrap: wrap;
+          gap: 16px;
+        }
+        @media (max-width: 768px) {
+          .product-right-bottom img,
+          .product-right-bottom table,
+          .product-right-bottom iframe,
+          .product-right-bottom pre {
+            max-width: 100% !important;
+            width: auto !important;
+            height: auto !important;
+          }
+          .price-phones {
+            flex-direction: column;
+            gap: 12px;
+          }
+          .product-right-bottom {
+            width: 100%;
+            box-sizing: border-box;
+            overflow-x: hidden;
+          }
+          .product-right-bottom > * {
+            max-width: 100%;
+            box-sizing: border-box;
+          }
+          .product-right-bottom * {
+            word-break: break-word;
+            overflow-wrap: break-word;
+          }
+        }
+        .product-description * {
+          font-family: 'Manrope', sans-serif !important;
+          max-width: 100% !important;
+          box-sizing: border-box !important;
+        }
+        .product-description p,
+        .product-description span,
+        .product-description div,
+        .product-description li {
+          white-space: normal !important;
+          word-break: break-word !important;
+          overflow-wrap: break-word !important;
         }
         @keyframes spin { to { transform: rotate(360deg); } }
       `}</style>

@@ -137,7 +137,7 @@ export default function Checkout() {
           </p>
         </div>
 
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 380px', gap: '32px', alignItems: 'start' }}>
+        <div className="checkout-grid">
 
           {/* FORMA */}
           <form onSubmit={handleSubmit}>
@@ -146,7 +146,7 @@ export default function Checkout() {
                 Podaci za dostavu
               </h2>
 
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px', marginBottom: '16px' }}>
+              <div className="form-row">
                 <div>
                   <label style={labelStyle}>Ime</label>
                   <input type="text" required placeholder="Vaše ime" value={form.first_name}
@@ -165,7 +165,7 @@ export default function Checkout() {
                 </div>
               </div>
 
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px', marginBottom: '16px' }}>
+              <div className="form-row">
                 <div>
                   <label style={labelStyle}>Email</label>
                   <input type="email" required placeholder="vas@email.com" value={form.email}
@@ -184,7 +184,7 @@ export default function Checkout() {
                 </div>
               </div>
 
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px', marginBottom: '16px' }}>
+              <div className="form-row">
                 <div>
                   <label style={labelStyle}>Adresa</label>
                   <input type="text" required placeholder="Ulica i broj" value={form.address}
@@ -264,7 +264,7 @@ export default function Checkout() {
           </form>
 
           {/* PREGLED */}
-          <div style={{ background: '#1a1a1a', border: '1px solid #222', borderRadius: '20px', padding: '28px', position: 'sticky', top: '130px' }}>
+          <div className="checkout-summary">
             <h2 style={{ color: '#ededeb', fontWeight: 700, fontSize: '18px', margin: '0 0 20px 0', fontFamily: "'Manrope', sans-serif" }}>
               Vaša porudžbina
             </h2>
@@ -311,6 +311,43 @@ export default function Checkout() {
           </div>
         </div>
       </div>
+      <style>{`
+        .checkout-grid {
+          display: grid;
+          grid-template-columns: 1fr 380px;
+          gap: 32px;
+          align-items: start;
+        }
+        .checkout-summary {
+          background: #1a1a1a;
+          border: 1px solid #222;
+          border-radius: 20px;
+          padding: 28px;
+          position: sticky;
+          top: 130px;
+          box-sizing: border-box;
+          width: 100%;
+        }
+        .form-row {
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          gap: 16px;
+          margin-bottom: 16px;
+        }
+        @media (max-width: 768px) {
+          .checkout-grid {
+            grid-template-columns: 1fr;
+            gap: 24px;
+          }
+          .checkout-summary {
+            position: static;
+            order: -1;
+          }
+          .form-row {
+            grid-template-columns: 1fr;
+          }
+        }
+      `}</style>
     </div>
   );
 }
