@@ -8,7 +8,7 @@ async function handler(req: NextRequest, { params }: { params: Promise<{ path: s
   const pathStr = path.join('/');
   const searchParams = req.nextUrl.searchParams;
   
-  const url = new URL(`http://195.35.49.191/wp-json/wc/v3/${pathStr}`);
+  const url = new URL(`https://195.35.49.191/wp-json/wc/v3/${pathStr}`);
   searchParams.forEach((value, key) => {
     if (key !== 'consumer_key' && key !== 'consumer_secret') {
       url.searchParams.set(key, value);
@@ -23,7 +23,6 @@ async function handler(req: NextRequest, { params }: { params: Promise<{ path: s
       headers: { 
         'Content-Type': 'application/json',
         'Host': 'doorgatesistem.com',
-        'X-Forwarded-Host': 'doorgatesistem.com',
       },
       body: req.method === 'POST' ? await req.text() : undefined,
     });
