@@ -104,7 +104,7 @@ export default function HeroSection() {
               fontFamily: "'Manrope', sans-serif",
             }}>
               Motori za kapije, video interfoni i pametni sistemi za kontrolu pristupa.
-              Prodaja, dostava i profesionalna montaža širom Srbije.
+              Prodaja i dostava širom Srbije.
             </p>
 
             <div data-animate style={{ display: 'flex', alignItems: 'center', gap: '12px', flexWrap: 'wrap' }}>
