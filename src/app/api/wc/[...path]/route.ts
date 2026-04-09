@@ -8,7 +8,7 @@ async function handler(req: NextRequest, { params }: { params: Promise<{ path: s
   const pathStr = path.join('/');
   const searchParams = req.nextUrl.searchParams;
   
-  const url = new URL(`https://doorgatesistem.com/wp-json/wc/v3/${pathStr}`);
+  const url = new URL(`http://195.35.49.191/wp-json/wc/v3/${pathStr}`);
   searchParams.forEach((value, key) => {
     if (key !== 'consumer_key' && key !== 'consumer_secret') {
       url.searchParams.set(key, value);
@@ -20,13 +20,17 @@ async function handler(req: NextRequest, { params }: { params: Promise<{ path: s
   try {
     const res = await fetch(url.toString(), {
       method: req.method,
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 
+        'Content-Type': 'application/json',
+        'Host': 'doorgatesistem.com',
+        'X-Forwarded-Host': 'doorgatesistem.com',
+      },
       body: req.method === 'POST' ? await req.text() : undefined,
     });
     const data = await res.json();
     return NextResponse.json(data);
   } catch (e) {
-    return NextResponse.json({ error: 'Failed' }, { status: 500 });
+    return NextResponse.json({ error: String(e) }, { status: 500 });
   }
 }
 
