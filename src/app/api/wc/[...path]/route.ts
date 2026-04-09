@@ -1,15 +1,16 @@
 import { NextRequest, NextResponse } from 'next/server';
-import https from 'https';
+
+export const runtime = 'nodejs';
 
 const WC_KEY = process.env.NEXT_PUBLIC_WC_CONSUMER_KEY;
 const WC_SECRET = process.env.NEXT_PUBLIC_WC_CONSUMER_SECRET;
-
-const agent = new https.Agent({ rejectUnauthorized: false });
 
 async function handler(req: NextRequest, { params }: { params: Promise<{ path: string[] }> }) {
   const { path } = await params;
   const pathStr = path.join('/');
   const searchParams = req.nextUrl.searchParams;
+  
+  process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
   
   const url = new URL(`https://195.35.49.191/wp-json/wc/v3/${pathStr}`);
   searchParams.forEach((value, key) => {
@@ -27,8 +28,6 @@ async function handler(req: NextRequest, { params }: { params: Promise<{ path: s
         'Content-Type': 'application/json',
         'Host': 'doorgatesistem.com',
       },
-      // @ts-ignore
-      agent,
       body: req.method === 'POST' ? await req.text() : undefined,
     });
     const data = await res.json();
