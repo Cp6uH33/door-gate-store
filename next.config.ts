@@ -5,6 +5,22 @@ const nextConfig: NextConfig = {
       {
         source: '/wp-json/:path*',
         destination: 'http://195.35.49.191/wp-json/:path*',
+        has: [
+          {
+            type: 'header',
+            key: 'host',
+          },
+        ],
+      },
+    ];
+  },
+  async headers() {
+    return [
+      {
+        source: '/wp-json/:path*',
+        headers: [
+          { key: 'Host', value: 'doorgatesistem.com' },
+        ],
       },
     ];
   },
