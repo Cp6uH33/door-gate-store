@@ -140,7 +140,7 @@ export default function Checkout() {
         <div className="checkout-grid">
 
           {/* FORMA */}
-          <form onSubmit={handleSubmit}>
+          <form onSubmit={handleSubmit} className="checkout-form">
             <div style={{ background: '#1a1a1a', border: '1px solid #222', borderRadius: '20px', padding: '32px', marginBottom: '16px' }}>
               <h2 style={{ color: '#ededeb', fontWeight: 700, fontSize: '18px', margin: '0 0 24px 0', fontFamily: "'Manrope', sans-serif" }}>
                 Podaci za dostavu
@@ -273,7 +273,7 @@ export default function Checkout() {
               {cart.map(item => (
                 <div key={item.id} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '12px' }}>
                   <div style={{ flex: 1, minWidth: 0 }}>
-                    <div style={{ color: '#ededeb', fontSize: '13px', fontWeight: 600, fontFamily: "'Manrope', sans-serif", whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                    <div style={{ color: '#ededeb', fontSize: '13px', fontWeight: 600, fontFamily: "'Manrope', sans-serif", wordBreak: 'break-word', overflowWrap: 'break-word' }}>
                       {item.name}
                     </div>
                     <div style={{ color: '#ededeb', fontSize: '12px', fontFamily: "'Manrope', sans-serif" }}>
@@ -318,6 +318,9 @@ export default function Checkout() {
           gap: 32px;
           align-items: start;
         }
+        .checkout-form {
+          min-width: 0;
+        }
         .checkout-summary {
           background: #1a1a1a;
           border: 1px solid #222;
@@ -327,6 +330,7 @@ export default function Checkout() {
           top: 130px;
           box-sizing: border-box;
           width: 100%;
+          overflow: hidden;
         }
         .form-row {
           display: grid;
@@ -336,12 +340,17 @@ export default function Checkout() {
         }
         @media (max-width: 768px) {
           .checkout-grid {
-            grid-template-columns: 1fr;
+            display: flex;
+            flex-direction: column;
             gap: 24px;
           }
           .checkout-summary {
             position: static;
             order: -1;
+            width: 100%;
+          }
+          .checkout-form {
+            width: 100%;
           }
           .form-row {
             grid-template-columns: 1fr;
