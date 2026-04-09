@@ -29,9 +29,18 @@ async function handler(req: NextRequest, { params }: { params: Promise<{ path: s
         'Host': 'doorgatesistem.com',
       },
       body: req.method === 'POST' ? await req.text() : undefined,
+      redirect: 'follow',
     });
-    const data = await res.json();
-    return NextResponse.json(data);
+    const text = await res.text();
+    console.log('Response status:', res.status);
+    console.log('Response text:', text.substring(0, 200));
+    
+    try {
+      const data = JSON.parse(text);
+      return NextResponse.json(data);
+    } catch {
+      return NextResponse.json({ raw: text.substring(0, 500), status: res.status });
+    }
   } catch (e) {
     return NextResponse.json({ error: String(e) }, { status: 500 });
   }
