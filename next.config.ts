@@ -1,6 +1,18 @@
 import type { NextConfig } from 'next';
 
 const nextConfig: NextConfig = {
+  async rewrites() {
+    return [
+      {
+        source: '/wp-json/:path*',
+        destination: 'http://195.35.49.191/wp-json/:path*',
+      },
+      {
+        source: '/wp-admin/:path*',
+        destination: 'http://195.35.49.191/wp-admin/:path*',
+      },
+    ];
+  },
   images: {
     remotePatterns: [
       {
