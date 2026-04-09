@@ -73,11 +73,11 @@ export default function HeroSection() {
             <div data-animate style={{ marginBottom: '20px' }}>
               <span style={{
                 display: 'inline-flex', alignItems: 'center', gap: '6px',
-                fontSize: '11px', fontWeight: 700, letterSpacing: '0.8px',
-                textTransform: 'uppercase', color: '#0f0f0f',
-                background: '#ffc02a', padding: '5px 12px', borderRadius: '100px',
+                fontSize: '11px', fontWeight: 500, letterSpacing: '0.8px',
+                textTransform: 'uppercase', color: '#ffc02a',
+                background: 'rgba(255,192,42,0.15)', padding: '5px 12px', borderRadius: '100px',
               }}>
-                <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#0f0f0f', display: 'inline-block' }} />
+                <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#ffc02a', display: 'inline-block' }} />
                 Profesionalna automatizacija
               </span>
             </div>

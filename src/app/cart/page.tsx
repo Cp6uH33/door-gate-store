@@ -73,13 +73,13 @@ export default function Cart() {
         <div style={{ marginBottom: '40px' }}>
           <span style={{
             display: 'inline-flex', alignItems: 'center', gap: '6px',
-            fontSize: '11px', fontWeight: 700, letterSpacing: '0.8px',
-            textTransform: 'uppercase', color: '#0f0f0f',
-            background: '#ffc02a', padding: '5px 12px',
+            fontSize: '11px', fontWeight: 500, letterSpacing: '0.8px',
+            textTransform: 'uppercase', color: '#ffc02a',
+            background: 'rgba(255,192,42,0.15)', padding: '5px 12px',
             borderRadius: '100px', marginBottom: '16px',
             fontFamily: "'Space Grotesk', sans-serif",
           }}>
-            <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#0f0f0f', display: 'inline-block' }} />
+            <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#ffc02a', display: 'inline-block' }} />
             Korpa
           </span>
           <h1 style={{ fontWeight: 800, fontSize: 'clamp(28px, 4vw, 48px)', margin: '0 0 6px 0', letterSpacing: '-2px', fontFamily: "'Manrope', sans-serif", color: '#ededeb' }}>
