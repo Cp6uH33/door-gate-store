@@ -259,7 +259,8 @@ export default function HeroSection() {
       <style>{`
         @media (max-width: 768px) {
           .hero-section {
-            background-position: 60% center !important;
+            background-image: url(/hero-mobile.webp) !important;
+            background-position: center center !important;
             min-height: 100svh !important;
           }
           .hero-grid {
