@@ -53,6 +53,31 @@ export default function ProductDetail() {
     </div>
   );
 
+  const breadcrumbData = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Početna",
+        "item": "https://doorgatesistem.com"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "Shop",
+        "item": "https://doorgatesistem.com/shop"
+      },
+      {
+        "@type": "ListItem",
+        "position": 3,
+        "name": product.name,
+        "item": `https://doorgatesistem.com/proizvodi/${product.id}`
+      }
+    ]
+  };
+
   const structuredData = {
     "@context": "https://schema.org",
     "@type": "Product",
@@ -81,6 +106,10 @@ export default function ProductDetail() {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbData) }}
       />
       <div style={{ background: '#0f0f0f', color: '#ededeb', minHeight: '100vh' }}>
         <div style={{ maxWidth: '1152px', margin: '0 auto', padding: '100px 20px 80px' }}>
