@@ -68,7 +68,7 @@ export default function Footer() {
                   +381 69 120 0104
                 </a>
                 <a href="mailto:doorgatesistem@gmail.com"
-                  style={{ color: '#555', textDecoration: 'none', fontSize: '13px', fontFamily: "'Manrope', sans-serif", transition: 'color 0.2s' }}
+                  style={{ color: '#ffc02a', textDecoration: 'none', fontSize: '13px', fontFamily: "'Manrope', sans-serif", transition: 'color 0.2s' }}
                   onMouseEnter={e => ((e.currentTarget as HTMLElement).style.color = '#ffc02a')}
                   onMouseLeave={e => ((e.currentTarget as HTMLElement).style.color = '#ffc02a')}
                 >
@@ -132,6 +132,16 @@ export default function Footer() {
                 Srbija · Vojvodina · Subotica
               </span>
             </div>
+            <a
+              href="https://ignjatijedev.netlify.app/"
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{ fontSize: '11px', color: '#2e2e2e', fontFamily: "'Manrope', sans-serif", textDecoration: 'none', transition: 'color 0.2s' }}
+              onMouseEnter={e => ((e.currentTarget as HTMLElement).style.color = '#555')}
+              onMouseLeave={e => ((e.currentTarget as HTMLElement).style.color = '#2e2e2e')}
+            >
+              Design &amp; Dev: ignjatije.dev
+            </a>
           </div>
 
         </div>
