@@ -124,7 +124,7 @@ export default function WhyUsSection() {
                       <div style={{ fontSize: '16px', fontWeight: 700, marginBottom: '4px', color: '#f0f0f0', fontFamily: "'Manrope', sans-serif" }}>
                         {f.title}
                       </div>
-                      <div style={{ fontSize: '14px', color: '#777', lineHeight: 1.6, fontFamily: "'Manrope', sans-serif" }}>
+                      <div style={{ fontSize: '14px', color: '#999', lineHeight: 1.6, fontFamily: "'Manrope', sans-serif" }}>
                         {f.text}
                       </div>
                     </div>

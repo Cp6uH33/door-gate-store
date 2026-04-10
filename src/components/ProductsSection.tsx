@@ -264,7 +264,7 @@ export default function ProductsSection() {
                       {product.name}
                     </div>
                     <div style={{
-                      fontSize: '13px', color: '#888', lineHeight: 1.5, marginBottom: '14px',
+                      fontSize: '13px', color: '#aaa', lineHeight: 1.5, marginBottom: '14px',
                       flex: 1,
                       overflow: 'hidden', display: '-webkit-box',
                       WebkitLineClamp: 2, WebkitBoxOrient: 'vertical' as const,
