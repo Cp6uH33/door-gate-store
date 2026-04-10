@@ -53,7 +53,7 @@ export default function HeroSection() {
         position: 'relative', paddingTop: '20px',
         overflow: 'hidden', minHeight: '100vh',
         display: 'flex', alignItems: 'center',
-        backgroundImage: 'url(/hero2.png)',
+        backgroundImage: 'url(/hero2.webp)',
         backgroundSize: 'cover', backgroundPosition: 'center',
       }}>
         <div style={{

@@ -17,7 +17,7 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
     if (!product?.id) return { title: 'Proizvod — Door & Gate Sistem' };
     
     const description = product.short_description?.replace(/<[^>]*>/g, '').trim() || product.name;
-    const image = product.images?.[0]?.src || '/hero2.png';
+    const image = product.images?.[0]?.src || '/hero2.webp';
     const price = parseFloat(product.price).toLocaleString('sr-RS');
     
     return {

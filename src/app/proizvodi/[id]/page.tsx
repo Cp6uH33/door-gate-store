@@ -154,7 +154,7 @@ export default function ProductDetail() {
             {/* LEVO — slike */}
             <div className="product-images">
               {/* Glavna slika sa strelicama */}
-              <div style={{ width: '100%', height: '480px', borderRadius: '20px', overflow: 'hidden', background: '#1a1a1a', border: '1px solid #222', position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              <div style={{ width: '100%', height: '480px', borderRadius: '20px', overflow: 'hidden', background: '#f5f6f1', border: '1px solid #e8e8e4', position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                 {product.images?.[activeImg]?.src ? (
                   // eslint-disable-next-line @next/next/no-img-element
                   <img src={product.images[activeImg].src} alt={product.name}
@@ -227,7 +227,7 @@ export default function ProductDetail() {
                   {product.images.map((img: any, i: number) => (
                     <div key={i} onClick={() => setActiveImg(i)} style={{
                       width: '68px', height: '68px', borderRadius: '10px',
-                      overflow: 'hidden', background: '#1a1a1a',
+                      overflow: 'hidden', background: '#f5f6f1',
                       border: `1.5px solid ${activeImg === i ? '#ffc02a' : '#222'}`,
                       cursor: 'pointer', transition: 'border-color 0.2s',
                       position: 'relative', flexShrink: 0,

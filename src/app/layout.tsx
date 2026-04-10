@@ -27,7 +27,7 @@ export const metadata: Metadata = {
     description: 'Prodaja, montaža i servis motora za kapije, video interfona i pametnih sistema za kontrolu pristupa. Dostava i montaža širom Srbije.',
     images: [
       {
-        url: '/hero2.png',
+        url: '/hero2.webp',
         width: 1200,
         height: 630,
         alt: 'Door & Gate Sistem',
@@ -38,7 +38,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'Door & Gate Sistem — Motori za kapije i video interfoni',
     description: 'Prodaja, montaža i servis motora za kapije, video interfona i pametnih sistema.',
-    images: ['/hero2.png'],
+    images: ['/hero2.webp'],
   },
   robots: {
     index: true,
@@ -142,7 +142,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                 "https://doorgatesistem.com"
               ],
               "priceRange": "$$",
-              "image": "https://doorgatesistem.com/hero2.png",
+              "image": "https://doorgatesistem.com/hero2.webp",
               "areaServed": {
                 "@type": "Country",
                 "name": "Serbia"

@@ -8,7 +8,7 @@ export const metadata: Metadata = {
     title: 'Kontakt — Door & Gate Sistem',
     description: 'Besplatna procena i ponuda. Dostupni pon-pet 8-20h.',
     url: 'https://doorgatesistem.com/kontakt',
-    images: [{ url: '/hero2.png', width: 1200, height: 630 }],
+    images: [{ url: '/hero2.webp', width: 1200, height: 630 }],
   },
 };
 

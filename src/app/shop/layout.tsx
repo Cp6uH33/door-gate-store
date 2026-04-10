@@ -8,7 +8,7 @@ export const metadata: Metadata = {
     title: 'Web Shop — Door & Gate Sistem',
     description: 'Motori za kapije, video interfoni, RFID sistemi i smart home oprema.',
     url: 'https://doorgatesistem.com/shop',
-    images: [{ url: '/hero2.png', width: 1200, height: 630 }],
+    images: [{ url: '/hero2.webp', width: 1200, height: 630 }],
   },
 };
 
