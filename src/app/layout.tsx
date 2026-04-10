@@ -62,6 +62,57 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           dangerouslySetInnerHTML={{
             __html: JSON.stringify({
               "@context": "https://schema.org",
+              "@type": "FAQPage",
+              "mainEntity": [
+                {
+                  "@type": "Question",
+                  "name": "Da li vršite montažu motora za kapije?",
+                  "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "Da, vršimo profesionalnu montažu motora za klizne i krilne kapije širom Srbije. Kontaktirajte nas za besplatnu procenu."
+                  }
+                },
+                {
+                  "@type": "Question",
+                  "name": "Koje brendove motora za kapije prodajete?",
+                  "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "Prodajemo motore vodećih svetskih brendova za automatizaciju kapija i ulaza."
+                  }
+                },
+                {
+                  "@type": "Question",
+                  "name": "Da li vršite dostavu širom Srbije?",
+                  "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "Da, vršimo dostavu na celoj teritoriji Srbije. Besplatna dostava za područje Vojvodine."
+                  }
+                },
+                {
+                  "@type": "Question",
+                  "name": "Kako mogu da naručim proizvod?",
+                  "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "Možete naručiti putem našeg web shopa na doorgatesistem.com, telefonom na +381631183898 ili +381691200104, ili putem email-a doorgatesistem@gmail.com."
+                  }
+                },
+                {
+                  "@type": "Question",
+                  "name": "Da li prodajete video interfone?",
+                  "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "Da, u ponudi imamo color video interfone, Wi-Fi smart interfone i RFID sisteme za kontrolu pristupa."
+                  }
+                }
+              ]
+            })
+          }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
               "@type": "LocalBusiness",
               "name": "Door & Gate Sistem",
               "description": "Prodaja, montaža i servis motora za kapije, video interfona i pametnih sistema za kontrolu pristupa.",
