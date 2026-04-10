@@ -152,7 +152,7 @@ export default function WhyUsSection() {
                 Besplatna<br />konsultacija
               </div>
               <div style={{ fontSize: '14px', color: '#666', lineHeight: 1.7, marginBottom: '32px', fontFamily: "'Manrope', sans-serif" }}>
-                Niste sigurni koji sistem odgovara vašem objektu? Pozovite nas ili pišite — savet je besplatan, a mi dolazimo na teren.
+                Niste sigurni koji motor za kapiju odgovara vašem objektu? NICE Road 400, FAAC, BFT ili TMT Husky — pozovite nas za besplatnu procenu.
               </div>
 
               <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', marginBottom: '32px' }}>

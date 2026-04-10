@@ -42,7 +42,7 @@ export default function Footer() {
                 />
               </Link>
               <p style={{ fontSize: '14px', color: '#ededeb', lineHeight: 1.7, marginBottom: '20px', maxWidth: '260px', fontFamily: "'Manrope', sans-serif" }}>
-                Profesionalna automatizacija ulaza i kapija. Prodaja, montaža i servis širom Srbije.
+                Prodaja NICE, FAAC, BFT i TMT motora za kapije. Prihvatnici i delovi za klizne kapije. Video interfoni i smart home sistemi. Montaža i servis širom Srbije.
               </p>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
                 <a href="tel:+381631183898" style={{ color: '#ffc02a', textDecoration: 'none', fontSize: '14px', fontWeight: 600, fontFamily: "'Space Grotesk', sans-serif", display: 'flex', alignItems: 'center', gap: '8px', transition: 'color 0.2s' }}
