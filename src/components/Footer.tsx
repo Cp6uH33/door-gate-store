@@ -70,11 +70,11 @@ export default function Footer() {
                 <a href="mailto:doorgatesistem@gmail.com"
                   style={{ color: '#555', textDecoration: 'none', fontSize: '13px', fontFamily: "'Manrope', sans-serif", transition: 'color 0.2s' }}
                   onMouseEnter={e => ((e.currentTarget as HTMLElement).style.color = '#ffc02a')}
-                  onMouseLeave={e => ((e.currentTarget as HTMLElement).style.color = '#555')}
+                  onMouseLeave={e => ((e.currentTarget as HTMLElement).style.color = '#ffc02a')}
                 >
                   doorgatesistem@gmail.com
                 </a>
-                <span style={{ fontSize: '12px', color: '#333', fontFamily: "'Manrope', sans-serif", marginTop: '4px' }}>
+                <span style={{ fontSize: '12px', color: '#ffc02a', fontFamily: "'Manrope', sans-serif", marginTop: '4px' }}>
                   Pon – Pet: 8:00 – 20:00
                 </span>
               </div>
