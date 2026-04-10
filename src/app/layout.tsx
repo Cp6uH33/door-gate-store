@@ -57,9 +57,6 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="sr">
-      <head>
-        <link rel="preload" href="/hero2.webp" as="image" type="image/webp" />
-      </head>
       <body>
         <script
           type="application/ld+json"
