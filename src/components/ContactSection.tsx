@@ -221,7 +221,7 @@ export default function ContactSection() {
 
               {/* Mapa */}
               <div style={{ borderRadius: '16px', overflow: 'hidden', border: '1px solid #ffc02a', position: 'relative' }}>
-                <iframe
+                <iframe title="Lokacija Door & Gate Sistem na mapi"
                   src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2767.7527004349085!2d19.66795608578743!3d46.075972017884936!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x474360d07374fe75%3A0x8a4cbefda79c09b1!2sBregalni%C4%8Dka%207%2C%20Subotica%2024106!5e0!3m2!1sen!2srs!4v1774380965444!5m2!1sen!2srs"
                   height="200" width="100%"
                   style={{ border: 0, display: 'block' }}

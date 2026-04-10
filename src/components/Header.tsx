@@ -131,7 +131,7 @@ export default function Header() {
             {/* Hamburger */}
             <button
               onClick={() => setIsOpen(!isOpen)}
-              className="hamburger-btn"
+              className="hamburger-btn" aria-label="Otvori meni"
               style={{
                 background: 'transparent', border: 'none',
                 color: navLinkColor, cursor: 'pointer',
