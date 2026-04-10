@@ -96,7 +96,7 @@ export default function TrustBar() {
             >
               <Image
                 src={src}
-                alt={`Partner ${(i % logos.length) + 1}`}
+                alt={`Door & Gate Sistem partner brend ${(i % logos.length) + 1}`}
                 width={100}
                 height={40}
                 style={{ objectFit: 'contain', filter: 'brightness(0) invert(1)' }}

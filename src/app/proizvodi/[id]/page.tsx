@@ -237,7 +237,7 @@ export default function ProductDetail() {
                       onMouseLeave={e => { if (activeImg !== i) (e.currentTarget as HTMLElement).style.opacity = '0.6'; }}
                     >
                       {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img src={img.src} alt="" style={{ width: '100%', height: '100%', objectFit: 'contain', padding: '6px' }} />
+                      <img src={img.src} alt={`${product.name} - slika ${i + 1}`} style={{ width: '100%', height: '100%', objectFit: 'contain', padding: '6px' }} />
                     </div>
                   ))}
                 </div>
