@@ -53,7 +53,6 @@ export default function HeroSection() {
         position: 'relative', paddingTop: '20px',
         overflow: 'hidden', minHeight: '100vh',
         display: 'flex', alignItems: 'center',
-        backgroundImage: 'url(/hero.webp)',
         backgroundSize: 'cover', backgroundPosition: 'center',
       }}>
         <div style={{
@@ -257,9 +256,12 @@ export default function HeroSection() {
       </section>
 
       <style>{`
+        .hero-section {
+          background-image: url(/hero.webp);
+        }
         @media (max-width: 768px) {
           .hero-section {
-            background-image: url(/hero-mobile.webp) !important;
+            background-image: url(/hero-mobile.webp);
             background-position: center center !important;
             min-height: 100svh !important;
           }
