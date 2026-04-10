@@ -9,7 +9,7 @@ const WC_SECRET = process.env.NEXT_PUBLIC_WC_CONSUMER_SECRET;
 
 const stats = [
   { num: '500', suffix: '+', label: 'Instalacija' },
-  { num: '48',  suffix: 'h', label: 'Montaža' },
+  { num: '20',  suffix: 'g', label: 'Iskustva' },
   { num: '5',   suffix: '★', label: 'Ocena usluge' },
 ];
 
@@ -49,7 +49,7 @@ export default function HeroSection() {
 
   return (
     <>
-      <section id="hero" style={{
+      <section id="hero" className="hero-section" style={{
         position: 'relative', paddingTop: '20px',
         overflow: 'hidden', minHeight: '100vh',
         display: 'flex', alignItems: 'center',
@@ -258,21 +258,34 @@ export default function HeroSection() {
 
       <style>{`
         @media (max-width: 768px) {
+          .hero-section {
+            background-position: 60% center !important;
+            min-height: 100svh !important;
+          }
           .hero-grid {
             grid-template-columns: 1fr !important;
             gap: 0 !important;
             padding-bottom: 0 !important;
+            padding-top: 80px !important;
           }
           .hero-product {
             display: block !important;
           }
           .hero-product > a > div {
             border-radius: 20px 20px 0 0 !important;
-            padding: 28px 20px 0 !important;
+            padding: 24px 16px 0 !important;
           }
           .hero-product > a > div > div:first-of-type {
-            height: 220px !important;
-            margin-top: 36px !important;
+            height: 200px !important;
+            margin-top: 32px !important;
+          }
+        }
+        @media (max-width: 480px) {
+          .hero-section {
+            background-position: 65% center !important;
+          }
+          .hero-product > a > div > div:first-of-type {
+            height: 170px !important;
           }
         }
       `}</style>
