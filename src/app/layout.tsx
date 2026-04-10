@@ -9,8 +9,8 @@ export const metadata: Metadata = {
     default: 'Door & Gate Sistem — Motori za kapije i video interfoni',
     template: '%s | Door & Gate Sistem',
   },
-  description: 'Prodaja, montaža i servis motora za kapije, video interfona i pametnih sistema za kontrolu pristupa. Dostava i montaža širom Srbije.',
-  keywords: ['motori za kapije', 'video interfoni', 'automatizacija kapija', 'klizne kapije', 'krilne kapije', 'smart home', 'Srbija', 'Vojvodina'],
+  description: 'Prodaja motora za kapije NICE, FAAC, BFT i TMT. Prihvatnici, graničnici i delovi za klizne kapije. Video interfoni i smart home sistemi. Dostava širom Srbije.',
+  keywords: ['motori za kapije', 'NICE motori za kapije', 'FAAC motori za kapije', 'BFT motori za kapije', 'TMT Husky', 'prihvatnik za kliznu kapiju', 'graničnik za kapiju', 'video interfoni', 'automatizacija kapija', 'klizne kapije', 'krilne kapije', 'smart home', 'Srbija', 'Vojvodina', 'road 400 kit'],
   authors: [{ name: 'Door & Gate Sistem' }],
   creator: 'Door & Gate Sistem',
   publisher: 'Door & Gate Sistem',
@@ -24,7 +24,7 @@ export const metadata: Metadata = {
     url: 'https://doorgatesistem.com',
     siteName: 'Door & Gate Sistem',
     title: 'Door & Gate Sistem — Motori za kapije i video interfoni',
-    description: 'Prodaja, montaža i servis motora za kapije, video interfona i pametnih sistema za kontrolu pristupa. Dostava i montaža širom Srbije.',
+    description: 'Prodaja motora za kapije NICE, FAAC, BFT i TMT. Prihvatnici, graničnici i delovi za klizne kapije. Video interfoni i smart home sistemi. Dostava širom Srbije.',
     images: [
       {
         url: '/hero2.webp',
