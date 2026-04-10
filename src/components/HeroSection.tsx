@@ -53,9 +53,15 @@ export default function HeroSection() {
         position: 'relative', paddingTop: '20px',
         overflow: 'hidden', minHeight: '100vh',
         display: 'flex', alignItems: 'center',
-        backgroundImage: 'url(/hero2.webp)',
-        backgroundSize: 'cover', backgroundPosition: 'center',
       }}>
+        <Image
+          src="/hero2.webp"
+          alt="Door & Gate Sistem - automatizacija kapija"
+          fill
+          priority
+          sizes="100vw"
+          style={{ objectFit: 'cover', objectPosition: 'center' }}
+        />
         <div style={{
           position: 'absolute', inset: 0,
           background: 'linear-gradient(to right, rgba(0,0,0,0.90) 0%, rgba(0,0,0,0.65) 50%, rgba(0,0,0,0.35) 100%)',
