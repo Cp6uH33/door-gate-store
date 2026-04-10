@@ -57,6 +57,48 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="sr">
       <body>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "LocalBusiness",
+              "name": "Door & Gate Sistem",
+              "description": "Prodaja, montaža i servis motora za kapije, video interfona i pametnih sistema za kontrolu pristupa.",
+              "url": "https://doorgatesistem.com",
+              "telephone": "+381631183898",
+              "email": "doorgatesistem@gmail.com",
+              "address": {
+                "@type": "PostalAddress",
+                "streetAddress": "Breganličanska 7",
+                "addressLocality": "Subotica",
+                "addressCountry": "RS"
+              },
+              "geo": {
+                "@type": "GeoCoordinates",
+                "latitude": 46.075972,
+                "longitude": 19.667956
+              },
+              "openingHoursSpecification": [
+                {
+                  "@type": "OpeningHoursSpecification",
+                  "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+                  "opens": "07:00",
+                  "closes": "16:00"
+                }
+              ],
+              "sameAs": [
+                "https://doorgatesistem.com"
+              ],
+              "priceRange": "$$",
+              "image": "https://doorgatesistem.com/hero2.png",
+              "areaServed": {
+                "@type": "Country",
+                "name": "Serbia"
+              }
+            })
+          }}
+        />
         <CartProvider>
           <Header />
           {children}
