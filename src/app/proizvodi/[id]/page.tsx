@@ -53,8 +53,35 @@ export default function ProductDetail() {
     </div>
   );
 
+  const structuredData = {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    "name": product.name,
+    "description": product.short_description?.replace(/<[^>]*>/g, '') || product.name,
+    "image": product.images?.[0]?.src || '',
+    "brand": {
+      "@type": "Brand",
+      "name": "Door & Gate Sistem"
+    },
+    "offers": {
+      "@type": "Offer",
+      "url": `https://doorgatesistem.com/proizvodi/${product.id}`,
+      "priceCurrency": "RSD",
+      "price": product.price,
+      "availability": "https://schema.org/InStock",
+      "seller": {
+        "@type": "Organization",
+        "name": "Door & Gate Sistem"
+      }
+    }
+  };
+
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
+      />
       <div style={{ background: '#0f0f0f', color: '#ededeb', minHeight: '100vh' }}>
         <div style={{ maxWidth: '1152px', margin: '0 auto', padding: '100px 20px 80px' }}>
 
