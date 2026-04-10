@@ -53,8 +53,17 @@ export default function HeroSection() {
         position: 'relative', paddingTop: '20px',
         overflow: 'hidden', minHeight: '100vh',
         display: 'flex', alignItems: 'center',
-        backgroundSize: 'cover', backgroundPosition: 'center',
       }}>
+        <div className="hero-bg-desktop" style={{
+          position: 'absolute', inset: 0,
+          backgroundImage: 'url(/hero.webp)',
+          backgroundSize: 'cover', backgroundPosition: 'center',
+        }} />
+        <div className="hero-bg-mobile" style={{
+          position: 'absolute', inset: 0,
+          backgroundImage: 'url(/hero-mobile.webp)',
+          backgroundSize: 'cover', backgroundPosition: 'center',
+        }} />
         <div style={{
           position: 'absolute', inset: 0,
           background: 'linear-gradient(to right, rgba(0,0,0,0.90) 0%, rgba(0,0,0,0.65) 50%, rgba(0,0,0,0.35) 100%)',
@@ -256,12 +265,11 @@ export default function HeroSection() {
       </section>
 
       <style>{`
-        .hero-section {
-          background-image: url(/hero.webp);
-        }
+        .hero-bg-mobile { display: none; }
         @media (max-width: 768px) {
+          .hero-bg-desktop { display: none; }
+          .hero-bg-mobile { display: block; }
           .hero-section {
-            background-image: url(/hero-mobile.webp);
             background-position: center center !important;
             min-height: 100svh !important;
           }
