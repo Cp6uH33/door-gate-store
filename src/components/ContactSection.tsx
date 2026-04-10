@@ -124,14 +124,14 @@ export default function ContactSection() {
                   <div className="form-row">
                     <div>
                       <label style={{ fontSize: '11px', fontWeight: 600, color: '#ededeb', display: 'block', marginBottom: '6px', textTransform: 'uppercase', letterSpacing: '0.5px', fontFamily: "'Space Grotesk', sans-serif" }} htmlFor="name">Ime i prezime</label>
-                      <input id="name" type="text" placeholder="Vaše ime..." value={form.name}
+                      <input id="name" type="text" autoComplete="name" placeholder="Vaše ime..." value={form.name}
                         onChange={e => setForm(p => ({ ...p, name: e.target.value }))} required style={inputStyle}
                         onFocus={e => { e.target.style.borderColor = '#ffc02a'; }}
                         onBlur={e => { e.target.style.borderColor = '#2a2a2a'; }} />
                     </div>
                     <div>
                       <label style={{ fontSize: '11px', fontWeight: 600, color: '#ededeb', display: 'block', marginBottom: '6px', textTransform: 'uppercase', letterSpacing: '0.5px', fontFamily: "'Space Grotesk', sans-serif" }} htmlFor="phone">Telefon</label>
-                      <input id="phone" type="tel" placeholder="+381 ..." value={form.phone}
+                      <input id="phone" type="tel" autoComplete="tel" placeholder="+381 ..." value={form.phone}
                         onChange={e => setForm(p => ({ ...p, phone: e.target.value }))} style={inputStyle}
                         onFocus={e => { e.target.style.borderColor = '#ffc02a'; }}
                         onBlur={e => { e.target.style.borderColor = '#2a2a2a'; }} />
@@ -139,14 +139,14 @@ export default function ContactSection() {
                   </div>
                   <div>
                     <label style={{ fontSize: '11px', fontWeight: 600, color: '#ededeb', display: 'block', marginBottom: '6px', textTransform: 'uppercase', letterSpacing: '0.5px', fontFamily: "'Space Grotesk', sans-serif" }} htmlFor="email">Email</label>
-                    <input id="email" type="email" placeholder="email@primer.com" value={form.email}
+                    <input id="email" type="email" autoComplete="email" placeholder="email@primer.com" value={form.email}
                       onChange={e => setForm(p => ({ ...p, email: e.target.value }))} style={inputStyle}
                       onFocus={e => { e.target.style.borderColor = '#ffc02a'; }}
                       onBlur={e => { e.target.style.borderColor = '#2a2a2a'; }} />
                   </div>
                   <div>
                     <label style={{ fontSize: '11px', fontWeight: 600, color: '#ededeb', display: 'block', marginBottom: '6px', textTransform: 'uppercase', letterSpacing: '0.5px', fontFamily: "'Space Grotesk', sans-serif" }} htmlFor="message">Poruka</label>
-                    <textarea id="message" placeholder="Opišite šta vam treba..." value={form.message}
+                    <textarea id="message" autoComplete="off" placeholder="Opišite šta vam treba..." value={form.message}
                       onChange={e => setForm(p => ({ ...p, message: e.target.value }))} required rows={4}
                       style={{ ...inputStyle, resize: 'vertical', minHeight: '100px' }}
                       onFocus={e => { e.target.style.borderColor = '#ffc02a'; }}
