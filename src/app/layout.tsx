@@ -3,6 +3,7 @@ import './globals.css';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { CartProvider } from '@/contexts/CartContext';
+import GoogleAnalytics from '@/components/GoogleAnalytics';
 
 export const metadata: Metadata = {
   title: {
@@ -57,6 +58,26 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="sr">
       <body>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "WebSite",
+              "name": "Door & Gate Sistem",
+              "url": "https://doorgatesistem.com",
+              "description": "Prodaja motora za kapije NICE, FAAC, BFT i TMT. Prihvatnici i delovi za klizne kapije. Video interfoni i smart home sistemi.",
+              "potentialAction": {
+                "@type": "SearchAction",
+                "target": {
+                  "@type": "EntryPoint",
+                  "urlTemplate": "https://doorgatesistem.com/shop?search={search_term_string}"
+                },
+                "query-input": "required name=search_term_string"
+              }
+            })
+          }}
+        />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
@@ -150,6 +171,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             })
           }}
         />
+        <GoogleAnalytics />
         <CartProvider>
           <Header />
           {children}
