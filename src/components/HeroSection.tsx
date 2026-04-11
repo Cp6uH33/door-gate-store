@@ -61,7 +61,7 @@ export default function HeroSection() {
         }} />
         <div className="hero-bg-mobile" style={{
           position: 'absolute', inset: 0,
-          backgroundImage: 'url(/hero-mobile.webp)',
+          backgroundImage: 'url(/hero-mobile.png)',
           backgroundSize: 'cover', backgroundPosition: 'center',
         }} />
         <div style={{
