@@ -7,8 +7,8 @@ import { useCart } from '@/contexts/CartContext';
 import { getCategoryIcon } from '@/lib/categoryIcons';
 
 const WC_URL = process.env.NEXT_PUBLIC_WC_URL;
-const WC_KEY = process.env.NEXT_PUBLIC_WC_CONSUMER_KEY;
-const WC_SECRET = process.env.NEXT_PUBLIC_WC_CONSUMER_SECRET;
+const WC_KEY = process.env.WC_CONSUMER_KEY;
+const WC_SECRET = process.env.WC_CONSUMER_SECRET;
 
 type Product = {
   id: number;

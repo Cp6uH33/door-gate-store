@@ -2,8 +2,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 
 const WC_URL = process.env.NEXT_PUBLIC_WC_URL;
-const WC_KEY = process.env.NEXT_PUBLIC_WC_CONSUMER_KEY;
-const WC_SECRET = process.env.NEXT_PUBLIC_WC_CONSUMER_SECRET;
+const WC_KEY = process.env.WC_CONSUMER_KEY;
+const WC_SECRET = process.env.WC_CONSUMER_SECRET;
 
 export async function POST(req: NextRequest) {
   const { form, cart } = await req.json();
