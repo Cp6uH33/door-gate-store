@@ -7,8 +7,6 @@ import { useCart } from '@/contexts/CartContext';
 import { getCategoryIcon } from '@/lib/categoryIcons';
 
 const WC_URL = process.env.NEXT_PUBLIC_WC_URL;
-const WC_KEY = process.env.WC_CONSUMER_KEY;
-const WC_SECRET = process.env.WC_CONSUMER_SECRET;
 
 type Product = {
   id: number;
@@ -42,7 +40,7 @@ function ShopContent() {
 
   const fetchProducts = useCallback((categorySlug?: string) => {
     setLoading(true);
-    let url = `${WC_URL}/products?consumer_key=${WC_KEY}&consumer_secret=${WC_SECRET}&per_page=100&status=publish`;
+    let url = `/api/wc/products?per_page=100&status=publish`;
     if (categorySlug && categorySlug !== 'svi') {
       const cat = categories.find(c => c.slug === categorySlug);
       if (cat) url += `&category=${cat.id}`;
@@ -54,10 +52,10 @@ function ShopContent() {
   }, [categories]);
 
   useEffect(() => {
-    fetch(`${WC_URL}/products/categories?consumer_key=${WC_KEY}&consumer_secret=${WC_SECRET}&per_page=100&hide_empty=true`)
+    fetch(`/api/wc/products/categories?per_page=100&hide_empty=true`)
       .then(res => res.json())
       .then(data => setCategories(data.filter((c: Category) => c.count > 0)))
-      .catch(() => {});
+      .catch(() => { });
   }, []);
 
   useEffect(() => {
@@ -77,9 +75,9 @@ function ShopContent() {
 
   const filtered = search.trim()
     ? products.filter(p =>
-        p.name.toLowerCase().includes(search.toLowerCase()) ||
-        p.short_description?.toLowerCase().includes(search.toLowerCase())
-      )
+      p.name.toLowerCase().includes(search.toLowerCase()) ||
+      p.short_description?.toLowerCase().includes(search.toLowerCase())
+    )
     : products;
 
   const SidebarContent = () => (
@@ -313,7 +311,8 @@ function ShopContent() {
                             {product.name}
                           </div>
                         </Link>
-                        <div style={{ fontSize: '12px', color: '#666', marginBottom: '14px', lineHeight: 1.5, flex: 1,
+                        <div style={{
+                          fontSize: '12px', color: '#666', marginBottom: '14px', lineHeight: 1.5, flex: 1,
                           overflow: 'hidden', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical' as const,
                           fontFamily: "'Manrope', sans-serif",
                         }}
