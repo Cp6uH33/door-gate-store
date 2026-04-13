@@ -4,9 +4,6 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { useCart } from '@/contexts/CartContext';
 
-const WC_URL = process.env.NEXT_PUBLIC_WC_URL;
-const WC_KEY = process.env.WC_CONSUMER_KEY;
-const WC_SECRET = process.env.WC_CONSUMER_SECRET;
 
 export default function Checkout() {
   const { cart, totalPrice } = useCart();
@@ -52,7 +49,7 @@ export default function Checkout() {
       };
 
       const res = await fetch(
-        `${WC_URL}/orders?consumer_key=${WC_KEY}&consumer_secret=${WC_SECRET}`,
+        `/api/wc/orders`,
         {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },

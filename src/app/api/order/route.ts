@@ -1,7 +1,6 @@
 
 import { NextRequest, NextResponse } from 'next/server';
 
-const WC_URL = process.env.NEXT_PUBLIC_WC_URL;
 const WC_KEY = process.env.WC_CONSUMER_KEY;
 const WC_SECRET = process.env.WC_CONSUMER_SECRET;
 
@@ -38,7 +37,7 @@ export async function POST(req: NextRequest) {
   };
 
   const res = await fetch(
-    `${WC_URL}/orders?consumer_key=${WC_KEY}&consumer_secret=${WC_SECRET}`,
+    `https://api.doorgatesistem.com/wp-json/wc/v3/orders?consumer_key=${WC_KEY}&consumer_secret=${WC_SECRET}`,
     {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },

@@ -4,9 +4,6 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { useCart } from '@/contexts/CartContext';
 
-const WC_URL = process.env.NEXT_PUBLIC_WC_URL;
-const WC_KEY = process.env.WC_CONSUMER_KEY;
-const WC_SECRET = process.env.WC_CONSUMER_SECRET;
 
 type Product = {
   id: number;
@@ -43,7 +40,7 @@ export default function ProductsSection() {
   const sectionRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    fetch(`${WC_URL}/products/categories?consumer_key=${WC_KEY}&consumer_secret=${WC_SECRET}&per_page=100&hide_empty=true`)
+    fetch(`/api/wc/products/categories?per_page=100&hide_empty=true`)
       .then(res => res.json())
       .then(data => setCategories(data.filter((c: Category) => c.count > 0)))
       .catch(() => {});
@@ -52,7 +49,7 @@ export default function ProductsSection() {
   useEffect(() => {
     if (categories.length === 0 && active !== 'Svi') return;
     setLoading(true);
-    let url = `${WC_URL}/products?consumer_key=${WC_KEY}&consumer_secret=${WC_SECRET}&per_page=6&status=publish&orderby=popularity`;
+    let url = `/api/wc/products?per_page=6&status=publish&orderby=popularity`;
     if (active !== 'Svi') {
       const slug = filterMap[active];
       const cat = categories.find(c => c.slug === slug);

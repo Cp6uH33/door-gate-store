@@ -10,7 +10,7 @@ export default function Proizvodi() {
   const { addToCart } = useCart();
 
   useEffect(() => {
-    fetch(`${process.env.NEXT_PUBLIC_WC_URL}/products?consumer_key=${process.env.WC_CONSUMER_KEY}&consumer_secret=${process.env.WC_CONSUMER_SECRET}&per_page=50&status=publish`)
+    fetch(`/api/wc/products?per_page=50&status=publish`)
       .then(res => res.json())
       .then(data => { setProducts(data); setLoading(false); })
       .catch(() => setLoading(false));

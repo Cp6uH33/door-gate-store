@@ -4,8 +4,7 @@ import Image from 'next/image';
 import { useEffect, useRef, useState } from 'react';
 
 const WC_URL = process.env.NEXT_PUBLIC_WC_URL;
-const WC_KEY = process.env.WC_CONSUMER_KEY;
-const WC_SECRET = process.env.WC_CONSUMER_SECRET;
+
 
 const stats = [
   { num: '500', suffix: '+', label: 'Instalacija' },
@@ -26,7 +25,7 @@ export default function HeroSection() {
   const [featured, setFeatured] = useState<FeaturedProduct | null>(null);
 
   useEffect(() => {
-    fetch(`${WC_URL}/products?consumer_key=${WC_KEY}&consumer_secret=${WC_SECRET}&featured=true&per_page=1`)
+    fetch(`/api/wc/products?featured=true&per_page=1`)
       .then(res => res.json())
       .then(data => { if (data?.length > 0) setFeatured(data[0]); })
       .catch(() => {});

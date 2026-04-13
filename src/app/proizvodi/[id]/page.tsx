@@ -4,9 +4,6 @@ import { useParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { useCart } from '@/contexts/CartContext';
 
-const WC_URL = process.env.NEXT_PUBLIC_WC_URL;
-const WC_KEY = process.env.WC_CONSUMER_KEY;
-const WC_SECRET = process.env.WC_CONSUMER_SECRET;
 
 export default function ProductDetail() {
   const { id } = useParams();
@@ -19,7 +16,7 @@ export default function ProductDetail() {
 
   useEffect(() => {
     if (!id) return;
-    fetch(`${WC_URL}/products/${id}?consumer_key=${WC_KEY}&consumer_secret=${WC_SECRET}`)
+    fetch(`/api/wc/products/${id}`)
       .then(res => res.json())
       .then(data => { setProduct(data); setLoading(false); })
       .catch(() => { setLoading(false); router.push('/shop'); });

@@ -3,9 +3,6 @@ import Link from 'next/link';
 import { useEffect, useRef, useState } from 'react';
 import { getCategoryIcon } from '@/lib/categoryIcons';
 
-const WC_URL = process.env.NEXT_PUBLIC_WC_URL;
-const WC_KEY = process.env.WC_CONSUMER_KEY;
-const WC_SECRET = process.env.WC_CONSUMER_SECRET;
 
 type WCCategory = {
   id: number;
@@ -21,7 +18,7 @@ export default function CategoriesSection() {
   const sectionRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    fetch(`${WC_URL}/products/categories?consumer_key=${WC_KEY}&consumer_secret=${WC_SECRET}&per_page=100&hide_empty=true`)
+    fetch(`/api/wc/products/categories?per_page=100&hide_empty=true`)
       .then(res => res.json())
       .then((data: WCCategory[]) => {
         setCategories(data.filter(c => c.count > 0));
