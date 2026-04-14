@@ -10,6 +10,10 @@ export const metadata: Metadata = {
     icon: '/Favicon.png',
     apple: '/Favicon.png',
   },
+  icons: {
+    icon: '/Favicon.png',
+    apple: '/Favicon.png',
+  },
   title: {
     default: 'Door & Gate Sistem — Motori za kapije i video interfoni',
     template: '%s | Door & Gate Sistem',
