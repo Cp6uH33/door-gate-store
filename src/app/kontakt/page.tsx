@@ -31,7 +31,7 @@ export default function Kontakt() {
 
   return (
     <div style={{ background: '#0f0f0f', color: '#ededeb', minHeight: '100vh' }}>
-      <div style={{ maxWidth: '1152px', margin: '0 auto', padding: '140px 24px 80px' }}>
+      <div className="kontakt-wrapper" style={{ maxWidth: '1152px', margin: '0 auto', padding: '140px 24px 80px' }}>
 
         {/* Breadcrumb */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '48px' }}>
@@ -67,13 +67,13 @@ export default function Kontakt() {
           </p>
         </div>
 
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '40px', alignItems: 'start' }}>
+        <div className="kontakt-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '40px', alignItems: 'start' }}>
 
           {/* FORMA */}
           <div style={{
             background: 'rgba(255,192,42,0.06)', border: '1px solid #ffc02a',
             borderRadius: '20px', padding: '36px',
-          }}>
+          }} className="kontakt-form-card">
             <h2 style={{
               color: '#ededeb', fontWeight: 800, fontSize: '22px',
               margin: '0 0 28px 0', letterSpacing: '-0.5px',
@@ -97,7 +97,7 @@ export default function Kontakt() {
               </div>
             ) : (
               <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '18px' }}>
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
+                <div className="form-name-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
                   <div>
                     <label style={labelStyle}>Ime i prezime</label>
                     <input type="text" placeholder="Vaše ime..." value={form.ime}
@@ -252,6 +252,28 @@ export default function Kontakt() {
           </div>
         </div>
       </div>
+    <style>{`
+      @media (max-width: 768px) {
+        .kontakt-wrapper {
+          padding: 100px 16px 60px !important;
+        }
+        .kontakt-grid {
+          grid-template-columns: 1fr !important;
+          gap: 24px !important;
+        }
+        .kontakt-form-card {
+          padding: 24px 20px !important;
+        }
+      }
+      @media (max-width: 480px) {
+        .kontakt-wrapper {
+          padding: 90px 14px 48px !important;
+        }
+        .form-name-grid {
+          grid-template-columns: 1fr !important;
+        }
+      }
+    `}</style>
     </div>
   );
 }
