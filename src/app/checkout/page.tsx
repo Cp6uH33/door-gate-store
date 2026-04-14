@@ -22,7 +22,7 @@ export default function Checkout() {
 
     try {
       const orderData = {
-        status: 'pending',
+        status: 'on-hold',
         billing: {
           first_name: form.first_name,
           last_name: form.last_name,
