@@ -1,5 +1,11 @@
 import type { NextConfig } from 'next';
 const nextConfig: NextConfig = {
+  async redirects() {
+    return [
+      // Stara lista proizvoda je uklonjena — prodavnica je na /shop
+      { source: '/proizvodi', destination: '/shop', permanent: true },
+    ];
+  },
   async rewrites() {
     return [
       {

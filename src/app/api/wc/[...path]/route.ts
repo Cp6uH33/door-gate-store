@@ -37,7 +37,13 @@ async function handler(req: NextRequest, { params }: { params: Promise<{ path: s
     
     try {
       const data = JSON.parse(text);
-      return NextResponse.json(data);
+      const out = NextResponse.json(data, { status: res.status });
+      // Prosledi WooCommerce paginaciju (ukupan broj proizvoda / stranica)
+      for (const h of ['x-wp-total', 'x-wp-totalpages']) {
+        const v = res.headers.get(h);
+        if (v) out.headers.set(h, v);
+      }
+      return out;
     } catch {
       return NextResponse.json({ raw: text.substring(0, 500), status: res.status });
     }

@@ -14,8 +14,22 @@ type Product = {
   price: string;
   images: { src: string }[];
   short_description: string;
+  sku?: string;
   categories: { id: number; slug: string; name: string }[];
 };
+
+// Mala slova, bez HTML-a i kvačica (č/ć→c, š→s, ž→z, đ→dj), interpunkcija → razmak
+function normalize(s: string) {
+  return s
+    .replace(/<[^>]*>/g, ' ')
+    .replace(/&amp;/g, '&').replace(/&#0?38;/g, '&').replace(/&nbsp;/g, ' ')
+    .replace(/&#\d+;|&[a-z]+;/gi, ' ')
+    .toLowerCase()
+    .replace(/đ/g, 'dj')
+    .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+    .replace(/[^a-z0-9]+/g, ' ')
+    .trim();
+}
 
 type Category = {
   id: number;
@@ -33,22 +47,35 @@ function ShopContent() {
   const [categories, setCategories] = useState<Category[]>([]);
   const [loading, setLoading] = useState(true);
   const [added, setAdded] = useState<Record<number, boolean>>({});
-  const [search, setSearch] = useState('');
+  const [search, setSearch] = useState(() => searchParams.get('search') ?? '');
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   const activeSlug = searchParams.get('cat') ?? 'svi';
 
-  const fetchProducts = useCallback((categorySlug?: string) => {
+  const fetchProducts = useCallback(async (categorySlug?: string) => {
     setLoading(true);
     let url = `/api/wc/products?per_page=100&status=publish`;
     if (categorySlug && categorySlug !== 'svi') {
       const cat = categories.find(c => c.slug === categorySlug);
       if (cat) url += `&category=${cat.id}`;
     }
-    fetch(url)
-      .then(res => res.json())
-      .then(data => { setProducts(data); setLoading(false); })
-      .catch(() => setLoading(false));
+    try {
+      // WooCommerce vraća najviše 100 proizvoda po zahtevu — učitaj sve stranice
+      const first = await fetch(`${url}&page=1`);
+      const firstData: Product[] = await first.json();
+      if (!Array.isArray(firstData)) { setProducts([]); return; }
+      const totalPages = parseInt(first.headers.get('x-wp-totalpages') ?? '1', 10) || 1;
+      const rest = await Promise.all(
+        Array.from({ length: totalPages - 1 }, (_, i) =>
+          fetch(`${url}&page=${i + 2}`).then(res => res.json()).catch(() => [])
+        )
+      );
+      setProducts([firstData, ...rest].flatMap(d => (Array.isArray(d) ? d : [])));
+    } catch {
+      // ostavi prethodne proizvode
+    } finally {
+      setLoading(false);
+    }
   }, [categories]);
 
   useEffect(() => {
@@ -73,11 +100,12 @@ function ShopContent() {
     setSidebarOpen(false);
   }
 
-  const filtered = search.trim()
-    ? products.filter(p =>
-      p.name.toLowerCase().includes(search.toLowerCase()) ||
-      p.short_description?.toLowerCase().includes(search.toLowerCase())
-    )
+  const searchTerms = normalize(search).split(' ').filter(Boolean);
+  const filtered = searchTerms.length
+    ? products.filter(p => {
+      const haystack = normalize(`${p.name} ${p.sku ?? ''} ${p.short_description ?? ''} ${p.categories?.map(c => c.name).join(' ') ?? ''}`);
+      return searchTerms.every(t => haystack.includes(t));
+    })
     : products;
 
   const SidebarContent = () => (
@@ -273,7 +301,7 @@ function ShopContent() {
                 <div style={{ textAlign: 'center', padding: '80px 0', color: '#555' }}>
                   <div style={{ fontSize: '48px', marginBottom: '16px' }}>🔍</div>
                   <div style={{ fontSize: '18px', fontWeight: 600, color: '#888', marginBottom: '8px' }}>Nema proizvoda</div>
-                  <div style={{ fontSize: '14px' }}>Pokušajte drugu kategoriju</div>
+                  <div style={{ fontSize: '14px' }}>{search.trim() ? 'Pokušajte drugi pojam ili kategoriju' : 'Pokušajte drugu kategoriju'}</div>
                 </div>
               ) : (
                 <div className="shop-grid">
