@@ -1,31 +1,13 @@
 "use client";
 import Link from 'next/link';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 import { getCategoryIcon } from '@/lib/categoryIcons';
-
-
-type WCCategory = {
-  id: number;
-  name: string;
-  slug: string;
-  count: number;
-  image: { src: string; alt: string } | null;
-};
+import { useCategories } from '@/lib/categories';
 
 export default function CategoriesSection() {
-  const [categories, setCategories] = useState<WCCategory[]>([]);
-  const [loading, setLoading] = useState(true);
+  // Samo glavne kategorije — podkategorije su u meniju i u shopu
+  const { tree: categories, loading } = useCategories();
   const sectionRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    fetch(`/api/wc/products/categories?per_page=100&hide_empty=true`)
-      .then(res => res.json())
-      .then((data: WCCategory[]) => {
-        setCategories(data.filter(c => c.count > 0));
-        setLoading(false);
-      })
-      .catch(() => setLoading(false));
-  }, []);
 
   useEffect(() => {
     if (loading) return;
@@ -177,6 +159,12 @@ export default function CategoriesSection() {
                     <div style={{ fontSize: '12px', color: '#ededeb', fontFamily: "'Manrope', sans-serif" }}>
                       {cat.count} {cat.count === 1 ? 'proizvod' : 'proizvoda'}
                     </div>
+                    {cat.children.length > 0 && (
+                      <div style={{ fontSize: '11px', color: '#888', marginTop: '8px', lineHeight: 1.5, fontFamily: "'Manrope', sans-serif" }}>
+                        {cat.children.slice(0, 4).map(ch => ch.name).join(' · ')}
+                        {cat.children.length > 4 && ` i još ${cat.children.length - 4}`}
+                      </div>
+                    )}
                   </div>
                 </Link>
               ))}

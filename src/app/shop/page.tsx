@@ -5,8 +5,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { useCart } from '@/contexts/CartContext';
 import { getCategoryIcon } from '@/lib/categoryIcons';
-
-const WC_URL = process.env.NEXT_PUBLIC_WC_URL;
+import { useCategories } from '@/lib/categories';
 
 type Product = {
   id: number;
@@ -31,26 +30,29 @@ function normalize(s: string) {
     .trim();
 }
 
-type Category = {
-  id: number;
-  name: string;
-  slug: string;
-  count: number;
-};
-
 function ShopContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const { addToCart } = useCart();
 
   const [products, setProducts] = useState<Product[]>([]);
-  const [categories, setCategories] = useState<Category[]>([]);
+  const { categories, tree, loading: catLoading } = useCategories();
   const [loading, setLoading] = useState(true);
   const [added, setAdded] = useState<Record<number, boolean>>({});
   const [search, setSearch] = useState(() => searchParams.get('search') ?? '');
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   const activeSlug = searchParams.get('cat') ?? 'svi';
+  const activeCat = categories.find(c => c.slug === activeSlug);
+  const parentCat = activeCat ? categories.find(c => c.id === activeCat.parent) : undefined;
+
+  // Pretraga iz headera menja ?search= dok je shop već otvoren
+  const urlSearch = searchParams.get('search') ?? '';
+  const [lastUrlSearch, setLastUrlSearch] = useState(urlSearch);
+  if (urlSearch !== lastUrlSearch) {
+    setLastUrlSearch(urlSearch);
+    setSearch(urlSearch);
+  }
 
   const fetchProducts = useCallback(async (categorySlug?: string) => {
     setLoading(true);
@@ -79,15 +81,8 @@ function ShopContent() {
   }, [categories]);
 
   useEffect(() => {
-    fetch(`/api/wc/products/categories?per_page=100&hide_empty=true`)
-      .then(res => res.json())
-      .then(data => setCategories(data.filter((c: Category) => c.count > 0)))
-      .catch(() => { });
-  }, []);
-
-  useEffect(() => {
-    if (categories.length > 0 || activeSlug === 'svi') fetchProducts(activeSlug);
-  }, [activeSlug, categories, fetchProducts]);
+    if (!catLoading) fetchProducts(activeSlug);
+  }, [activeSlug, catLoading, fetchProducts]);
 
   function handleAdd(product: Product) {
     addToCart({ id: product.id, name: product.name, price: product.price, images: product.images, short_description: product.short_description });
@@ -136,29 +131,53 @@ function ShopContent() {
         </span>
         Svi proizvodi
       </button>
-      {categories.map(cat => (
-        <button key={cat.id} onClick={() => handleCatClick(cat.slug)} style={{
-          display: 'flex', alignItems: 'center', gap: '12px',
-          padding: '10px 14px', borderRadius: '10px', border: 'none',
-          cursor: 'pointer', textAlign: 'left', transition: 'all 0.2s',
-          background: activeSlug === cat.slug ? 'rgba(255,192,42,0.12)' : 'transparent',
-          color: activeSlug === cat.slug ? '#ffc02a' : '#888',
-          fontWeight: activeSlug === cat.slug ? 600 : 400, fontSize: '14px',
-          fontFamily: "'Manrope', sans-serif",
-        }}>
-          <span style={{
-            width: '32px', height: '32px', borderRadius: '8px', flexShrink: 0,
-            background: activeSlug === cat.slug ? 'rgba(255,192,42,0.2)' : '#1a1a1a',
-            display: 'flex', alignItems: 'center', justifyContent: 'center',
-            color: activeSlug === cat.slug ? '#ffc02a' : '#555',
-            border: `1px solid ${activeSlug === cat.slug ? 'rgba(255,192,42,0.3)' : '#222'}`,
-          }}>
-            <div style={{ width: '16px', height: '16px' }}>{getCategoryIcon(cat.slug)}</div>
-          </span>
-          <span style={{ flex: 1 }}>{cat.name}</span>
-          <span style={{ fontSize: '11px', color: '#444' }}>{cat.count}</span>
-        </button>
-      ))}
+      {tree.map(cat => {
+        const isActive = activeSlug === cat.slug;
+        const inBranch = isActive || cat.children.some(ch => ch.slug === activeSlug);
+        return (
+          <div key={cat.id}>
+            <button onClick={() => handleCatClick(cat.slug)} style={{
+              display: 'flex', alignItems: 'center', gap: '12px', width: '100%',
+              padding: '10px 14px', borderRadius: '10px', border: 'none',
+              cursor: 'pointer', textAlign: 'left', transition: 'all 0.2s',
+              background: isActive ? 'rgba(255,192,42,0.12)' : 'transparent',
+              color: inBranch ? '#ffc02a' : '#888',
+              fontWeight: inBranch ? 600 : 400, fontSize: '14px',
+              fontFamily: "'Manrope', sans-serif",
+            }}>
+              <span style={{
+                width: '32px', height: '32px', borderRadius: '8px', flexShrink: 0,
+                background: inBranch ? 'rgba(255,192,42,0.2)' : '#1a1a1a',
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
+                color: inBranch ? '#ffc02a' : '#555',
+                border: `1px solid ${inBranch ? 'rgba(255,192,42,0.3)' : '#222'}`,
+              }}>
+                <div style={{ width: '16px', height: '16px' }}>{getCategoryIcon(cat.slug)}</div>
+              </span>
+              <span style={{ flex: 1 }}>{cat.name}</span>
+              <span style={{ fontSize: '11px', color: '#444' }}>{cat.count}</span>
+            </button>
+            {cat.children.length > 0 && (
+              <div style={{ margin: '2px 0 6px 30px', paddingLeft: '12px', borderLeft: '1px solid #222', display: 'flex', flexDirection: 'column' }}>
+                {cat.children.map(sub => (
+                  <button key={sub.id} onClick={() => handleCatClick(sub.slug)} style={{
+                    display: 'flex', alignItems: 'center', gap: '8px',
+                    padding: '6px 10px', borderRadius: '8px', border: 'none',
+                    cursor: 'pointer', textAlign: 'left', transition: 'all 0.2s',
+                    background: activeSlug === sub.slug ? 'rgba(255,192,42,0.12)' : 'transparent',
+                    color: activeSlug === sub.slug ? '#ffc02a' : '#777',
+                    fontWeight: activeSlug === sub.slug ? 600 : 400, fontSize: '13px',
+                    fontFamily: "'Manrope', sans-serif",
+                  }}>
+                    <span style={{ flex: 1 }}>{sub.name}</span>
+                    <span style={{ fontSize: '11px', color: '#444' }}>{sub.count}</span>
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
+        );
+      })}
     </div>
   );
 
@@ -187,9 +206,18 @@ function ShopContent() {
                 </h1>
                 <p style={{ fontSize: '15px', color: '#666', marginTop: '8px', fontFamily: "'Manrope', sans-serif" }}>
                   {loading ? 'Učitavam...' : `${filtered.length} od ${products.length} proizvoda`}
-                  {activeSlug !== 'svi' && categories.find(c => c.slug === activeSlug) && (
-                    <span style={{ color: '#ffc02a', marginLeft: '8px' }}>
-                      — {categories.find(c => c.slug === activeSlug)?.name}
+                  {activeCat && (
+                    <span style={{ marginLeft: '8px' }}>
+                      —{' '}
+                      {parentCat && (
+                        <>
+                          <button onClick={() => handleCatClick(parentCat.slug)} style={{ background: 'none', border: 'none', padding: 0, color: '#888', cursor: 'pointer', font: 'inherit', textDecoration: 'underline', textUnderlineOffset: '3px' }}>
+                            {parentCat.name}
+                          </button>
+                          {' / '}
+                        </>
+                      )}
+                      <span style={{ color: '#ffc02a' }}>{activeCat.name}</span>
                     </span>
                   )}
                 </p>
@@ -227,7 +255,7 @@ function ShopContent() {
               <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="#ffc02a" strokeWidth="1.8">
                 <path d="M2 4h12M4 8h8M6 12h4" strokeLinecap="round" />
               </svg>
-              {activeSlug === 'svi' ? 'Sve kategorije' : categories.find(c => c.slug === activeSlug)?.name ?? 'Kategorije'}
+              {activeCat ? (parentCat ? `${parentCat.name} / ${activeCat.name}` : activeCat.name) : 'Sve kategorije'}
             </span>
             <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
               <path d={sidebarOpen ? 'M4 12l4-4 4 4' : 'M4 6l4 4 4-4'} />
@@ -247,7 +275,7 @@ function ShopContent() {
           <div className="shop-layout">
 
             {/* Desktop sidebar */}
-            <aside className="desktop-sidebar" style={{ position: 'sticky', top: '84px' }}>
+            <aside className="desktop-sidebar" style={{ position: 'sticky', top: '84px', maxHeight: 'calc(100vh - 100px)', overflowY: 'auto', paddingRight: '6px' }}>
               <SidebarContent />
             </aside>
 
@@ -386,7 +414,10 @@ function ShopContent() {
         }
         .mobile-filter-btn { display: none !important; }
         .mobile-sidebar { display: none !important; }
-        .desktop-sidebar { display: block; }
+        .desktop-sidebar { display: block; overscroll-behavior: contain; scrollbar-width: thin; scrollbar-color: #333 transparent; }
+        .desktop-sidebar::-webkit-scrollbar { width: 6px; }
+        .desktop-sidebar::-webkit-scrollbar-thumb { background: #333; border-radius: 3px; }
+        .desktop-sidebar::-webkit-scrollbar-thumb:hover { background: #ffc02a; }
 
         @media (max-width: 1024px) {
           .shop-grid {
